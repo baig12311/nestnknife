@@ -14,7 +14,7 @@ import Header from '../../components/categories/Header';
 import { useProductsByCollection } from '../../hooks/useProductsByCollection';
 import { useLocalSearchParams, router } from 'expo-router';
 import FadeInView from '../../components/animations/FadeInView';
-
+import ProductSkelton from '../../components/skeleton/ProductSkeleton';
 //import { useCollectionProducts } from '../../hooks/useProducts';
 
 const CollectionScreen = () => {
@@ -32,11 +32,8 @@ const CollectionScreen = () => {
 
   if (isLoading) {
     return (
-      <ActivityIndicator
-        style={styles.loader}
-        size="large"
-        color="#1F5B3A"
-      />
+      <ProductSkelton/>
+      
     );
   }
 
@@ -52,7 +49,15 @@ const CollectionScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title={title ?? 'Collection'} onSearchPress={() => router.push('/search/Search')} />
+      <Header title={title ?? 'Collection'} onSearchPress={() =>
+    router.push({
+      pathname: '/search/Search',
+      params: {
+        collectionHandle: handle,   // jo already useLocalSearchParams se mila hua hai
+        title: title,               // collection ka naam
+      },
+    })
+  } />
       {/* <Text style={styles.title}>
         {description ?? 'Collection'}
       </Text> */}

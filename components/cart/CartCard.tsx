@@ -13,16 +13,17 @@ interface props{
     onDecrease?:()=>void
     onIncrease?:()=>void
     quantity:number
-
+    onRemove?:()=>void,
+    updating:boolean
 }
-const CartCard:React.FC<props> = ({productName, price, image, onDecrease, onIncrease, quantity}) => {
+const CartCard:React.FC<props> = ({productName, price, image, onDecrease, onIncrease, quantity, onRemove}) => {
     return (
         <View style={styles.container}>
             <Image style={styles.image} source={{uri:image}}/>
             <View style={styles.contentContainer}>
                 <View style={styles.header} >
                     <Text style={styles.product} numberOfLines={2}>{productName}</Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={onRemove}>
                         <Icon 
                         name='trash-outline' 
                         type='Ionicons'
@@ -37,7 +38,7 @@ const CartCard:React.FC<props> = ({productName, price, image, onDecrease, onIncr
                 <View style={[styles.header, {marginTop:hp(1.5)}]}>
                     <QuantityCard onDecrease={onDecrease} onIncrease={onIncrease} quantity={quantity}/>
                     <Text style={styles.price}>
-                       {(price*quantity).toLocaleString()}
+                       Rs. {(price*quantity).toLocaleString()}
                     </Text>
                 </View>
             </View>
@@ -48,7 +49,7 @@ const CartCard:React.FC<props> = ({productName, price, image, onDecrease, onIncr
 // define your styles
 const styles = StyleSheet.create({
     container: {
-        borderBottomWidth:0.4,
+        borderBottomWidth:0.2,
         borderColor:Colors.secondary,
         //borderRadius:15,
         padding: wp(3),

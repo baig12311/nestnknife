@@ -16,7 +16,7 @@ import Header from '../../components/categories/Header';
 import CategoryCard from '../../components/categories/CategoryCard';
 import { router } from 'expo-router';
 import { useCollections } from '../../hooks/useProducts';
-
+import ProductSkelton from '../../components/skeleton/ProductSkeleton';
 export default function CategoriesScreen() {
   const {
     data: collections,
@@ -29,11 +29,12 @@ export default function CategoriesScreen() {
 
   if (isLoading) {
     return (
-      <ActivityIndicator
-        style={styles.loader}
-        size="large"
-        color="#1F5B3A"
-      />
+      <ProductSkelton/>
+      // <ActivityIndicator
+      //   style={styles.loader}
+      //   size="large"
+      //   color="#1F5B3A"
+      // />
     );
   }
 
@@ -49,12 +50,13 @@ export default function CategoriesScreen() {
 
   return (
     <SafeAreaView style={styles.mainContainer}>
+       <Header title='Collections' />
       <ScrollView
         style={styles.container}
         showsVerticalScrollIndicator={false}
       >
 
-        <Header title='Collections' />
+       
 
         <Text style={styles.subtitle}>
           Explore Our Collections

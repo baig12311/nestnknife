@@ -8,8 +8,10 @@ interface Props{
   placeholderText?:string,
   value?:string,
   onChangeText?:any
+  editable?:boolean,
+  onFocus?:any
 }
-const SearchBar:React.FC<Props> = ({placeholderText, value, onChangeText}) => {
+const SearchBar:React.FC<Props> = ({placeholderText, value, onChangeText, editable, onFocus}) => {
   return (
 <ShadowCard style={[styles.container, placeholderText==='Seacrh for products...' ? styles.input1
   :styles.input2
@@ -23,6 +25,8 @@ const SearchBar:React.FC<Props> = ({placeholderText, value, onChangeText}) => {
         onChangeText={onChangeText}
         placeholderTextColor="#888"
         style={styles.input}
+        onFocus={onFocus}
+        editable={editable}
       />
     </View>
 </ShadowCard>

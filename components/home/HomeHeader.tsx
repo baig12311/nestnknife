@@ -10,7 +10,7 @@ const HomeHeader=()=> {
       <Image source={require('../../assets/logo.png')} style={styles.logo} resizeMode='contain'/>
         {/* <Text style={styles.brand}>NestnKnife</Text> */}
         <View style={styles.iconView}>
-          <HeaderIcon iconName='notifications-outline'/>
+          {/* <HeaderIcon iconName='notifications-outline'/> */}
                     <HeaderIcon iconName='cart-outline'/>
 
         </View>

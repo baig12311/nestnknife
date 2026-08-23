@@ -7,17 +7,19 @@ import Icon from '../Icon';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 interface rowProps {
-    rowTitle?: string
+    rowTitle?: string,
+    onPress?:()=>void
+    onRemove?:()=>void
 }
-const SearchPopularRow: React.FC<rowProps> = ({ rowTitle }) => {
+const SearchRecentRow: React.FC<rowProps> = ({ rowTitle, onPress, onRemove}) => {
     return (
         <View style={styles.container}>
-            <View style={styles.firstContainer}>
+            <TouchableOpacity style={styles.firstContainer} onPress={onPress}>
                 <Icon name='clock-circle' type='AntDesign' size={wp(5)} color={Colors.secondary} />
                 <Text style={styles.searchText}>{rowTitle}</Text>
-            </View>
+            </TouchableOpacity>
 
-            <TouchableOpacity>
+            <TouchableOpacity onPress={onRemove}>
                 <Icon name='close-outline' type='Ionicons' size={wp(6)} color={Colors.secondary} />
 
             </TouchableOpacity>
@@ -53,4 +55,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default SearchPopularRow;
+export default SearchRecentRow;

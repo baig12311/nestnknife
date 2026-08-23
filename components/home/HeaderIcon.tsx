@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../../constants/colors';
 import Icon from '../Icon';
 import { fonts } from '../../constants/typography';
+import { useCartBadge } from '../../hooks/useCartBadge';
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 interface Props {
@@ -13,14 +14,21 @@ interface Props {
 }
 // create a component
 const HeaderIcon: React.FC<Props> = ({ iconName, badgeData }) => {
+    const cartCount = useCartBadge();
+
     return (
         <TouchableOpacity style={styles.iconContainer}>
             <Icon name={iconName} type='Ionicons' size={wp(6.5)} color={Colors.text} />
-            <View style={styles.badge}>
-                <Text style={styles.badgeText}>
-                    3
-                </Text>
-            </View>
+            {
+                cartCount > 0 && (
+                    <View style={styles.badge}>
+                        <Text style={styles.badgeText}>
+                            {cartCount}
+                        </Text>
+                    </View>
+                )
+            }
+
         </TouchableOpacity>
     );
 };
@@ -47,8 +55,8 @@ const styles = StyleSheet.create({
         borderRadius: wp(3),
         position: 'absolute',
         backgroundColor: Colors.primary,
-        top:'-6%',
-        right:'-3%',
+        top: '-6%',
+        right: '-3%',
         justifyContent: 'center',
         alignItems: 'center'
     },

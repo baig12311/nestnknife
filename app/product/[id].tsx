@@ -9,7 +9,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import FormattedDescription from '../../services/FormattedDescription';
-
+import { useQueryClient } from '@tanstack/react-query';
+import { useAddToCart } from '../../hooks/useCartMutations';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocalSearchParams } from 'expo-router';
@@ -17,6 +18,8 @@ import styles from './DetailStyle';
 import { RootState } from '../../store';
 import { useProduct } from '../../hooks/useProducts';
 import QuantityCard from '../../components/cart/QuantityCard';
+import Button from '../../components/common/Button';
+import ProductDetailSkeleton from '../../components/skeleton/ProductDetailSkeleton';
 
 import {
   createCart,
@@ -27,7 +30,8 @@ import { setCartId } from '../../store/cartSlice';
 
 const ProductDetailsScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
-
+const queryClient = useQueryClient();
+const addToCartMutation = useAddToCart();
   const dispatch = useDispatch();
 
   const cartId = useSelector(
@@ -45,11 +49,12 @@ const ProductDetailsScreen = () => {
 
   if (isLoading) {
     return (
-      <ActivityIndicator
-        style={styles.loader}
-        size="large"
-        color="#1F5B3A"
-      />
+      <ProductDetailSkeleton/>
+      // <ActivityIndicator
+      //   style={styles.loader}
+      //   size="large"
+      //   color="#1F5B3A"
+      // />
     );
   }
 
@@ -64,43 +69,36 @@ const ProductDetailsScreen = () => {
   const variant = product.variants.edges[0]?.node;
 
   const handleAddToCart = async () => {
-    if (!variant) {
-      console.error('No product variant found.');
-      return;
+  if (!variant) {
+    console.error('No product variant found.');
+    return;
+  }
+
+  try {
+    setAdding(true);
+
+    let currentCartId = cartId;
+
+    if (!currentCartId) {
+      const cart = await createCart();
+      currentCartId = cart.id;
+      dispatch(setCartId(cart.id));
     }
 
-    try {
-      setAdding(true);
+    const cart = await addToCartMutation.mutateAsync({
+      cartId: currentCartId,
+      merchandiseId: variant.id,
+      quantity,
+    });
 
-      let currentCartId = cartId;
+    console.log('CART AFTER ADD:', cart);
 
-      // No Shopify cart yet → create one
-      if (!currentCartId) {
-        const cart = await createCart();
-
-        currentCartId = cart.id;
-
-        dispatch(setCartId(cart.id));
-      }
-
-      // Add selected variant to Shopify cart
-      const cart = await addToCart(
-  currentCartId,
-  variant.id,
-  quantity
-);
-
-console.log('CART AFTER ADD:', cart);
-console.log('CART ID:', cart.id);
-console.log('TOTAL QUANTITY:', cart.totalQuantity);
-
-    } catch (error) {
-      console.error('ADD TO CART ERROR:', error);
-
-    } finally {
-      setAdding(false);
-    }
-  };
+  } catch (error) {
+    console.error('ADD TO CART ERROR:', error);
+  } finally {
+    setAdding(false);
+  }
+};
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -160,41 +158,11 @@ console.log('TOTAL QUANTITY:', cart.totalQuantity);
             quantity={quantity}
           />
 
-          {/* <View style={styles.quantityControls}>
-                <TouchableOpacity
-                  style={styles.quantityButton}
-                  onPress={() =>
-                    setQuantity((current) =>
-                      Math.max(1, current - 1)
-                    )
-                  }
-                >
-                  <Text style={styles.quantityButtonText}>
-                    −
-                  </Text>
-                </TouchableOpacity>
-
-                <Text style={styles.quantity}>
-                  {quantity}
-                </Text>
-
-                <TouchableOpacity
-                  style={styles.quantityButton}
-                  onPress={() =>
-                    setQuantity((current) => current + 1)
-                  }
-                >
-                  <Text style={styles.quantityButtonText}>
-                    +
-                  </Text>
-                </TouchableOpacity>
-              </View> */}
-
 
         </View>
 
         {/* Add to Cart */}
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[
             styles.addToCartButton,
             adding && styles.disabledButton,
@@ -209,7 +177,12 @@ console.log('TOTAL QUANTITY:', cart.totalQuantity);
               Add to Cart
             </Text>
           )}
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        <Button 
+        title='Add to Cart' 
+        onPress={handleAddToCart}
+        loading={adding}
+        />
       </View>
 
     </SafeAreaView>

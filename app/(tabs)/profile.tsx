@@ -1,12 +1,13 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-
+import ProductSkelton from '../../components/skeleton/ProductSkeleton';
+import ProductDetailSkeleton from '../../components/skeleton/ProductDetailSkeleton';
 // create a component
 const MyComponent = () => {
     return (
         <View style={styles.container}>
-            <Text>MyComponent</Text>
+          <ProductDetailSkeleton/>
         </View>
     );
 };
@@ -15,10 +16,7 @@ const MyComponent = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#2c3e50',
-    },
+    }
 });
 
 //make this component available to the app

@@ -18,6 +18,7 @@ import FadeInView from '../../components/animations/FadeInView';
 import { Shadow } from 'react-native-shadow-2';
 import HomeSkeleton from '../../components/skeleton/HomeSkeleton';
 import styles from '../styles/HStyle';
+import ProductCardSkeleton from '../../components/skeleton/ProductCardSkeleton';
 
 const categories = [
   'Prep & Cook',
@@ -47,9 +48,15 @@ if (isLoading) {
     <SafeAreaView style={styles.mainContainer}>
       <HomeHeader />
       <FadeInView delay={150}>
-        <View style={styles.searchContainer}>
-          <SearchBar placeholderText='Seacrh for products...'/>
-        </View>
+        <TouchableOpacity
+  activeOpacity={0.8}
+  onPress={() => router.push('/search/Search')}
+  style={styles.searchContainer}
+>
+  <View pointerEvents="none">
+    <SearchBar placeholderText="Seacrh for products..." />
+  </View>
+</TouchableOpacity>
       </FadeInView>
 
       
@@ -87,7 +94,17 @@ if (isLoading) {
                       style={styles.cardShadowWrapper}
                       containerStyle={styles.shadowContainer}
                     > */}
-                      <TouchableOpacity style={styles.card} activeOpacity={0.85}>
+                      <TouchableOpacity 
+                      style={styles.card} 
+                      activeOpacity={0.85} 
+                      // onPress={() => router.push(`/collection/${collection.handle}`)}
+                      onPress={() => router.push({
+    pathname: '/collection/[handle]',
+    params: {
+      handle: collection.handle,
+      title: collection.title
+    }
+  })}>
                         {collection.image && (
                           <Image
                             source={{ uri: collection.image.url }}
@@ -108,7 +125,12 @@ if (isLoading) {
 
           <FadeInView delay={600}>
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Everyday Favourites</Text>
+             <View style={styles.sectionHeader}>
+                <Text style={styles.sectionTitle}>Everyday Essentials</Text>
+                <TouchableOpacity onPress={() => router.push('/collection/featured-products')}>
+                  <Text style={styles.sectionHeaderText}>View All</Text>
+                </TouchableOpacity>
+              </View>
 
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {products.map((product, index) => (
@@ -127,7 +149,7 @@ if (isLoading) {
             </View>
           </FadeInView>
           {/* Apply the same fix to Everyday Favourites section */}
-
+        
         </ScrollView>
       
     </SafeAreaView>
