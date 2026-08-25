@@ -75,6 +75,11 @@ const styles = StyleSheet.create({
     sectionContainer:{
         
         marginBottom: hp(2)
+    },
+    noFoundText:{
+        color: Colors.secondary,
+        fontFamily: fonts.medium,
+        fontSize:wp(4.5)
     }
 });
 export default styles;

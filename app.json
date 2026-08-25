@@ -2,6 +2,8 @@
   "expo": {
     "name": "nestnknife",
     "slug": "nestnknife",
+    "scheme": "shop.81785061622.app",
+    "owner": "baig1212",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,14 +23,16 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.baig1212.nestnknife"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-router",
-      "expo-font"
+      "expo-font",
+      "expo-secure-store"
     ]
   }
 }

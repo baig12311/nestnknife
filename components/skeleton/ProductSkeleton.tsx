@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import SkeletonBox from './SkeletonBox';
 import ProductCardSkeleton from './ProductCardSkeleton';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import Colors from '../../constants/colors';
 const ProductSkelton = () => {
     return (
         <SafeAreaView style={styles.container}>
@@ -53,7 +54,8 @@ const ProductSkelton = () => {
 // define your styles
 const styles = StyleSheet.create({
     container: {
-        padding: hp(2)
+        padding: hp(2),
+        backgroundColor: Colors.background
     },
     header: {
         justifyContent: 'space-between',

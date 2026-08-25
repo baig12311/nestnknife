@@ -6,6 +6,7 @@ export type ShopifyProduct = {
   price: string;
   image: string | null;
 };
+
 // fetching all products from shopify store
 type ShopifyProductsResponse = {
   products: {
@@ -63,7 +64,7 @@ export async function getProducts(): Promise<ShopifyProduct[]> {
   }));
 }
 
-//fetching a single product from shopify store
+// fetching a single product from shopify store
 const PRODUCT_QUERY = `
   query GetProduct($id: ID!) {
     product(id: $id) {
@@ -74,6 +75,13 @@ const PRODUCT_QUERY = `
 
       featuredImage {
         url
+      }
+
+      images(first: 10) {
+        nodes {
+          url
+          altText
+        }
       }
 
       priceRange {
@@ -105,11 +113,18 @@ type ShopifyProductResponse = {
     id: string;
     title: string;
     description: string;
-    descriptionHtml:string
+    descriptionHtml: string;
 
     featuredImage: {
       url: string;
     } | null;
+
+    images: {
+      nodes: {
+        url: string;
+        altText: string | null;
+      }[];
+    };
 
     priceRange: {
       minVariantPrice: {
@@ -143,7 +158,7 @@ export async function getProduct(id: string) {
   return data.product;
 }
 
-//fetching products by collection handle from shopify store
+// fetching products by collection handle from shopify store
 const FEATURED_PRODUCTS_QUERY = `
   query GetFeaturedProducts($handle: String!, $first: Int!) {
     collection(handle: $handle) {
@@ -218,9 +233,6 @@ export const getFeaturedProducts = async (): Promise<
   );
 };
 
-
-
-
 type ShopifyCollectionProductsResponse = {
   collection: {
     products: {
@@ -273,20 +285,25 @@ export const getProductsByCollection = async (
   handle: string,
   first: number = 4,
 ): Promise<ShopifyProduct[]> => {
-  const data = await shopifyFetch<ShopifyCollectionProductsResponse>(
-    COLLECTION_PRODUCTS_QUERY,
-    {
-      handle,
-      first,
-    },
-  );
+  const data =
+    await shopifyFetch<ShopifyCollectionProductsResponse>(
+      COLLECTION_PRODUCTS_QUERY,
+      {
+        handle,
+        first,
+      },
+    );
 
   return (
-    data.collection?.products.edges.map(({ node }) => ({
-      id: node.id,
-      title: node.title,
-      price: node.priceRange.minVariantPrice.amount,
-      image: node.featuredImage?.url ?? null,
-    })) ?? []
+    data.collection?.products.edges.map(
+      ({ node }) => ({
+        id: node.id,
+        title: node.title,
+        price:
+          node.priceRange.minVariantPrice.amount,
+        image:
+          node.featuredImage?.url ?? null,
+      }),
+    ) ?? []
   );
 };

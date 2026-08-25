@@ -4,18 +4,32 @@ import { fonts } from '../../constants/typography';
 import Colors from '../../constants/colors';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import HeaderIcon from './HeaderIcon';
-const HomeHeader=()=> {
-  return (
-    <View style={styles.container}>
-      <Image source={require('../../assets/logo.png')} style={styles.logo} resizeMode='contain'/>
-        {/* <Text style={styles.brand}>NestnKnife</Text> */}
-        <View style={styles.iconView}>
-          {/* <HeaderIcon iconName='notifications-outline'/> */}
-                    <HeaderIcon iconName='cart-outline'/>
+interface Props{
+  title?:string
 
-        </View>
-         
+}
+const HomeHeader:React.FC<Props>=({title})=> {
+  return (
+   <View style={[styles.container, !title&&{borderBottomWidth:0.2,}]}>
+      {/* Left Side: Title ya Logo */}
+      {title ? (
+        <Text style={styles.title}>{title}</Text>
+      ) : (
+        <Image 
+          source={require('../../assets/logo.png')} 
+          style={styles.logo} 
+          resizeMode='contain'
+        />
+      )}
+      
+      {/* Right Side: Icons View */}
+      <View style={styles.iconView}>
+        {/* Notification Icon hamesha dikhega */}
+        <HeaderIcon iconName='notifications-outline'/>
         
+        {/* Cart Icon sirf tab dikhega jab title NAHI hoga */}
+        <HeaderIcon iconName='cart-outline'/>
+      </View>
     </View>
   );
 }
@@ -26,7 +40,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomWidth:0.2,
+    
     borderColor: Colors.secondary,
    
     marginBottom:hp(2)
@@ -50,6 +64,12 @@ const styles = StyleSheet.create({
   iconView:{
     flexDirection: 'row',
 
+  },
+  title:{
+    fontSize: wp(5),
+        fontFamily: fonts.semibold,
+        //fontWeight: '600',
+        color: Colors.text,
   }
   
 });

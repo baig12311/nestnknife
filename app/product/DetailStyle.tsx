@@ -11,15 +11,46 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
+    //borderWidth:3
   },
   contentContainer:{
-    padding:hp(2)
+    paddingHorizontal:hp(2),
+    //borderWidth:2
   },
 
   image: {
-    width: '100%',
-    height: hp(35),
+    width:  wp(100),
+    height: '100%',
+    // borderBottomLeftRadius: 15,
+    // borderBottomRightRadius:15,
+    // elevation: 10,
+    //height: hp(35),
     backgroundColor: '#F5F5F5',
+  },
+  dotsContainer:{
+    //borderWidth:1,
+    marginBottom: hp(2),
+    flexDirection:'row',
+    justifyContent: 'center',
+    gap:5
+  },
+  dot:{
+    width: wp(3),
+    height: wp(3),
+    borderRadius: wp(2),
+    elevation:1,
+    backgroundColor: Colors.secondary2
+  },
+  activeDot:{
+    width: wp(7),
+    backgroundColor: Colors.accent
+  },
+  imageContainer:{
+    height: hp(35),
+    marginBottom: hp(1)
+    //height: hp(-100),
+    //width: wp(100)
+    //borderWidth: 4
   },
 
   title: {

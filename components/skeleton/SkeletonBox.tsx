@@ -8,6 +8,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import Colors from '../../constants/colors';
 import { LinearGradient } from 'expo-linear-gradient';
 
 /*
@@ -94,7 +95,7 @@ export default SkeletonBox
 const styles=StyleSheet.create({
   skeleton: {
     overflow: 'hidden',
-    backgroundColor: '#E5E7EB',
+    backgroundColor: Colors.secondary2,
   },
 
   /*

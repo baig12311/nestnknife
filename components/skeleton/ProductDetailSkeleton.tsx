@@ -7,6 +7,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import SkeletonBox from './SkeletonBox';
+import Colors from '../../constants/colors';
 
 const ProductDetailSkeleton = () => {
   return (
@@ -55,7 +56,7 @@ export default ProductDetailSkeleton;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.background,
   },
   content: {
     paddingHorizontal: wp(5),

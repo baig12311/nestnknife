@@ -74,14 +74,17 @@ export const searchProducts = async (
    SCOPED SEARCH (ek collection ke andar)
 ========================= */
 
+/* =========================
+   SCOPED SEARCH (ek collection ke andar)
+========================= */
+
 const SEARCH_IN_COLLECTION_QUERY = `
   query SearchInCollection(
     $handle: String!
-    $query: String!
     $first: Int!
   ) {
     collection(handle: $handle) {
-      products(first: $first, query: $query) {
+      products(first: $first) {
         edges {
           node {
             id
@@ -129,24 +132,35 @@ type ShopifySearchInCollectionResponse = {
 export const searchInCollection = async (
   handle: string,
   query: string,
-  first: number = 20,
+  first: number = 100,   // zyada products fetch karo taake filter karne ke liye pool bada ho
 ): Promise<ShopifyProduct[]> => {
-   console.log('SCOPED SEARCH CALLED:', { handle, query }); 
   const data = await shopifyFetch<ShopifySearchInCollectionResponse>(
     SEARCH_IN_COLLECTION_QUERY,
     {
       handle,
-      query,
       first,
     },
   );
- console.log('SCOPED SEARCH RESPONSE:', JSON.stringify(data)); 
+
   if (!data.collection) return [];
 
-  return data.collection.products.edges.map(({ node }) => ({
+  const allProducts = data.collection.products.edges.map(({ node }) => ({
     id: node.id,
     title: node.title,
     price: node.priceRange.minVariantPrice.amount,
     image: node.featuredImage?.url ?? null,
   }));
+
+  // Client-side filtering — title match
+  const searchTerm = query
+    .replace(/title:\*/g, '')
+    .replace(/\*/g, '')
+    .trim()
+    .toLowerCase();
+
+  if (!searchTerm) return allProducts;
+
+  return allProducts.filter((product) =>
+    product.title.toLowerCase().includes(searchTerm)
+  );
 };

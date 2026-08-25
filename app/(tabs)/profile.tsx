@@ -1,23 +1,49 @@
-//import liraries
-import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import ProductSkelton from '../../components/skeleton/ProductSkeleton';
-import ProductDetailSkeleton from '../../components/skeleton/ProductDetailSkeleton';
-// create a component
-const MyComponent = () => {
-    return (
-        <View style={styles.container}>
-          <ProductDetailSkeleton/>
-        </View>
-    );
-};
+import React from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image
+} from 'react-native';
+import { useCustomer } from '../../hooks/useCustomer';
+import { useAppSelector } from '../../hooks/redux';
+import { router } from 'expo-router';
+import { ShadowCard } from '../../components/common/ShadowCard';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import Colors from '../../constants/colors';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import styles from '../styles/ProfileStyle';
+import { refreshAccessToken } from '../../services/shopify/shopify0Auth';
+import { useLogin } from '../../hooks/useAuth';
+import FloatingInput from '../../components/profile/FloatingInput';
+import HomeHeader from '../../components/home/HomeHeader';
+import Icon from '../../components/Icon';
+import { useLogout } from '../../hooks/useAuth';
+import LoggedIn from '../profile/loggedin/LoggedIn';
+const ProfileScreen = () => {
+  const logoutMutation=useLogout()
+  const login = useLogin();
+  const accessToken =useAppSelector(
+  (state) => state.auth.accessToken
+);
 
-// define your styles
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    }
-});
+const isLoggedIn = !!accessToken;
+  // const {
+  //   customer,
+  //   loading,
+  //   updateCustomer,
+  //   updating,
+  // } = useCustomer();
 
-//make this component available to the app
-export default MyComponent;
+  return (
+    <SafeAreaView style={styles.container}>
+      
+      {
+        isLoggedIn &&(<LoggedIn/>)
+      }
+    </SafeAreaView>
+  );
+}
+export default ProfileScreen
+
