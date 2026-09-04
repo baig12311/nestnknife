@@ -41,10 +41,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     
+    
     borderColor: Colors.secondary,
    
-    marginBottom:hp(2)
-    //alignItems: 'center',
+    marginBottom:hp(2),
     //paddingBottom: hp(2),
   },
   logo:{

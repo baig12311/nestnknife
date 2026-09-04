@@ -47,6 +47,7 @@ export function useCustomer() {
     try {
       const data = await getFullCustomerData();
       setCustomer(data);
+      console.log("Customer Data: ", customer)
     } catch (err: any) {
       console.error('useCustomer ERROR:', err);
       setError(err.message ?? 'Failed to load customer data.');

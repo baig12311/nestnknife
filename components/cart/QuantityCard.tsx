@@ -13,7 +13,7 @@ interface Props{
 const QuantityCard:React.FC<Props> = ({quantity, onDecrease, onIncrease}) => {
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={onDecrease} style={styles.button}>
+            <TouchableOpacity onPress={onDecrease} style={styles.button} activeOpacity={0.7}>
                 <Text style={styles.QText}>
                     -
                 </Text>
@@ -24,7 +24,7 @@ const QuantityCard:React.FC<Props> = ({quantity, onDecrease, onIncrease}) => {
             </Text>
             </View>
            
-             <TouchableOpacity onPress={onIncrease} style={styles.button}>
+             <TouchableOpacity onPress={onIncrease} style={styles.button} activeOpacity={0.7}>
                 <Text style={styles.QText}>
                     +
                 </Text>

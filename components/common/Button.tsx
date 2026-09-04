@@ -14,7 +14,12 @@ interface Props {
 const Button: React.FC<Props> = ({ onPress, title, loading, disabled}) => {
     return (
         <ShadowCard style={styles.container} containerStyle={styles.containerStyle}>
-            <TouchableOpacity onPress={onPress} style={[styles.button, (disabled || loading)&&{opacity:0.7}]}  disabled={disabled || loading}>
+            <TouchableOpacity 
+            onPress={onPress} 
+            style={[styles.button, (disabled || loading)&&{opacity:0.7}]}  
+            disabled={disabled || loading}
+            activeOpacity={0.7}
+            >
                 {loading ? (
                     <ActivityIndicator color={Colors.background} />
                 ) : (

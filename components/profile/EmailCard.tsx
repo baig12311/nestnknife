@@ -5,9 +5,10 @@
  import { ShadowCard } from '../common/ShadowCard';
  import Icon from '../Icon';
  import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
- 
- // create a component
- const EmailCard = () => {
+ interface Props{
+    email?:string
+ }
+ const EmailCard:React.FC<Props> = ({email}) => {
     return (
         <ShadowCard style={styles.buttonContainer} containerStyle={styles.buttonContainerStyle}>
           <View style={styles.button} 
@@ -21,7 +22,7 @@
                 Email
               </Text>
               <Text style={styles.ButtonSubText}>
-                shaheerbaig45@gmail.com
+                {email}
               </Text>
             </View>
            <Text style={styles.verifyText}>
@@ -37,7 +38,7 @@
  const styles = StyleSheet.create({
      buttonContainer: {
         borderRadius: wp(2),
-        marginBottom: hp(3)
+        marginBottom: hp(2)
     },
     buttonContainerStyle: {
         width: '100%',
@@ -70,12 +71,17 @@
     ButtonSubText: {
         fontFamily: fonts.medium,
         color: Colors.text,
-        fontSize: wp(3.3)
+        fontSize: wp(3.2)
     },
     verifyText:{
-        padding: wp(2),
-        backgroundColor: Colors.accent,
-        borderRadius: wp(2)
+        paddingHorizontal: wp(1.5),
+        paddingVertical:wp(0.5),
+        elevation: 2,
+        backgroundColor: '#E2F1E5',
+        color: '#2A6B46',
+        borderRadius: wp(2),
+        fontFamily: fonts.medium,
+        fontSize: wp(3.2)
     }
  });
  

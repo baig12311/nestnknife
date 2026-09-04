@@ -60,6 +60,7 @@ const Icon: React.FC<IconProps> = ({ name, size, color, type }) => {
                                                     ) :
                                                         type === 'Octicons' ? (
                                                             <Octicons name={name as any} size={size} color={color} />
+                  
                                                         ) :
                                                             type === 'SimpleLineIcons' ? (
                                                                 <SimpleLineIcons name={name as any} size={size} color={color} />
@@ -67,6 +68,7 @@ const Icon: React.FC<IconProps> = ({ name, size, color, type }) => {
                                                                 type === 'Foundation' ? (
                                                                     <Foundation name={name as any} size={size} color={color} />
                                                                 ) :
+
                                                                     (
                                                                         <MaterialCommunityIcons name={name as any} size={size} color={color} />
                                                                     )}

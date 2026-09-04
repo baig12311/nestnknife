@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity, TextComponent } from 'react-native';
 import Colors from '../../constants/colors';
 import { fonts } from '../../constants/typography';
+import { router } from 'expo-router';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Icon from '../Icon';
 
@@ -15,12 +16,17 @@ const Incomplete = () => {
                 color={Colors.accent}
             />
             <View style={styles.textContainer}>
-                <Text style={styles.heading}>Your profile is incomplete</Text>
-                <Text style={styles.sub}>Add you details to enjoy faster checkout, order tracking and more.</Text>
+                <Text style={styles.heading}>Complete your profile</Text>
+                {/* <Text style={styles.sub}>Add you details to enjoy faster checkout, order tracking and more.</Text> */}
+                <Text style={styles.sub}>Add more details for faster checkout.</Text>
 
             </View>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>Complete Now</Text>
+                <TouchableOpacity 
+                style={styles.button} 
+                activeOpacity={0.7}
+                onPress={()=>router.push('/profile/detailform/DetailForm')}
+                >
+                    <Text style={styles.buttonText}>Add Details</Text>
                 </TouchableOpacity>
 
         </View>
@@ -30,11 +36,11 @@ const Incomplete = () => {
 // define your styles
 const styles = StyleSheet.create({
     container: {
-        borderWidth: 1,
+        borderWidth: 0.3,
         flexDirection: 'row',
         justifyContent: 'space-between',
         backgroundColor: '#FFF5E6',
-        borderColor: Colors.accent,
+        borderColor: Colors.secondary,
         padding:wp(2),
         marginBottom: hp(2),
         borderRadius: wp(2)
@@ -61,13 +67,13 @@ const styles = StyleSheet.create({
     },
     heading:{
         fontSize: wp(3.5),
-        fontFamily: fonts.medium,
+        fontFamily: fonts.semibold,
         color:Colors.text
     },
     sub:{
         fontSize: wp(3.2),
         fontFamily: fonts.regular,
-        color:Colors.text
+        color:Colors.secondary,
     }
 });
 

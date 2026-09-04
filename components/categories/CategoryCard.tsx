@@ -14,7 +14,7 @@ interface Props{
 const CategoryCard:React.FC<Props> = ({cardTitle, image, onPress}) => {
     return (
          <ShadowCard style={styles.container} containerStyle={styles.containerStyle}>
-<TouchableOpacity style={styles.container} onPress={onPress}>
+<TouchableOpacity onPress={onPress} activeOpacity={0.7}>
     {
         image&&(<Image style={styles.image} resizeMode='cover' source={{uri:image}}/>)
     }
@@ -37,7 +37,8 @@ const styles = StyleSheet.create({
     container: {
         //width:wp(40),
         height: hp(23),
-        overflow: 'hidden'
+        overflow: 'hidden',
+        borderRadius:wp(3)
         
     },
     containerStyle:{

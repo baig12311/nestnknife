@@ -23,7 +23,7 @@ export function ShadowCard({
   distance = 6,
   offset = [0, 3],
   startColor = 'rgba(0, 0, 0, 0.06)',
-  borderRadius = 16,
+  borderRadius,
   style,
   containerStyle,
 }: ShadowCardProps) {

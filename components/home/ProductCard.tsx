@@ -13,6 +13,7 @@ const ProductCard:React.FC<ProductCardProps>=({ product })=>{
   return (
     <ShadowCard style={styles.container} containerStyle={styles.containerStyle}>
       <TouchableOpacity
+      activeOpacity={0.7}
   //style={styles.container}
   onPress={() =>
   router.push({

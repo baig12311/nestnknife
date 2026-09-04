@@ -84,9 +84,11 @@ export const getFullCustomerData = async () => {
 export const updateCustomer = async ({
   firstName,
   lastName,
+  phoneNumber
 }: {
   firstName?: string;
   lastName?: string;
+  phoneNumber?:string
 }) => {
   const token = await getStoredAccessToken();
 
@@ -105,9 +107,7 @@ export const updateCustomer = async ({
           emailAddress {
             emailAddress
           }
-          phoneNumber {
-            phoneNumber
-          }
+          phoneNumber 
         }
 
         userErrors {
@@ -130,6 +130,7 @@ export const updateCustomer = async ({
         input: {
           firstName,
           lastName,
+          phoneNumber
         },
       },
     }),

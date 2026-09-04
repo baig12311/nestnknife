@@ -85,7 +85,7 @@ import { Fraunces_600SemiBold, Fraunces_700Bold } from '@expo-google-fonts/fraun
 import { store, AppDispatch } from '../store';
 import { queryClient } from '../services/queryClient';
 import { restoreSession } from '../hooks/useAuth';
-
+import { loadCartId } from '../store/cartSlice';
 SplashScreen.preventAutoHideAsync();
 
 /*
@@ -99,6 +99,7 @@ const AppContent = () => {
 
   useEffect(() => {
     restoreSession(dispatch);
+    dispatch(loadCartId() as any);
   }, []);
 
   return <Slot />;

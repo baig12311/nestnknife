@@ -7,12 +7,15 @@ import Header from '../../components/categories/Header';
 import CartCard from '../../components/cart/CartCard';
 import { useUpdateCartLine, useRemoveCartLine } from '../../hooks/useCartMutations';
 import { RootState } from '../../store';
+import { useDispatch } from 'react-redux';
+import { setCartId } from '../../store/cartSlice';
 import { useCart } from '../../hooks/useProducts';
 import CartAmount from '../../components/cart/CartAmount';
 import Button from '../../components/common/Button';
 import { Linking, Alert } from 'react-native';
 
 const Cart = () => {
+  const dispatch = useDispatch<any>();
   const cartId = useSelector((state: RootState) => state.cart.cartId);
 
   const { data: cart, isLoading, error } = useCart(cartId);
@@ -91,7 +94,10 @@ const handleCheckout = async () => {
 
   try {
     setCheckingOut(true);
-
+ // ✅✅✅ YEH 3 LINES ADD KAR ✅✅✅
+    console.log('💾 Saving cart ID to storage...');
+    dispatch(setCartId(cart.id) as any);
+    console.log('✅ Cart ID saved:', cart.id);
     const supported = await Linking.canOpenURL(cart.checkoutUrl);
 
     if (supported) {

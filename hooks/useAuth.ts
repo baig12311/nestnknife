@@ -11,8 +11,9 @@ import {
   setAccessToken,
   setCustomer,
   logoutUser,
+  finishAuthCheck
 } from '../store/authSlice';
-
+import { clearCartData } from '../store/cartSlice';
 import { AppDispatch } from '../store';
 
 /* =========================
@@ -58,6 +59,7 @@ export function useLogout() {
 
     onSuccess: () => {
       dispatch(logoutUser());
+      dispatch(clearCartData() as any);
     },
 
     onError: (error) => {
@@ -73,18 +75,35 @@ export function useLogout() {
    RESTORE SESSION
 ========================= */
 
+// export async function restoreSession(dispatch: AppDispatch) {
+//   try {
+//     const storedToken = await getStoredAccessToken();
+
+//     if (!storedToken) {
+//       return;
+//     }
+
+//     dispatch(setAccessToken(storedToken));
+
+//     console.log('SESSION RESTORED');
+//     dispatch(finishAuthCheck());
+//   } catch (error) {
+//     console.error('RESTORE SESSION ERROR:', error);
+//     dispatch(finishAuthCheck());
+//   }
+// }
+
 export async function restoreSession(dispatch: AppDispatch) {
   try {
     const storedToken = await getStoredAccessToken();
 
-    if (!storedToken) {
-      return;
+    if (storedToken) {
+      dispatch(setAccessToken(storedToken));
+      console.log('SESSION RESTORED');
     }
-
-    dispatch(setAccessToken(storedToken));
-
-    console.log('SESSION RESTORED');
   } catch (error) {
     console.error('RESTORE SESSION ERROR:', error);
+  } finally {
+    dispatch(finishAuthCheck());
   }
 }

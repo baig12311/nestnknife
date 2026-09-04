@@ -13,6 +13,7 @@ const ProductCard:React.FC<ProductCardProps>=({ product })=>{
   return (
     <ShadowCard style={styles.container} containerStyle={styles.containerStyle}>
  <TouchableOpacity
+ activeOpacity={0.7}
   onPress={() =>
   router.push({
     pathname: '/product/[id]',
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
   container: {
     //width: wp(44),
     //marginRight: wp(),
-    borderRadius: 16,
+    borderRadius: wp(3),
     backgroundColor: '#FFFFFF',
     overflow: 'hidden',
     borderWidth: 1,
