@@ -19,7 +19,6 @@ const LoggedIn = () => {
     const email =customer?.emailAddress?.emailAddress
     const fName=customer?.firstName
     const lName=customer?.lastName
-    console.log(customer)
     return (
         <View style={styles.container}>
 

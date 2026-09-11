@@ -92,6 +92,7 @@ const TabLayout = () => {
                     fontSize: wp(3.5),
                     fontWeight: '400',
                     fontFamily: 'Poppins_500Medium'
+                    //fontFamily:  'Poppins_600SemiBold'
                     //paddingBottom: hp(1)
                 },
 

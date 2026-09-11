@@ -1,8 +1,7 @@
-
 import { getStoredAccessToken } from './shopify0Auth';
 
 const SHOP_ID = '81785061622';
-const API_VERSION = '2025-01'; // apne dashboard se confirm karo
+const API_VERSION = '2025-01';
 const GRAPHQL_ENDPOINT = `https://shopify.com/${SHOP_ID}/account/customer/api/${API_VERSION}/graphql`;
 
 export const getFullCustomerData = async () => {
@@ -33,8 +32,11 @@ export const getFullCustomerData = async () => {
         addresses(first: 10) {
           edges {
             node {
+              id
               address1
+              address2
               city
+              province
               country
               zip
             }
@@ -51,6 +53,16 @@ export const getFullCustomerData = async () => {
                 currencyCode
               }
               fulfillmentStatus
+              lineItems(first: 10) {
+                edges {
+                  node {
+                    id
+                    title
+                    quantity
+                    
+                  }
+                }
+              }
             }
           }
         }
@@ -62,7 +74,7 @@ export const getFullCustomerData = async () => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': token, // note: kuch versions me "Bearer " prefix chahiye — dono try karo
+      'Authorization': token,
     },
     body: JSON.stringify({ query }),
   });
@@ -78,17 +90,23 @@ export const getFullCustomerData = async () => {
   return json.data.customer;
 };
 
-
-//UPDAET CUSTOMER DATA 
-
 export const updateCustomer = async ({
   firstName,
   lastName,
-  phoneNumber
+  phoneNumber,
+  address,
 }: {
   firstName?: string;
   lastName?: string;
-  phoneNumber?:string
+  phoneNumber?: string;
+  address?: {
+    address1?: string;
+    address2?: string;
+    city?: string;
+    province?: string;
+    country?: string;
+    zip?: string;
+  };
 }) => {
   const token = await getStoredAccessToken();
 
@@ -107,9 +125,18 @@ export const updateCustomer = async ({
           emailAddress {
             emailAddress
           }
-          phoneNumber 
+          phoneNumber {
+            phoneNumber
+          }
+          defaultAddress {
+            address1
+            address2
+            city
+            province
+            country
+            zip
+          }
         }
-
         userErrors {
           field
           message
@@ -118,21 +145,31 @@ export const updateCustomer = async ({
     }
   `;
 
+  const input: any = {};
+  
+  if (firstName !== undefined) input.firstName = firstName;
+  if (lastName !== undefined) input.lastName = lastName;
+  if (phoneNumber !== undefined) input.phoneNumber = phoneNumber;
+  
+  if (address) {
+    input.defaultAddress = {};
+    if (address.address1 !== undefined) input.defaultAddress.address1 = address.address1;
+    if (address.address2 !== undefined) input.defaultAddress.address2 = address.address2;
+    if (address.city !== undefined) input.defaultAddress.city = address.city;
+    if (address.province !== undefined) input.defaultAddress.province = address.province;
+    if (address.country !== undefined) input.defaultAddress.country = address.country;
+    if (address.zip !== undefined) input.defaultAddress.zip = address.zip;
+  }
+
   const response = await fetch(GRAPHQL_ENDPOINT, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: token,
+      'Authorization': token,
     },
     body: JSON.stringify({
       query: mutation,
-      variables: {
-        input: {
-          firstName,
-          lastName,
-          phoneNumber
-        },
-      },
+      variables: { input },
     }),
   });
 
@@ -147,7 +184,6 @@ export const updateCustomer = async ({
 
   if (result.userErrors?.length) {
     console.error('CUSTOMER UPDATE ERROR:', result.userErrors);
-
     throw new Error(
       result.userErrors.map((error: any) => error.message).join(', ')
     );

@@ -1,12 +1,8 @@
-
 import { View, Text, StyleSheet } from 'react-native';
-import Colors from '../../constants/colors';
-import { fonts } from '../../constants/typography';
-import Icon from '../Icon';
+import { router } from 'expo-router';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import CustomSectionRow from './CustomSectionrow';
 import { ShadowCard } from '../common/ShadowCard';
-// create a component
 const MoreInfoSection = () => {
     return (
         <ShadowCard style={styles.container} containerStyle={styles.containerStyle}>
@@ -18,6 +14,7 @@ const MoreInfoSection = () => {
                     subText='View your order history'
                     paddingVertical={hp(1)}
                     borderBottomWidth={0.3}
+                    onPress={()=>router.push('/profile/orders/Orders')}
                 />
                 <CustomSectionRow
                     iconName='truck'
@@ -34,6 +31,7 @@ const MoreInfoSection = () => {
                     subText='Add you delivery addresses'
                     paddingVertical={hp(1)}
                     borderBottomWidth={0.3}
+                    onPress={()=>router.push('/profile/address/Address')}
                 />
                 
 

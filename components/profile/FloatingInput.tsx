@@ -7,17 +7,20 @@ import {
 } from 'react-native-responsive-screen';
 import { fonts } from '../../constants/typography';
 import Colors from '../../constants/colors';
+import Icon from '../Icon';
 
 interface Props {
     value?: string
     onChangeText?: (text: string) => void
     errorFlag?: string
     placeholder?: string
-    keyboardType?:any
-    max?:number
+    keyboardType?: any
+    max?: number
+    iconName:string
+    iconType:string
 }
 
-const FloatingInput: React.FC<Props> = ({ value, onChangeText, errorFlag, placeholder, keyboardType, max}) => {
+const FloatingInput: React.FC<Props> = ({ value, onChangeText, errorFlag, placeholder, keyboardType, max, iconName, iconType}) => {
     const progress = useSharedValue(0);
     //const focusProgress = useSharedValue(0);
     const [isFocused, setIsFocused] = useState(false);
@@ -41,22 +44,21 @@ const FloatingInput: React.FC<Props> = ({ value, onChangeText, errorFlag, placeh
 
     const handleBlur = () => {
         setIsFocused(false);
-        progress.value=withTiming(0, {duration:120})
+        progress.value = withTiming(0, { duration: 120 })
         //focusProgress.value = withTiming(0, { duration: 120 });
-        
+
         // Placeholder neeche aaye agar field khali hai
         // if (!value || value.length === 0) {
         //     progress.value = withTiming(0, { duration: 120 });
         // }
-        if(value)
-        {
+        if (value) {
             //console.log('value: ', value)
-            progress.value=withTiming(1, {duration:120})
+            progress.value = withTiming(1, { duration: 120 })
         }
-        
+
     };
 
-    const size = wp(4)
+    const size = wp(3.6)
     const animatedSize = wp(3)
 
     const animatedStyle = useAnimatedStyle(() => {
@@ -70,8 +72,17 @@ const FloatingInput: React.FC<Props> = ({ value, onChangeText, errorFlag, placeh
     })
 
     return (
-        <View style={placeholder!=='Phone Number' &&{ marginBottom: hp(2)}}>
-            <Animated.View style={[styles.inputField, animatedContainer, placeholder==='Phone Number'&&{borderColor:Colors.background}]}>
+        <View style={placeholder !== 'Phone Number' && { marginBottom: hp(2) }}>
+           
+            <Animated.View style={[styles.inputField, animatedContainer, placeholder === 'Phone Number' && { borderColor: Colors.background }]}>
+                 <View style={styles.iconContainer}>
+                <Icon
+                name={iconName}
+                type={iconType}
+                size={wp(5)}
+                color={Colors.secondary}
+                />
+            </View>
                 <Animated.Text style={[styles.placeholder, animatedStyle]}>
                     {placeholder}
                 </Animated.Text>
@@ -93,8 +104,13 @@ const styles = StyleSheet.create({
     inputField: {
         borderRadius: wp(2),
         height: hp(6),
-        borderColor: Colors.secondary
+        borderColor: Colors.secondary,
+        flexDirection: 'row',
+        alignItems: 'center'
         //marginBottom: hp(0),
+    },
+    iconContainer:{
+        paddingHorizontal: wp(2)
     },
     input: {
         flex: 1,
@@ -102,18 +118,18 @@ const styles = StyleSheet.create({
         fontFamily: fonts.regular,
         fontSize: wp(4),
         color: Colors.text,
-        paddingHorizontal: wp(4),
        
+
     },
     placeholder: {
         fontFamily: fonts.regular,
-        marginTop:hp(0.2),
+        marginTop: hp(0.3),
         zIndex: 2,
         backgroundColor: Colors.background,
         position: 'absolute',
         textAlignVertical: 'center',
-        left: '4%',
-        
+        left: 33,
+
     },
 });
 

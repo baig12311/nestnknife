@@ -1,58 +1,64 @@
 
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from '../Icon';
 import Colors from '../../constants/colors';
 import { fonts } from '../../constants/typography';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-interface Props{
-    paddingHorizontal?:number
-    paddingVertical?:number
-    iconName?:string
-    iconType?:string
-    mainText?:string
-    subText?:string
-    borderBottomWidth?:number
-    status?:string
+interface Props {
+    paddingHorizontal?: number
+    paddingVertical?: number
+    iconName: string
+    iconType: string
+    mainText?: string
+    subText?: string
+    borderBottomWidth?: number
+    status?: string
+    onPress?: () => void
 }
-const CustomSectionRow:React.FC<Props> = ({paddingHorizontal,
+const CustomSectionRow: React.FC<Props> = ({ paddingHorizontal,
     paddingVertical,
     iconName,
     iconType,
     mainText,
     subText,
     borderBottomWidth,
-    status
+    status,
+    onPress
 }) => {
     return (
-        <View style={[styles.container, {paddingHorizontal:paddingHorizontal, 
-        paddingVertical: paddingVertical,
-        borderBottomWidth: borderBottomWidth}]}>
-           {iconName && iconType ? (
+        <TouchableOpacity 
+        activeOpacity={0.7}
+        onPress={onPress}
+        style={[styles.container, {
+            paddingHorizontal: paddingHorizontal,
+            paddingVertical: paddingVertical,
+            borderBottomWidth: borderBottomWidth
+        }]}>
+
             <View style={styles.icon}>
-                 <Icon
-          name={iconName}
-          type={iconType}
-          size={wp(7)}
-          color={Colors.text}
-        />
+                <Icon
+                    name={iconName}
+                    type={iconType}
+                    size={wp(7)}
+                    color={Colors.text}
+                />
             </View>
-       
-      ) : null}
+
+
             <View style={styles.textContainer}>
                 <Text style={styles.mainText}>{mainText}</Text>
-                {
-                    subText && (<Text style={styles.subtext}>{subText}</Text>)
-                }
-                 
+                <Text style={styles.subtext}>{subText}</Text>
+
+
             </View>
-            <Text style={styles.textStatus}>{status}</Text>
-             <Icon
-            name='chevron-small-right'
-            type='Entypo'
-            size={wp(7)}
-            color={Colors.text}
+            {/* <Text style={styles.textStatus}>{status}</Text> */}
+            <Icon
+                name='chevron-small-right'
+                type='Entypo'
+                size={wp(7)}
+                color={Colors.text}
             />
-        </View>
+        </TouchableOpacity>
     );
 };
 
@@ -63,26 +69,26 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderColor: Colors.secondary
     },
-    textContainer:{
-        flex:1
+    textContainer: {
+        flex: 1
     },
-    mainText:{
-         fontFamily: fonts.semibold,
+    mainText: {
+        fontFamily: fonts.semibold,
         color: Colors.text,
         fontSize: wp(4)
     },
-    subtext:{
+    subtext: {
         fontFamily: fonts.regular,
         color: Colors.secondary,
         fontSize: wp(3.2)
     },
-    textStatus:{
-          color: '#C84037',
-          fontFamily: fonts.medium,
-          fontSize: wp(3.2),
-          marginRight: wp(2),
+    textStatus: {
+        color: '#C84037',
+        fontFamily: fonts.medium,
+        fontSize: wp(3.2),
+        marginRight: wp(2),
     },
-     icon: {
+    icon: {
         width: wp(12),
         height: wp(12),
         borderRadius: wp(6),

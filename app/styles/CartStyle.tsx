@@ -44,11 +44,18 @@ const styles=StyleSheet.create({
   },
 
   emptyText: {
-    marginTop: hp(1),
     fontSize: wp(4),
     fontFamily: fonts.regular,
-    color:Colors.secondary
+    color:Colors.secondary,
+    textAlign: 'center',
   },
+  emptyText1:{
+     marginBottom: hp(3),
+  },
+  emptyCart:{
+    width:wp(80),
+    height: hp(30),
+  }
 
 })
 export default styles;

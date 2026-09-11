@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Colors from "../../constants/colors";
 import { fonts } from "../../constants/typography";
 import { ShadowCard } from './ShadowCard';
@@ -8,17 +8,17 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 interface Props {
     onPress?: () => void
     title?: string
-    loading?:boolean
-    disabled?:boolean
+    loading?: boolean
+    disabled?: boolean
 }
-const Button: React.FC<Props> = ({ onPress, title, loading, disabled}) => {
+const Button: React.FC<Props> = ({ onPress, title, loading, disabled }) => {
     return (
         <ShadowCard style={styles.container} containerStyle={styles.containerStyle}>
-            <TouchableOpacity 
-            onPress={onPress} 
-            style={[styles.button, (disabled || loading)&&{opacity:0.7}]}  
-            disabled={disabled || loading}
-            activeOpacity={0.7}
+            <TouchableOpacity
+                onPress={onPress}
+                style={[styles.button, (disabled || loading) && { opacity: 0.7 }]}
+                disabled={disabled || loading}
+                activeOpacity={0.7}
             >
                 {loading ? (
                     <ActivityIndicator color={Colors.background} />

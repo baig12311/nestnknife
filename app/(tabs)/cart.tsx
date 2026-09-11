@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { View, Text, FlatList } from 'react-native';
+import { SafeAreaView} from 'react-native-safe-area-context';
+import { View, Text, FlatList, Image} from 'react-native';
 import { useSelector } from 'react-redux';
 import styles from '../styles/CartStyle';
 import Header from '../../components/categories/Header';
 import CartCard from '../../components/cart/CartCard';
+import { router } from 'expo-router';
 import { useUpdateCartLine, useRemoveCartLine } from '../../hooks/useCartMutations';
 import { RootState } from '../../store';
 import { useDispatch } from 'react-redux';
@@ -77,8 +78,11 @@ const Cart = () => {
         <Header title="Cart" />
 
         <View style={styles.emptyContainer}>
+          <Image source={require('../../assets/illustrations/emptyCart.png')} style={styles.emptyCart}/>
           <Text style={styles.emptyTitle}>Your Cart is Empty</Text>
-          <Text style={styles.emptyText}>Add some products to your cart.</Text>
+          <Text style={styles.emptyText}>Looks like you haven't added anything yet.</Text>
+          <Text style={[styles.emptyText, styles.emptyText1]}>Discover our collection!</Text>
+          <Button title='Shop Now' onPress={()=>router.replace('./categories')}/>
         </View>
       </SafeAreaView>
     );
