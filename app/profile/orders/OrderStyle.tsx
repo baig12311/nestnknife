@@ -35,6 +35,9 @@ const styles = StyleSheet.create({
     },
     contentContainer:{
 
+    },
+    scrollContainer:{
+        paddingBottom: hp(5)
     }
    
     

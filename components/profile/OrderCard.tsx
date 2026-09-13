@@ -1,10 +1,12 @@
 
-import { View, Text, StyleSheet, } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, } from 'react-native';
 import Colors from '../../constants/colors';
 import { fonts } from '../../constants/typography';
 import { ShadowCard } from '../common/ShadowCard';
 import Icon from '../Icon';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useState } from 'react';
+import MoreProductContainer from './MoreProductContainer';
 interface Props {
     orderID?: string
     orderAmount?: string
@@ -12,6 +14,7 @@ interface Props {
     orderDate?: Date
 }
 const OrderCard: React.FC<Props> = ({ orderID, orderAmount, orderDate, orderItems }) => {
+    const [showMore, setShowMore] = useState(false)
     return (
         <ShadowCard style={styles.container} containerStyle={styles.containerStyle}>
             <View style={styles.orderCard}
@@ -21,16 +24,25 @@ const OrderCard: React.FC<Props> = ({ orderID, orderAmount, orderDate, orderItem
                     <Text style={styles.badgeText}>Badge</Text>
                 </View>
                 <Text style={styles.date}>11 September 2026</Text>
-                <View style={styles.imageContainer}>
-                    <View style={{ width: wp(20), height: wp(20), borderRadius: wp(2), borderWidth: 1, borderColor: Colors.tertiary }} />
-                    <View style={{ width: wp(20), height: wp(20), borderRadius: wp(2), borderWidth: 1, borderColor: Colors.tertiary }} />
-
-                    <View style={{ width: wp(20), height: wp(20), borderRadius: wp(2), borderWidth: 1, borderColor: Colors.tertiary }} />
-
-
-
+                <View style={styles.productContainer}>
+                    <View style={styles.imageContainer}>
+                        <View style={{ width: wp(20), height: wp(20), borderRadius: wp(2), borderWidth: 1, borderColor: Colors.tertiary }} />
+                        <View style={{ width: wp(20), height: wp(20), borderRadius: wp(2), borderWidth: 1, borderColor: Colors.tertiary }} />
+                        <View style={{ width: wp(20), height: wp(20), borderRadius: wp(2), borderWidth: 1, borderColor: Colors.tertiary }} />
+                    </View>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => setShowMore(!showMore)}>
+                        <Icon
+                            name={showMore ? 'chevron-small-down': 'chevron-small-right'}
+                            type='Entypo'
+                            size={wp(7)}
+                            color={Colors.text}
+                        />
+                    </TouchableOpacity>
 
                 </View>
+                {
+                    showMore && (<MoreProductContainer/>)
+                }
                 <View style={styles.orderIdContainer}>
                     <Text style={styles.date}>2 Items</Text>
                     <Text style={styles.idText}>Total: PKR 9,999</Text>
@@ -78,12 +90,16 @@ const styles = StyleSheet.create({
         fontSize: wp(3.5),
         color: Colors.secondary,
     },
+    productContainer: {
+        flexDirection: 'row',
+        marginVertical: hp(1),
+        alignItems: 'center'
+    },
     imageContainer: {
         flexDirection: 'row',
-        gap: 5,
-        marginVertical: hp(1),
-
-    }
+        gap: 10,
+        flex: 1
+    },
 
 
 });

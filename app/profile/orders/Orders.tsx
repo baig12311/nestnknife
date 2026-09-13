@@ -1,6 +1,6 @@
 //import liraries
 import { useRef, useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import styles from './OrderStyle';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useCustomer } from '../../../hooks/useCustomer';
@@ -58,10 +58,13 @@ const Orders = () => {
                     ))
                 }
             </View>
-            <OrderCard />
+            <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+                <OrderCard />
             <OrderCard />
 
             <OrderCard />
+            </ScrollView>
+            
 
             {/* <Text>Orders</Text>
             <Text>Order ID: {orderId}</Text>
