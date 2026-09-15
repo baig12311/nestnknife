@@ -16,7 +16,7 @@ const Header: React.FC<headerProps> = ({ title, onSearchPress, onFilterPress }) 
     return (
         <View style={styles.container}>
             <View style={styles.iconContainer}>
-                <TouchableOpacity onPress={() => router.back()} style={{ marginRight: wp(4) }} activeOpacity={0.7}>
+                <TouchableOpacity onPress={() => router.replace('/')} style={{ marginRight: wp(4) }} activeOpacity={0.7}>
                     <Icon name="arrow-back" type='MaterialIcons' size={wp(6)} color={Colors.text} />
                 </TouchableOpacity>
 

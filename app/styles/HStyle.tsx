@@ -56,9 +56,7 @@ const styles = StyleSheet.create({
     image: {
         width: wp(20),
         height: wp(20),
-        borderRadius: wp(10)
-        //marginBottom: hp(0.5),
-
+        borderRadius: wp(10),
     },
     cardTitleContainer: {
 
@@ -82,8 +80,8 @@ const styles = StyleSheet.create({
     },
     sectionHeaderText: {
         color: Colors.primary,
-        fontSize: wp(4),
-        fontFamily: fonts.semibold,
+        fontSize: wp(3.5),
+        fontFamily: fonts.medium,
         //textDecorationLine: 'underline',
     },
     searchContainer: {

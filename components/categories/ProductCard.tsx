@@ -13,6 +13,7 @@ const ProductCard:React.FC<ProductCardProps>=({ product })=>{
   return (
     <ShadowCard style={styles.container} containerStyle={styles.containerStyle}>
  <TouchableOpacity
+ 
  activeOpacity={0.7}
   onPress={() =>
   router.push({
@@ -42,6 +43,7 @@ const ProductCard:React.FC<ProductCardProps>=({ product })=>{
     </TouchableOpacity>
     </ShadowCard>
  
+ 
   );
 }
 
@@ -52,7 +54,7 @@ const styles = StyleSheet.create({
     //width: wp(44),
     //marginRight: wp(),
     borderRadius: wp(3),
-    backgroundColor: '#FFFFFF',
+    //backgroundColor: '#FFFFFF',
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: '#EEEEEE',
@@ -61,6 +63,7 @@ const styles = StyleSheet.create({
     width: wp(44),
     marginBottom:hp(2)
   },
+ 
   image: {
     width: '100%',
     height: hp(17),

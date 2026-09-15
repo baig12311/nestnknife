@@ -9,21 +9,21 @@ import { useCartBadge } from '../../hooks/useCartBadge';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 interface Props {
     iconName: string,
-
     badgeData?: number
+    count?: number
+    onPress?:()=>void
 }
 // create a component
-const HeaderIcon: React.FC<Props> = ({ iconName, badgeData }) => {
-    const cartCount = useCartBadge();
+const HeaderIcon: React.FC<Props> = ({ iconName, badgeData, count=0, onPress}) => {
 
     return (
-        <TouchableOpacity style={styles.iconContainer}>
+        <TouchableOpacity style={styles.iconContainer} onPress={onPress} activeOpacity={0.7}>
             <Icon name={iconName} type='Ionicons' size={wp(6.5)} color={Colors.text} />
             {
-                cartCount > 0 && (
+                count > 0 && (
                     <View style={styles.badge}>
                         <Text style={styles.badgeText}>
-                            {cartCount}
+                            {count}
                         </Text>
                     </View>
                 )

@@ -3,8 +3,8 @@ import Colors from "../../constants/colors";
 import { fonts } from "../../constants/typography";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const styles = StyleSheet.create({
-  mainContainer:{
-    flex:1,
+  mainContainer: {
+    flex: 1,
     backgroundColor: '#FAF7F2',
     //padding:20
   },
@@ -13,61 +13,62 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
     //borderWidth:3
   },
-  contentContainer:{
-    paddingHorizontal:hp(2),
+  contentContainer: {
+    paddingHorizontal: hp(2),
     //borderWidth:2
   },
 
   image: {
-    width:  wp(100),
+    width: wp(100),
     height: '100%',
-    // borderBottomLeftRadius: 15,
-    // borderBottomRightRadius:15,
-    // elevation: 10,
-    //height: hp(35),
+   
     backgroundColor: '#F5F5F5',
   },
-  dotsContainer:{
-    //borderWidth:1,
+  imageMapperContainer: {
     marginBottom: hp(2),
-    flexDirection:'row',
+    flexDirection: 'row',
     justifyContent: 'center',
-    gap:5
+    gap:10,
+    flexWrap:'wrap',
+    paddingHorizontal:hp(2)
   },
-  dot:{
-    width: wp(3),
-    height: wp(3),
+  
+ 
+  mapImage: {
+    width: wp(12),
+    height: wp(12),
     borderRadius: wp(2),
-    elevation:1,
-    backgroundColor: Colors.secondary2
+    opacity: 0.3
   },
-  activeDot:{
-    width: wp(7),
-    backgroundColor: Colors.accent
+  activeImage: {
+    borderWidth: 1,
+    borderColor: Colors.accent,
+    opacity: 1
+
   },
-  imageContainer:{
-    height: hp(35),
+  dividerLine:{
+    borderBottomWidth:0.3,
+    borderColor:Colors.secondary,
+    //marginHorizontal:hp(2),
+    marginBottom:hp(1)
+  },
+  imageContainer: {
+    height: hp(30),
     marginBottom: hp(1)
-    //height: hp(-100),
-    //width: wp(100)
-    //borderWidth: 4
   },
 
   title: {
-    fontSize: wp(6),
+    fontSize: wp(5.5),
     fontFamily: fonts.bold,
-    //fontWeight: '700',
-        color:Colors.text,
-        //marginBottom:hp(1)
+    color: Colors.text,
 
   },
 
   price: {
-   fontSize: wp(6),
-   fontFamily: fonts.displayBold,
-    //fontWeight: '700',
-    color:Colors.primary,
-            marginBottom:hp(0.5)
+    fontSize: wp(6),
+    fontFamily: fonts.displayBold,
+    color: Colors.primary,
+    marginBottom: hp(0.5)
 
   },
 
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
     //borderWidth:1,
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom:hp(1)
+    marginBottom: hp(1)
   },
 
   quantityLabel: {
@@ -91,11 +92,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  buyContainer:{
-    borderTopWidth:0.3,
-    borderColor:Colors.secondary,
-    padding:hp(2),
- 
+  buyContainer: {
+    borderTopWidth: 0.3,
+    borderColor: Colors.secondary,
+    padding: hp(2),
+
   },
 
   quantityButton: {
@@ -109,12 +110,12 @@ const styles = StyleSheet.create({
 
   quantityButtonText: {
     fontSize: wp(7),
-    fontFamily:fonts.medium,
+    fontFamily: fonts.medium,
     color: '#222',
   },
 
   quantity: {
-    fontFamily:fonts.semibold,
+    fontFamily: fonts.semibold,
     width: 50,
     textAlign: 'center',
     fontSize: wp(5),
@@ -122,18 +123,18 @@ const styles = StyleSheet.create({
   },
 
   addToCartButton: {
-    height:hp(6),
+    height: hp(6),
     justifyContent: 'center',
-    alignItems:'center',
+    alignItems: 'center',
     backgroundColor: Colors.primary,
-    borderRadius:wp(3)
+    borderRadius: wp(3)
 
   },
 
   addToCartText: {
     color: Colors.background,
     fontSize: wp(4.5),
-    fontFamily:fonts.semibold
+    fontFamily: fonts.semibold
     //fontWeight: '600',
   },
 
@@ -151,10 +152,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#D00',
   },
-  headingView:{
-    borderBottomWidth:0.3,
-    borderColor:Colors.secondary,
+  headingView: {
+    borderBottomWidth: 0.3,
+    borderColor: Colors.secondary,
     marginBottom: hp(2)
-  }
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    gap: 10
+  },
 });
 export default styles

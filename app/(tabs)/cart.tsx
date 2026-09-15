@@ -82,7 +82,10 @@ const Cart = () => {
           <Text style={styles.emptyTitle}>Your Cart is Empty</Text>
           <Text style={styles.emptyText}>Looks like you haven't added anything yet.</Text>
           <Text style={[styles.emptyText, styles.emptyText1]}>Discover our collection!</Text>
-          <Button title='Shop Now' onPress={()=>router.replace('./categories')}/>
+          <View style={{width:'60%', alignSelf: 'center'}}>
+                      <Button title='Shop Now' onPress={()=>router.replace('./categories')}/>
+
+          </View>
         </View>
       </SafeAreaView>
     );

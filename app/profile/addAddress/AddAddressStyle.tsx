@@ -20,6 +20,23 @@ const styles = StyleSheet.create({
     },
     fieldsContainer:{
         flex:1
+    },
+     numberInput:{
+        flexDirection:'row',
+        borderWidth: 0.3,
+        borderColor: Colors.secondary,
+        borderRadius:wp(2),
+        marginBottom:hp(2)
+
+    },
+    codeText:{
+        fontFamily:fonts.semibold,
+        fontSize:wp(4),
+        color:Colors.secondary,
+        textAlignVertical:'center',
+        paddingHorizontal:wp(2),
+        borderRightWidth:0.5,
+        borderColor: Colors.secondary
     }
     
 });

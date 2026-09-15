@@ -4,11 +4,14 @@ import { fonts } from '../../constants/typography';
 import Colors from '../../constants/colors';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import HeaderIcon from './HeaderIcon';
+import { router } from 'expo-router';
+import { useCartBadge } from '../../hooks/useCartBadge';
 interface Props{
   title?:string
 
 }
 const HomeHeader:React.FC<Props>=({title})=> {
+  const cartCount=useCartBadge()
   return (
    <View style={[styles.container, !title&&{borderBottomWidth:0.2,}]}>
       {/* Left Side: Title ya Logo */}
@@ -28,7 +31,7 @@ const HomeHeader:React.FC<Props>=({title})=> {
         <HeaderIcon iconName='notifications-outline'/>
         
         {/* Cart Icon sirf tab dikhega jab title NAHI hoga */}
-        <HeaderIcon iconName='cart-outline'/>
+        <HeaderIcon iconName='cart-outline' count={cartCount&&cartCount} onPress={()=>router.replace('/cart')}/>
       </View>
     </View>
   );

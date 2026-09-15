@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -22,7 +23,7 @@ import QuantityCard from '../../components/cart/QuantityCard';
 import Button from '../../components/common/Button';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import ProductDetailSkeleton from '../../components/skeleton/ProductDetailSkeleton';
-
+import ButtonOutline from '../../components/common/ButtonOutline';
 import {
   createCart,
   addToCart,
@@ -36,6 +37,7 @@ const ProductDetailsScreen = () => {
   const queryClient = useQueryClient();
   const addToCartMutation = useAddToCart();
   const dispatch = useDispatch();
+  const flatListRef=useRef<FlatList>(null)
 
   const cartId = useSelector(
     (state: RootState) => state.cart.cartId
@@ -109,17 +111,18 @@ const ProductDetailsScreen = () => {
       <View style={styles.imageContainer}>
         <FlatList
           data={product?.images.nodes ?? []}
+          ref={flatListRef}
           horizontal
           pagingEnabled
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item) => item.url}
           onMomentumScrollEnd={(event) => {
-  const index = Math.round(
-    event.nativeEvent.contentOffset.x / wp(100)
-  );
+            const index = Math.round(
+              event.nativeEvent.contentOffset.x / wp(100)
+            );
 
-  setActiveIndex(index);
-}}
+            setActiveIndex(index);
+          }}
           //style={styles.flatContainer}
           renderItem={({ item }) => (
 
@@ -131,19 +134,35 @@ const ProductDetailsScreen = () => {
 
           )}
         />
-       
+
       </View>
- <View style={styles.dotsContainer}>
-  {product?.images.nodes.map((_, index) => (
-    <View
-      key={index}
-      style={[
-        styles.dot,
-        activeIndex === index && styles.activeDot,
-      ]}
-    />
-  ))}
-</View>
+      <View 
+      
+      style={styles.imageMapperContainer} 
+      >
+        {product?.images.nodes.map((itemImage, index) => (
+          <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={()=>{
+            flatListRef.current?.scrollToIndex({
+              index:index,
+              animated:true
+            })
+            setActiveIndex(index)
+          }}
+          >
+            <Image
+            key={index}
+            style={[
+              styles.mapImage, 
+              activeIndex === index && styles.activeImage,
+            ]}
+            source={{ uri: itemImage.url }} />
+          </TouchableOpacity>
+          
+        ))}
+      </View>
+      <View style={styles.dividerLine}/>
       <ScrollView
         style={styles.container}
         showsVerticalScrollIndicator={false}
@@ -214,11 +233,26 @@ const ProductDetailsScreen = () => {
             </Text>
           )}
         </TouchableOpacity> */}
-        <Button
-          title='Add to Cart'
-          onPress={handleAddToCart}
-          loading={adding}
-        />
+        <View style={styles.buttonContainer}>
+          <View style={{ flex: 1 }}>
+            <ButtonOutline
+              title='Add to Cart'
+              onPress={handleAddToCart}
+              loading={adding}
+            />
+
+          </View>
+          <View style={{ flex: 1 }}>
+            <Button
+              title='Buy Now'
+            //onPress={handleAddToCart}
+            //loading={adding}
+            />
+          </View>
+
+
+        </View>
+
       </View>
 
     </SafeAreaView>

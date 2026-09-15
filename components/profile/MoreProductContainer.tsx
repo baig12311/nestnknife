@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     borderLeftWidth:0.3,
     borderRightWidth:0.3,
     borderColor:Colors.secondary,
-
     height: hp(20)
   },
 });

@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
          borderColor:Colors.secondary,
         borderWidth:0.4,
         flexDirection: 'row',
-        borderRadius:wp(4),
+        borderRadius:wp(2),
         width:wp(30),
         height: hp(5),
         //justifyContent:'space-between',

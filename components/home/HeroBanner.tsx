@@ -2,6 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { fonts } from '../../constants/typography';
 import { ShadowCard } from '../common/ShadowCard';
+import { router } from 'expo-router';
 import Colors from '../../constants/colors';
 const HeroBanner = () => {
   return (
@@ -19,7 +20,7 @@ const HeroBanner = () => {
           Practical kitchen solutions designed for modern everyday living.
         </Text>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={()=>router.replace('/categories')} activeOpacity={0.7}>
           <Text style={styles.buttonText}>Explore Collection</Text>
         </TouchableOpacity>
       </View>

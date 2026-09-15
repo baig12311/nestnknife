@@ -73,6 +73,7 @@ import { Provider, useDispatch } from 'react-redux';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
 
 import {
   Poppins_400Regular,
@@ -102,7 +103,12 @@ const AppContent = () => {
     dispatch(loadCartId() as any);
   }, []);
 
-  return <Slot />;
+  return (
+    <>
+      <StatusBar style="dark" />
+      <Slot />
+    </>
+  )
 };
 
 export default function RootLayout() {

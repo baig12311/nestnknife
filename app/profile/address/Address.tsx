@@ -5,10 +5,26 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Button from '../../../components/common/Button';
 import Header from '../../../components/profile/Header';
 import { router } from 'expo-router';
+import { useCustomer } from '../../../hooks/useCustomer';
+import { FlatList } from 'react-native';
 const Address = () => {
+    const {customer, loading} = useCustomer()
+    const customerAddresses = customer?.addresses?.edges
+    //console.log(customerAddresses)
     return (
         <SafeAreaView style={styles.container}>
             <Header title='Address'/>
+            {/* <FlatList
+            data={customerAddresses}
+            renderItem={({item})=>(
+                <>
+                <Text>{item.node.address1}</Text>
+                <Text>{item.node.city}</Text>
+                <Text>{item.node.city}</Text>
+                 <Text>{item.node.firstName}</Text>
+                </>
+            )}
+            /> */}
             <View style={styles.contentContainer}>
                 <Image
                 source={require('../../../assets/illustrations/address.png')}

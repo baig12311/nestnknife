@@ -1,12 +1,480 @@
-import { getStoredAccessToken } from './shopify0Auth';
+
+
+
+
+
+// import {
+//   getStoredAccessToken,
+//   refreshAccessToken,
+// } from './shopify0Auth';
+
+// const SHOP_ID = '81785061622';
+// const API_VERSION = '2025-01';
+
+// const GRAPHQL_ENDPOINT = `https://shopify.com/${SHOP_ID}/account/customer/api/${API_VERSION}/graphql`;
+
+// /* =========================================================
+//    GET FULL CUSTOMER DATA
+// ========================================================= */
+
+// export const getFullCustomerData = async () => {
+//   let token = await getStoredAccessToken();
+
+//   if (!token) {
+//     throw new Error('User not logged in.');
+//   }
+
+//   const query = `
+//     query {
+//       customer {
+//         id
+//         firstName
+//         lastName
+//         displayName
+
+//         emailAddress {
+//           emailAddress
+//         }
+
+//         phoneNumber {
+//           phoneNumber
+//         }
+
+//         defaultAddress {
+//         id
+//           address1
+//           address2
+//           city
+//           province
+//           country
+//           zip
+//         }
+
+//         addresses(first: 10) {
+//           edges {
+//             node {
+//               id
+//               address1
+//               address2
+//               city
+//               province
+//               country
+//               zip
+//             }
+//           }
+//         }
+
+//         orders(first: 10) {
+//           edges {
+//             node {
+//               id
+//               name
+//               processedAt
+
+//               totalPrice {
+//                 amount
+//                 currencyCode
+//               }
+
+//               fulfillmentStatus
+
+//               lineItems(first: 10) {
+//                 edges {
+//                   node {
+//                     id
+//                     title
+//                     quantity
+//                   }
+//                 }
+//               }
+//             }
+//           }
+//         }
+//       }
+//     }
+//   `;
+
+//   /* =========================================================
+//      API REQUEST FUNCTION
+//   ========================================================= */
+
+//   const makeRequest = async (accessToken: string) => {
+//     const response = await fetch(GRAPHQL_ENDPOINT, {
+//       method: 'POST',
+
+//       headers: {
+//         'Content-Type': 'application/json',
+//         Authorization: accessToken,
+//       },
+
+//       body: JSON.stringify({
+//         query,
+//       }),
+//     });
+
+//     return response.json();
+//   };
+
+//   /* =========================================================
+//      FIRST REQUEST
+//   ========================================================= */
+
+//   let json = await makeRequest(token);
+
+//   /* =========================================================
+//      CHECK IF ACCESS TOKEN IS INVALID
+//   ========================================================= */
+
+//   const tokenInvalid = json.errors?.some(
+//     (error: any) =>
+//       error.message === 'Access token is invalid or revoked'
+//   );
+
+//   /* =========================================================
+//      REFRESH TOKEN + RETRY
+//   ========================================================= */
+
+//   if (tokenInvalid) {
+//     console.log('ACCESS TOKEN INVALID → REFRESHING...');
+
+//     const newToken = await refreshAccessToken();
+
+//     if (!newToken) {
+//       throw new Error('Session expired. Please login again.');
+//     }
+
+//     token = newToken;
+
+//     console.log(
+//       'TOKEN REFRESHED → RETRYING CUSTOMER REQUEST...'
+//     );
+
+//     json = await makeRequest(token);
+//   }
+
+//   /* =========================================================
+//      FINAL ERROR CHECK
+//   ========================================================= */
+
+//   if (json.errors) {
+//     console.error('GRAPHQL ERROR:', json.errors);
+
+//     throw new Error(
+//       json.errors[0]?.message ?? 'GraphQL error'
+//     );
+//   }
+
+//   /* =========================================================
+//      RETURN CUSTOMER DATA
+//   ========================================================= */
+
+//   console.log(
+//     'FULL CUSTOMER DATA:',
+//     json.data.customer
+//   );
+
+//   return json.data.customer;
+// };
+// /* =========================================================
+//    UPDATE ADDRESS
+// ========================================================= */
+
+// export const createCustomerAddress = async ({
+//   firstName,
+//   lastName,
+//   phoneNumber,
+//   address1,
+//   address2,
+//   city,
+//   province,
+//   territoryCode,
+//   zip,
+// }: {
+//   firstName: string;
+//   lastName: string;
+//   phoneNumber?: string;
+//   address1: string;
+//   address2?: string;
+//   city: string;
+//   province?: string;
+//   territoryCode: string;
+//   zip?: string;
+// }) => {
+//   const token = await getStoredAccessToken();
+
+//   if (!token) {
+//     throw new Error('User not logged in.');
+//   }
+//   const mutation = `
+//   mutation CustomerAddressCreate($address: CustomerAddressInput!, $defaultAddress: Boolean) {
+//     customerAddressCreate(address: $address  defaultAddress: $defaultAddress) {
+//       customerAddress {
+//         id
+//         address1
+//         address2
+//         city
+//         province
+//         territoryCode
+//         zip
+//       }
+
+//       userErrors {
+//         field
+//         message
+//       }
+//     }
+//   }
+// `;
+//   const response = await fetch(GRAPHQL_ENDPOINT, {
+//     method: 'POST',
+
+//     headers: {
+//       'Content-Type': 'application/json',
+//       Authorization: token,
+//     },
+
+//     body: JSON.stringify({
+//       query: mutation,
+//       variables: {
+//         address: {
+//           address1,
+//           address2,
+//           city,
+//           province,
+//           territoryCode,
+//           zip,
+//         },
+//       },
+//     }),
+//   });
+//   const json = await response.json();
+
+//   if (json.errors) {
+//     console.error('GRAPHQL ERROR:', json.errors);
+
+//     throw new Error(
+//       json.errors[0]?.message ?? 'GraphQL error'
+//     );
+//   }
+//   const result = json.data.customerAddressCreate;
+
+//   if (result.userErrors?.length) {
+//     console.error(
+//       'ADDRESS CREATE ERROR:',
+//       result.userErrors
+//     );
+
+//     throw new Error(
+//       result.userErrors
+//         .map((error: any) => error.message)
+//         .join(', ')
+//     );
+//   }
+
+//   return result.customerAddress;
+// };
+
+// /* =========================================================
+//    UPDATE CUSTOMER
+// ========================================================= */
+
+// export const updateCustomer = async ({
+//   firstName,
+//   lastName,
+//   phoneNumber,
+//   address,
+// }: {
+//   firstName?: string;
+//   lastName?: string;
+//   phoneNumber?: string;
+
+//   address?: {
+//     address1?: string;
+//     address2?: string;
+//     city?: string;
+//     province?: string;
+//     country?: string;
+//     zip?: string;
+//   };
+// }) => {
+//   const token = await getStoredAccessToken();
+
+//   if (!token) {
+//     throw new Error('User not logged in.');
+//   }
+
+//   const mutation = `
+//     mutation customerUpdate($input: CustomerUpdateInput!) {
+//       customerUpdate(input: $input) {
+//         customer {
+//           id
+//           firstName
+//           lastName
+//           displayName
+
+//           emailAddress {
+//             emailAddress
+//           }
+
+//           phoneNumber {
+//             phoneNumber
+//           }
+
+//           defaultAddress {
+//             address1
+//             address2
+//             city
+//             province
+//             country
+//             zip
+//           }
+//         }
+
+//         userErrors {
+//           field
+//           message
+//         }
+//       }
+//     }
+//   `;
+
+//   /* =========================================================
+//      CREATE INPUT
+//   ========================================================= */
+
+//   const input: any = {};
+
+//   if (firstName !== undefined) {
+//     input.firstName = firstName;
+//   }
+
+//   if (lastName !== undefined) {
+//     input.lastName = lastName;
+//   }
+
+//   if (phoneNumber !== undefined) {
+//     input.phoneNumber = phoneNumber;
+//   }
+
+//   /* =========================================================
+//      ADDRESS
+//   ========================================================= */
+
+//   if (address) {
+//     input.defaultAddress = {};
+
+//     if (address.address1 !== undefined) {
+//       input.defaultAddress.address1 = address.address1;
+//     }
+
+//     if (address.address2 !== undefined) {
+//       input.defaultAddress.address2 = address.address2;
+//     }
+
+//     if (address.city !== undefined) {
+//       input.defaultAddress.city = address.city;
+//     }
+
+//     if (address.province !== undefined) {
+//       input.defaultAddress.province = address.province;
+//     }
+
+//     if (address.country !== undefined) {
+//       input.defaultAddress.country = address.country;
+//     }
+
+//     if (address.zip !== undefined) {
+//       input.defaultAddress.zip = address.zip;
+//     }
+//   }
+
+//   /* =========================================================
+//      UPDATE REQUEST
+//   ========================================================= */
+
+//   const response = await fetch(GRAPHQL_ENDPOINT, {
+//     method: 'POST',
+
+//     headers: {
+//       'Content-Type': 'application/json',
+//       Authorization: token,
+//     },
+
+//     body: JSON.stringify({
+//       query: mutation,
+//       variables: {
+//         input,
+//       },
+//     }),
+//   });
+
+//   const json = await response.json();
+
+//   /* =========================================================
+//      GRAPHQL ERROR
+//   ========================================================= */
+
+//   if (json.errors) {
+//     console.error('GRAPHQL ERROR:', json.errors);
+
+//     throw new Error(
+//       json.errors[0]?.message ?? 'GraphQL error'
+//     );
+//   }
+
+//   /* =========================================================
+//      CUSTOMER UPDATE RESULT
+//   ========================================================= */
+
+//   const result = json.data.customerUpdate;
+
+//   /* =========================================================
+//      USER ERRORS
+//   ========================================================= */
+
+//   if (result.userErrors?.length) {
+//     console.error(
+//       'CUSTOMER UPDATE ERROR:',
+//       result.userErrors
+//     );
+
+//     throw new Error(
+//       result.userErrors
+//         .map((error: any) => error.message)
+//         .join(', ')
+//     );
+//   }
+
+//   /* =========================================================
+//      RETURN UPDATED CUSTOMER
+//   ========================================================= */
+
+//   return result.customer;
+// };
+
+
+
+
+import {
+  getStoredAccessToken,
+  refreshAccessToken,
+} from './shopify0Auth';
 
 const SHOP_ID = '81785061622';
 const API_VERSION = '2025-01';
+
 const GRAPHQL_ENDPOINT = `https://shopify.com/${SHOP_ID}/account/customer/api/${API_VERSION}/graphql`;
 
+/* =========================================================
+   GET FULL CUSTOMER DATA
+========================================================= */
+
 export const getFullCustomerData = async () => {
-  const token = await getStoredAccessToken();
-  if (!token) throw new Error('User not logged in.');
+  let token = await getStoredAccessToken();
+
+  if (!token) {
+    throw new Error('User not logged in.');
+  }
 
   const query = `
     query {
@@ -15,20 +483,29 @@ export const getFullCustomerData = async () => {
         firstName
         lastName
         displayName
+
         emailAddress {
           emailAddress
         }
+
         phoneNumber {
           phoneNumber
         }
+
         defaultAddress {
+          id
           address1
           address2
           city
           province
           country
+          firstName
+          lastName
+          phoneNumber
+          territoryCode
           zip
         }
+
         addresses(first: 10) {
           edges {
             node {
@@ -38,28 +515,35 @@ export const getFullCustomerData = async () => {
               city
               province
               country
+              firstName
+              lastName
+              phoneNumber
+              territoryCode
               zip
             }
           }
         }
+
         orders(first: 10) {
           edges {
             node {
               id
               name
               processedAt
+
               totalPrice {
                 amount
                 currencyCode
               }
+
               fulfillmentStatus
+
               lineItems(first: 10) {
                 edges {
                   node {
                     id
                     title
                     quantity
-                    
                   }
                 }
               }
@@ -70,25 +554,228 @@ export const getFullCustomerData = async () => {
     }
   `;
 
+  /* =========================================================
+     API REQUEST FUNCTION
+  ========================================================= */
+
+  const makeRequest = async (accessToken: string) => {
+    const response = await fetch(GRAPHQL_ENDPOINT, {
+      method: 'POST',
+
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+
+      body: JSON.stringify({
+        query,
+      }),
+    });
+
+    return response.json();
+  };
+
+  /* =========================================================
+     FIRST REQUEST
+  ========================================================= */
+
+  let json = await makeRequest(token);
+
+  /* =========================================================
+     CHECK IF ACCESS TOKEN IS INVALID
+  ========================================================= */
+
+  const tokenInvalid = json.errors?.some(
+    (error: any) =>
+      error.message === 'Access token is invalid or revoked'
+  );
+
+  /* =========================================================
+     REFRESH TOKEN + RETRY
+  ========================================================= */
+
+  if (tokenInvalid) {
+    console.log('ACCESS TOKEN INVALID → REFRESHING...');
+
+    const newToken = await refreshAccessToken();
+
+    if (!newToken) {
+      throw new Error('Session expired. Please login again.');
+    }
+
+    token = newToken;
+
+    console.log(
+      'TOKEN REFRESHED → RETRYING CUSTOMER REQUEST...'
+    );
+
+    json = await makeRequest(token);
+  }
+
+  /* =========================================================
+     FINAL ERROR CHECK
+  ========================================================= */
+
+  if (json.errors) {
+    console.error('GRAPHQL ERROR:', json.errors);
+
+    throw new Error(
+      json.errors[0]?.message ?? 'GraphQL error'
+    );
+  }
+
+  /* =========================================================
+     RETURN CUSTOMER DATA
+  ========================================================= */
+
+  console.log(
+    'FULL CUSTOMER DATA:',
+    json.data.customer
+  );
+
+  return json.data.customer;
+};
+
+/* =========================================================
+   CREATE CUSTOMER ADDRESS
+========================================================= */
+
+export const createCustomerAddress = async ({
+  firstName,
+  lastName,
+  phoneNumber,
+  address1,
+  address2,
+  city,
+  province,
+  territoryCode,
+  zip,
+  defaultAddress,
+}: {
+  firstName: string;
+  lastName: string;
+  phoneNumber?: string;
+  address1: string;
+  address2?: string;
+  city: string;
+  province?: string;
+  territoryCode: string;
+  zip?: string;
+  defaultAddress: boolean;
+}) => {
+  const token = await getStoredAccessToken();
+
+  if (!token) {
+    throw new Error('User not logged in.');
+  }
+
+  const mutation = `
+    mutation CustomerAddressCreate(
+      $address: CustomerAddressInput!
+      $defaultAddress: Boolean
+    ) {
+      customerAddressCreate(
+        address: $address
+        defaultAddress: $defaultAddress
+      ) {
+        customerAddress {
+          id
+          address1
+          address2
+          city
+          province
+          country
+          firstName
+          lastName
+          phoneNumber
+          territoryCode
+          zip
+        }
+
+        userErrors {
+          field
+          message
+        }
+      }
+    }
+  `;
+
   const response = await fetch(GRAPHQL_ENDPOINT, {
     method: 'POST',
+
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': token,
+      Authorization: token,
     },
-    body: JSON.stringify({ query }),
+
+    body: JSON.stringify({
+      query: mutation,
+
+      variables: {
+        address: {
+          firstName,
+          lastName,
+          phoneNumber,
+          address1,
+          address2,
+          city,
+          province,
+          territoryCode,
+          zip,
+        },
+
+        defaultAddress,
+      },
+    }),
   });
 
   const json = await response.json();
 
+  /* =========================================================
+     GRAPHQL ERROR
+  ========================================================= */
+
   if (json.errors) {
     console.error('GRAPHQL ERROR:', json.errors);
-    throw new Error(JSON.stringify(json.errors));
+
+    throw new Error(
+      json.errors[0]?.message ?? 'GraphQL error'
+    );
   }
 
-  console.log('FULL CUSTOMER DATA:', json.data.customer);
-  return json.data.customer;
+  /* =========================================================
+     ADDRESS CREATE RESULT
+  ========================================================= */
+
+  const result = json.data.customerAddressCreate;
+
+  /* =========================================================
+     USER ERRORS
+  ========================================================= */
+
+  if (result.userErrors?.length) {
+    console.error(
+      'ADDRESS CREATE ERROR:',
+      result.userErrors
+    );
+
+    throw new Error(
+      result.userErrors
+        .map((error: any) => error.message)
+        .join(', ')
+    );
+  }
+
+  /* =========================================================
+     RETURN CREATED ADDRESS
+  ========================================================= */
+
+  return result.customerAddress;
 };
+
+/* =========================================================
+   UPDATE CUSTOMER
+========================================================= */
 
 export const updateCustomer = async ({
   firstName,
@@ -99,6 +786,7 @@ export const updateCustomer = async ({
   firstName?: string;
   lastName?: string;
   phoneNumber?: string;
+
   address?: {
     address1?: string;
     address2?: string;
@@ -122,12 +810,15 @@ export const updateCustomer = async ({
           firstName
           lastName
           displayName
+
           emailAddress {
             emailAddress
           }
+
           phoneNumber {
             phoneNumber
           }
+
           defaultAddress {
             address1
             address2
@@ -137,6 +828,7 @@ export const updateCustomer = async ({
             zip
           }
         }
+
         userErrors {
           field
           message
@@ -145,49 +837,116 @@ export const updateCustomer = async ({
     }
   `;
 
+  /* =========================================================
+     CREATE INPUT
+  ========================================================= */
+
   const input: any = {};
-  
-  if (firstName !== undefined) input.firstName = firstName;
-  if (lastName !== undefined) input.lastName = lastName;
-  if (phoneNumber !== undefined) input.phoneNumber = phoneNumber;
-  
+
+  if (firstName !== undefined) {
+    input.firstName = firstName;
+  }
+
+  if (lastName !== undefined) {
+    input.lastName = lastName;
+  }
+
+  if (phoneNumber !== undefined) {
+    input.phoneNumber = phoneNumber;
+  }
+
+  /* =========================================================
+     ADDRESS
+  ========================================================= */
+
   if (address) {
     input.defaultAddress = {};
-    if (address.address1 !== undefined) input.defaultAddress.address1 = address.address1;
-    if (address.address2 !== undefined) input.defaultAddress.address2 = address.address2;
-    if (address.city !== undefined) input.defaultAddress.city = address.city;
-    if (address.province !== undefined) input.defaultAddress.province = address.province;
-    if (address.country !== undefined) input.defaultAddress.country = address.country;
-    if (address.zip !== undefined) input.defaultAddress.zip = address.zip;
+
+    if (address.address1 !== undefined) {
+      input.defaultAddress.address1 = address.address1;
+    }
+
+    if (address.address2 !== undefined) {
+      input.defaultAddress.address2 = address.address2;
+    }
+
+    if (address.city !== undefined) {
+      input.defaultAddress.city = address.city;
+    }
+
+    if (address.province !== undefined) {
+      input.defaultAddress.province = address.province;
+    }
+
+    if (address.country !== undefined) {
+      input.defaultAddress.country = address.country;
+    }
+
+    if (address.zip !== undefined) {
+      input.defaultAddress.zip = address.zip;
+    }
   }
+
+  /* =========================================================
+     UPDATE REQUEST
+  ========================================================= */
 
   const response = await fetch(GRAPHQL_ENDPOINT, {
     method: 'POST',
+
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': token,
+      Authorization: token,
     },
+
     body: JSON.stringify({
       query: mutation,
-      variables: { input },
+      variables: {
+        input,
+      },
     }),
   });
 
   const json = await response.json();
 
+  /* =========================================================
+     GRAPHQL ERROR
+  ========================================================= */
+
   if (json.errors) {
     console.error('GRAPHQL ERROR:', json.errors);
-    throw new Error(json.errors[0]?.message ?? 'GraphQL error');
+
+    throw new Error(
+      json.errors[0]?.message ?? 'GraphQL error'
+    );
   }
+
+  /* =========================================================
+     CUSTOMER UPDATE RESULT
+  ========================================================= */
 
   const result = json.data.customerUpdate;
 
+  /* =========================================================
+     USER ERRORS
+  ========================================================= */
+
   if (result.userErrors?.length) {
-    console.error('CUSTOMER UPDATE ERROR:', result.userErrors);
+    console.error(
+      'CUSTOMER UPDATE ERROR:',
+      result.userErrors
+    );
+
     throw new Error(
-      result.userErrors.map((error: any) => error.message).join(', ')
+      result.userErrors
+        .map((error: any) => error.message)
+        .join(', ')
     );
   }
+
+  /* =========================================================
+     RETURN UPDATED CUSTOMER
+  ========================================================= */
 
   return result.customer;
 };

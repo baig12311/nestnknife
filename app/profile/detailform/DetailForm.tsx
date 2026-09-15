@@ -14,27 +14,26 @@ import { router } from 'expo-router';
 const DetailForm = () => {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
-    const [phoneNumber, setPhoneNumber]=useState('')
+    const [phoneNumber, setPhoneNumber] = useState('')
     const [error, setError] = useState(false)
-    const{updateCustomer}=useCustomer()
+    const { updateCustomer } = useCustomer()
     const handleUpdate = () => {
 
         // const fullNumber='+92' + phoneNumber
         // console.log('Phone Number', fullNumber)
         if (firstName && lastName) {
-            if(phoneNumber.length===10)
-            {
+            if (phoneNumber.length === 10) {
                 updateCustomer({
-                firstName: firstName,
-                lastName: lastName,
-                phoneNumber: phoneNumber
+                    firstName: firstName,
+                    lastName: lastName,
+                    phoneNumber: phoneNumber
 
-            })
+                })
             }
-            else{
+            else {
                 console.log('Phone number should be 10 digits.')
             }
-            
+
             console.log('dataupdated')
         }
         else {
@@ -62,30 +61,22 @@ const DetailForm = () => {
                 placeholder='First Name'
                 value={firstName}
                 onChangeText={setFirstName}
+                iconName='person-outline'
+                iconType='Ionicons'
             />
             <FloatingInput
                 placeholder='Last Name'
                 value={lastName}
                 onChangeText={setLastName}
+                iconName='person-outline'
+                iconType='Ionicons'
             />
-            
-            <View style={styles.numberInput}>
-                <Text style={styles.codeText}>+92</Text>
-                <View style={{flex:1}}>
-                                    <FloatingInput 
-                                    placeholder='Phone Number'
-                                    keyboardType='phone-pad'
-                                    value={phoneNumber}
-                                    onChangeText={setPhoneNumber}
-                                    max={10}
-                                    />
 
-                </View>
-            </View>
+
             {
                 error && (<Text>Plaese fill in all details</Text>)
             }
-            
+
             <Benefits />
             <Button title='Save & Continue' onPress={handleUpdate} />
 
