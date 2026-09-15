@@ -21,6 +21,7 @@ const AddAddress = () => {
     })
     const handleAddressChange = async () => {
         const fullNumber = '+92' + AddressData.phoneNumber
+        
         const result = await createCustomerAddress({
             firstName: AddressData.firstName,
             lastName: AddressData.lastName,
@@ -65,8 +66,11 @@ const AddAddress = () => {
                         <FloatingInput
                             placeholder='Phone Number'
                             keyboardType='phone-pad'
-                            value={phoneNumber}
-                            onChangeText={setPhoneNumber}
+                            value={AddressData.phoneNumber}
+                            onChangeText={(text) => setAddressData({
+                        ...AddressData,
+                        phoneNumber: text
+                    })}
                             max={10}
                         />
 

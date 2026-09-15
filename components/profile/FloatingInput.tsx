@@ -16,11 +16,11 @@ interface Props {
     placeholder?: string
     keyboardType?: any
     max?: number
-    iconName:string
-    iconType:string
+    iconName?: string
+    iconType?: string
 }
 
-const FloatingInput: React.FC<Props> = ({ value, onChangeText, errorFlag, placeholder, keyboardType, max, iconName, iconType}) => {
+const FloatingInput: React.FC<Props> = ({ value, onChangeText, errorFlag, placeholder, keyboardType, max, iconName, iconType }) => {
     const progress = useSharedValue(0);
     //const focusProgress = useSharedValue(0);
     const [isFocused, setIsFocused] = useState(false);
@@ -45,12 +45,7 @@ const FloatingInput: React.FC<Props> = ({ value, onChangeText, errorFlag, placeh
     const handleBlur = () => {
         setIsFocused(false);
         progress.value = withTiming(0, { duration: 120 })
-        //focusProgress.value = withTiming(0, { duration: 120 });
 
-        // Placeholder neeche aaye agar field khali hai
-        // if (!value || value.length === 0) {
-        //     progress.value = withTiming(0, { duration: 120 });
-        // }
         if (value) {
             //console.log('value: ', value)
             progress.value = withTiming(1, { duration: 120 })
@@ -73,17 +68,20 @@ const FloatingInput: React.FC<Props> = ({ value, onChangeText, errorFlag, placeh
 
     return (
         <View style={placeholder !== 'Phone Number' && { marginBottom: hp(2) }}>
-           
+
             <Animated.View style={[styles.inputField, animatedContainer, placeholder === 'Phone Number' && { borderColor: Colors.background }]}>
-                 <View style={styles.iconContainer}>
-                <Icon
-                name={iconName}
-                type={iconType}
-                size={wp(5)}
-                color={Colors.secondary}
-                />
-            </View>
-                <Animated.Text style={[styles.placeholder, animatedStyle]}>
+                {
+                    (iconName && iconType) && (<View style={styles.iconContainer}>
+                        <Icon
+                            name={iconName}
+                            type={iconType}
+                            size={wp(5)}
+                            color={Colors.secondary}
+                        />
+                    </View>)
+                }
+
+                <Animated.Text style={[styles.placeholder, animatedStyle,{left: iconName && iconType ? 33 : 10}]}>
                     {placeholder}
                 </Animated.Text>
                 <TextInput
@@ -109,7 +107,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
         //marginBottom: hp(0),
     },
-    iconContainer:{
+    iconContainer: {
         paddingHorizontal: wp(2)
     },
     input: {
@@ -118,7 +116,7 @@ const styles = StyleSheet.create({
         fontFamily: fonts.regular,
         fontSize: wp(4),
         color: Colors.text,
-       
+
 
     },
     placeholder: {
@@ -128,7 +126,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.background,
         position: 'absolute',
         textAlignVertical: 'center',
-        left: 33,
+       
 
     },
 });

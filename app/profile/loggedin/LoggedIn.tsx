@@ -15,25 +15,23 @@ import { useLogout } from '../../../hooks/useAuth';
 import { useCustomer } from '../../../hooks/useCustomer';
 const LoggedIn = () => {
     const logoutMutation = useLogout()
-    const {customer, loading}=useCustomer();
-    const email =customer?.emailAddress?.emailAddress
-    const fName=customer?.firstName
-    const lName=customer?.lastName
+    const { customer, loading } = useCustomer();
+    const email = customer?.emailAddress?.emailAddress
+    const fName = customer?.firstName
+    const lName = customer?.lastName
     return (
         <View style={styles.container}>
-
             <ScrollView contentContainerStyle={styles.content}
                 showsVerticalScrollIndicator={false}>
-
-                <Greeting 
-                email={email}
-                fName={fName}
-                lName={lName}
-                loading={loading}
+                <Greeting
+                    email={email}
+                    fName={fName}
+                    lName={lName}
+                    loading={loading}
                 />
-                <Incomplete />
-                {/* <EmailCard email={email}/>
-                <PersonalInfoSection /> */}
+                {
+                    (!loading&&(!fName && !lName)) && (<Incomplete />)
+                }
                 <Text style={styles.heading}>Account</Text>
                 <MoreInfoSection />
                 <SignOut onPress={() => logoutMutation.mutate()} />
@@ -43,9 +41,4 @@ const LoggedIn = () => {
         </View>
     );
 };
-
-// define your styles
-
-
-//make this component available to the app
 export default LoggedIn;
