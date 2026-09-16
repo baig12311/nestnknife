@@ -81,7 +81,7 @@ const FloatingInput: React.FC<Props> = ({ value, onChangeText, errorFlag, placeh
                     </View>)
                 }
 
-                <Animated.Text style={[styles.placeholder, animatedStyle,{left: iconName && iconType ? 33 : 10}]}>
+                <Animated.Text style={[styles.placeholder, animatedStyle, { left: iconName && iconType ? 33 : 10 }]}>
                     {placeholder}
                 </Animated.Text>
                 <TextInput
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.background,
         position: 'absolute',
         textAlignVertical: 'center',
-       
+
 
     },
 });

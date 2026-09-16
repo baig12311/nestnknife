@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import styles from './AddAddressStyle';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -6,9 +6,17 @@ import Header from '../../../components/profile/Header';
 import FloatingInput from '../../../components/profile/FloatingInput';
 import { Checkbox } from 'expo-checkbox';
 import { createCustomerAddress } from '../../../services/shopify/customer';
-
+import { useLocalSearchParams } from 'expo-router';
 import Button from '../../../components/common/Button';
+import { useCustomer } from '../../../hooks/useCustomer';
+import Loader from '../../../components/profile/Loader';
 const AddAddress = () => {
+    const { addressId } = useLocalSearchParams();
+    console.log('Selected Addres ID', addressId)
+    const { customer, loading } = useCustomer()
+    const selectedAddress = customer?.addresses?.edges.find(
+        (item: any) => item.node.id === addressId
+    );
     const [AddressData, setAddressData] = useState({
         firstName: '',
         lastName: '',
@@ -19,9 +27,28 @@ const AddAddress = () => {
         postalCode: '',
         isDefault: false
     })
+    const setSelectedAddress = () => {
+        if (selectedAddress) {
+            const addressNode = selectedAddress.node
+            setAddressData({
+                firstName: addressNode.firstName ?? '',
+                lastName: addressNode.lastName ?? '',
+                phoneNumber: addressNode.phoneNumber ?? '',
+                address1: addressNode.address1 ?? '',
+                address2: addressNode.address2 ?? '',
+                city: addressNode.city ?? '',
+                postalCode: addressNode.zip ?? '',
+                isDefault: addressNode.isDefault ?? false,
+            });
+        }
+    }
+    useEffect(() => {
+
+        setSelectedAddress()
+    }, [selectedAddress])
     const handleAddressChange = async () => {
         const fullNumber = '+92' + AddressData.phoneNumber
-        
+
         const result = await createCustomerAddress({
             firstName: AddressData.firstName,
             lastName: AddressData.lastName,
@@ -35,6 +62,11 @@ const AddAddress = () => {
         })
         console.log('ADDRESS INFO: ', result)
 
+    }
+    if (loading) {
+        return (
+            <Loader />
+        )
     }
     return (
         <SafeAreaView style={styles.container}>
@@ -68,9 +100,9 @@ const AddAddress = () => {
                             keyboardType='phone-pad'
                             value={AddressData.phoneNumber}
                             onChangeText={(text) => setAddressData({
-                        ...AddressData,
-                        phoneNumber: text
-                    })}
+                                ...AddressData,
+                                phoneNumber: text
+                            })}
                             max={10}
                         />
 

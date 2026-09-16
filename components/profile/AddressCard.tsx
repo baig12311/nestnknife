@@ -10,6 +10,8 @@ interface Props {
     phoneNumber?: string
     address1?: string
     address2?: string
+    menuOpen?:boolean
+    onMenuPress?:()=>void
     onPressEdit?: () => void
     onPressDelete?: () => void
 }
@@ -17,11 +19,12 @@ interface rowProps {
     title?: string
     iconName: string
     iconType: string
+    onPress?:()=>void
 }
 const AddressCard: React.FC<Props> = ({ firstName, lastName, phoneNumber, address1, address2, onPressDelete,
-    onPressEdit
+    onPressEdit, menuOpen, onMenuPress
 }) => {
-    const [showMenu, setShowMenu] = useState(false)
+    //const [showMenu, setShowMenu] = useState(false)
     return (
         <View style={styles.container}>
             <View style={styles.iconContainer}>
@@ -54,7 +57,7 @@ const AddressCard: React.FC<Props> = ({ firstName, lastName, phoneNumber, addres
                 <TouchableOpacity
                     style={styles.menuButton}
                     activeOpacity={0.7}
-                    onPress={() => setShowMenu(!showMenu)}
+                    onPress={onMenuPress}
                 >
                     <Icon
                         name='dots-three-vertical'
@@ -67,17 +70,19 @@ const AddressCard: React.FC<Props> = ({ firstName, lastName, phoneNumber, addres
                
             </View>
              {
-                    showMenu && (
+                    menuOpen && (
                         <View style={styles.menu}>
                             <Row
                             iconName='edit'
                             iconType='AntDesign'
                             title='Edit'
+                            onPress={onPressEdit}
                             />
                             <Row
                             iconName='trash-outline'
                             iconType='Ionicons'
                             title='Remove'
+                            onPress={onPressDelete}
                             />
                         </View>
                     )
@@ -88,17 +93,17 @@ const AddressCard: React.FC<Props> = ({ firstName, lastName, phoneNumber, addres
     );
 };
 
-const Row: React.FC<rowProps> = ({ title, iconName, iconType }) => {
+const Row: React.FC<rowProps> = ({ title, iconName, iconType, onPress}) => {
     return (
-        <View style={styles.rowContainer}>
+        <TouchableOpacity style={styles.rowContainer} onPress={onPress}>
             <Icon
                 name={iconName}
                 type={iconType}
-                color={Colors.text}
+                color={Colors.primary}
                 size={wp(5)}
             />
             <Text style={styles.textTitle}>{title}</Text>
-        </View>
+        </TouchableOpacity>
     )
 
 }
@@ -129,7 +134,7 @@ const styles = StyleSheet.create({
     menu: {
         position: 'absolute',
         right:0,
-        top:45,
+        top:40,
         zIndex:10,
         borderRadius: wp(2),
         padding: wp(2),
@@ -144,7 +149,7 @@ const styles = StyleSheet.create({
     textName: {
         fontFamily: fonts.semibold,
         fontSize: wp(4),
-        color: Colors.text,
+        color: Colors.primary,
         marginBottom: hp(0.5),
 
     },

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState} from 'react';
 import { View, Text, Image } from 'react-native';
 import styles from './AddressStyle';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -7,19 +7,29 @@ import Header from '../../../components/profile/Header';
 import { router } from 'expo-router';
 import { useCustomer } from '../../../hooks/useCustomer';
 import { FlatList } from 'react-native';
+import ConfirmatinDialog from '../../../components/profile/ConfirmationDialog';
 import AddressCard from '../../../components/profile/AddressCard';
+import Loader from '../../../components/profile/Loader';
 const Address = () => {
     const { customer, loading } = useCustomer()
+    const [DeleteDialogShow, setDeleteDialogShow] = useState(false)
+    const [openMenuIndex, setOpenMenuIndex] = useState<number | null>(null);
     const customerAddresses = customer?.addresses?.edges
+    const handleEditAddress=(address:any)=>{
+        router.push({
+            pathname: '/profile/addAddress/AddAddress',
+            params:{
+                addressId: address.id
+            }
+        })
+    }
 
     if (loading) {
         return (
-            <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ fontSize: 20 }}>Loading....</Text>
-            </View>
+            <Loader/>
         )
     }
-    const renderAddress =({item}:any)=>{
+    const renderAddress =({item, index}:any)=>{
         return(
             <AddressCard
         firstName={item.node.firstName}
@@ -27,6 +37,16 @@ const Address = () => {
         address1={item.node.address1}
         address2={item.node.address2}
         phoneNumber={item.node.phoneNumber}
+        onPressDelete={()=>setDeleteDialogShow(!DeleteDialogShow)}
+        menuOpen={openMenuIndex === index}
+
+            onMenuPress={() => {
+                setOpenMenuIndex(
+                    openMenuIndex === index ? null : index
+                );
+            }}
+        onPressEdit={()=>handleEditAddress(item.node)}
+
         />
         )
         
@@ -36,6 +56,17 @@ const Address = () => {
     return (
         <SafeAreaView style={styles.container}>
             <Header title='Address' />
+            {
+                DeleteDialogShow && (
+                    <ConfirmatinDialog
+                    modalVisible={DeleteDialogShow}
+                    msg='Are you sure you want to permanently delete this address?'
+                    txtButton='Delete'
+                    onPressCancel={()=>setDeleteDialogShow(!DeleteDialogShow)}
+                    //onPressDelete={}
+                    />
+                )
+            }
             {
                 customerAddresses ? (
                     <FlatList

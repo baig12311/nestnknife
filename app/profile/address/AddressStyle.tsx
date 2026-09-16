@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: hp(10)
 
-    }
+    },
+    
 });
 export default styles
