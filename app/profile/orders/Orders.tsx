@@ -7,6 +7,7 @@ import { useCustomer } from '../../../hooks/useCustomer';
 import PagerView from "react-native-pager-view";
 import Header from '../../../components/profile/Header';
 import OrderCard from '../../../components/profile/OrderCard';
+import { router } from 'expo-router';
 const Orders = () => {
     const pagerRef = useRef<PagerView>(null)
     const [selectedStatus, setSelectedStatus] = useState('All')
@@ -48,7 +49,7 @@ const Orders = () => {
     }
     return (
         <SafeAreaView style={styles.container}>
-            <Header title='Orders' />
+            <Header title='Orders' onPress={()=>router.replace('/profile')}/>
             <View style={styles.statusContainer}>
                 {
                     statuses.map((status, index) => (

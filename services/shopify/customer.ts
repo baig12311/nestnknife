@@ -1,8 +1,3 @@
-
-
-
-
-
 // import {
 //   getStoredAccessToken,
 //   refreshAccessToken,
@@ -12,6 +7,7 @@
 // const API_VERSION = '2025-01';
 
 // const GRAPHQL_ENDPOINT = `https://shopify.com/${SHOP_ID}/account/customer/api/${API_VERSION}/graphql`;
+
 
 // /* =========================================================
 //    GET FULL CUSTOMER DATA
@@ -41,12 +37,16 @@
 //         }
 
 //         defaultAddress {
-//         id
+//           id
 //           address1
 //           address2
 //           city
 //           province
 //           country
+//           firstName
+//           lastName
+//           phoneNumber
+//           territoryCode
 //           zip
 //         }
 
@@ -59,6 +59,10 @@
 //               city
 //               province
 //               country
+//               firstName
+//               lastName
+//               phoneNumber
+//               territoryCode
 //               zip
 //             }
 //           }
@@ -175,8 +179,10 @@
 
 //   return json.data.customer;
 // };
+
+
 // /* =========================================================
-//    UPDATE ADDRESS
+//    CREATE CUSTOMER ADDRESS
 // ========================================================= */
 
 // export const createCustomerAddress = async ({
@@ -189,6 +195,7 @@
 //   province,
 //   territoryCode,
 //   zip,
+//   defaultAddress,
 // }: {
 //   firstName: string;
 //   lastName: string;
@@ -199,32 +206,46 @@
 //   province?: string;
 //   territoryCode: string;
 //   zip?: string;
+//   defaultAddress: boolean;
 // }) => {
+
 //   const token = await getStoredAccessToken();
 
 //   if (!token) {
 //     throw new Error('User not logged in.');
 //   }
-//   const mutation = `
-//   mutation CustomerAddressCreate($address: CustomerAddressInput!, $defaultAddress: Boolean) {
-//     customerAddressCreate(address: $address  defaultAddress: $defaultAddress) {
-//       customerAddress {
-//         id
-//         address1
-//         address2
-//         city
-//         province
-//         territoryCode
-//         zip
-//       }
 
-//       userErrors {
-//         field
-//         message
+//   const mutation = `
+//     mutation CustomerAddressCreate(
+//       $address: CustomerAddressInput!
+//       $defaultAddress: Boolean
+//     ) {
+//       customerAddressCreate(
+//         address: $address
+//         defaultAddress: $defaultAddress
+//       ) {
+//         customerAddress {
+//           id
+//           address1
+//           address2
+//           city
+//           province
+//           country
+//           firstName
+//           lastName
+//           phoneNumber
+//           territoryCode
+//           zip
+//         }
+
+//         userErrors {
+//           field
+//           message
+//         }
 //       }
 //     }
-//   }
-// `;
+//   `;
+
 //   const response = await fetch(GRAPHQL_ENDPOINT, {
 //     method: 'POST',
 
@@ -235,8 +256,12 @@
 
 //     body: JSON.stringify({
 //       query: mutation,
+
 //       variables: {
 //         address: {
+//           firstName,
+//           lastName,
+//           phoneNumber,
 //           address1,
 //           address2,
 //           city,
@@ -244,10 +269,17 @@
 //           territoryCode,
 //           zip,
 //         },
+
+//         defaultAddress,
 //       },
 //     }),
 //   });
+
 //   const json = await response.json();
+
+//   /* =========================================================
+//      GRAPHQL ERROR
+//   ========================================================= */
 
 //   if (json.errors) {
 //     console.error('GRAPHQL ERROR:', json.errors);
@@ -256,7 +288,16 @@
 //       json.errors[0]?.message ?? 'GraphQL error'
 //     );
 //   }
+
+//   /* =========================================================
+//      ADDRESS CREATE RESULT
+//   ========================================================= */
+
 //   const result = json.data.customerAddressCreate;
+
+//   /* =========================================================
+//      USER ERRORS
+//   ========================================================= */
 
 //   if (result.userErrors?.length) {
 //     console.error(
@@ -271,8 +312,251 @@
 //     );
 //   }
 
+//   /* =========================================================
+//      RETURN CREATED ADDRESS
+//   ========================================================= */
+
 //   return result.customerAddress;
 // };
+
+
+// /* =========================================================
+//    UPDATE CUSTOMER ADDRESS
+// ========================================================= */
+
+// export const updateCustomerAddress = async ({
+//   addressId,
+//   firstName,
+//   lastName,
+//   phoneNumber,
+//   address1,
+//   address2,
+//   city,
+//   province,
+//   territoryCode,
+//   zip,
+//   defaultAddress,
+// }: {
+//   addressId: string;
+//   firstName: string;
+//   lastName: string;
+//   phoneNumber?: string;
+//   address1: string;
+//   address2?: string;
+//   city: string;
+//   province?: string;
+//   territoryCode: string;
+//   zip?: string;
+//   defaultAddress: boolean;
+// }) => {
+
+//   const token = await getStoredAccessToken();
+
+//   if (!token) {
+//     throw new Error('User not logged in.');
+//   }
+
+//   const mutation = `
+//     mutation CustomerAddressUpdate(
+//       $addressId: ID!
+//       $address: CustomerAddressInput
+//       $defaultAddress: Boolean
+//     ) {
+//       customerAddressUpdate(
+//         addressId: $addressId
+//         address: $address
+//         defaultAddress: $defaultAddress
+//       ) {
+//         customerAddress {
+//           id
+//           address1
+//           address2
+//           city
+//           province
+//           country
+//           firstName
+//           lastName
+//           phoneNumber
+//           territoryCode
+//           zip
+//         }
+
+//         userErrors {
+//           field
+//           message
+//         }
+//       }
+//     }
+//   `;
+
+//   const response = await fetch(GRAPHQL_ENDPOINT, {
+//     method: 'POST',
+
+//     headers: {
+//       'Content-Type': 'application/json',
+//       Authorization: token,
+//     },
+
+//     body: JSON.stringify({
+//       query: mutation,
+
+//       variables: {
+//         addressId,
+
+//         address: {
+//           firstName,
+//           lastName,
+//           phoneNumber,
+//           address1,
+//           address2,
+//           city,
+//           province,
+//           territoryCode,
+//           zip,
+//         },
+
+//         defaultAddress,
+//       },
+//     }),
+//   });
+
+//   const json = await response.json();
+
+//   /* =========================================================
+//      GRAPHQL ERROR
+//   ========================================================= */
+
+//   if (json.errors) {
+//     console.error('GRAPHQL ERROR:', json.errors);
+
+//     throw new Error(
+//       json.errors[0]?.message ?? 'GraphQL error'
+//     );
+//   }
+
+//   /* =========================================================
+//      ADDRESS UPDATE RESULT
+//   ========================================================= */
+
+//   const result = json.data.customerAddressUpdate;
+
+//   /* =========================================================
+//      USER ERRORS
+//   ========================================================= */
+
+//   if (result.userErrors?.length) {
+//     console.error(
+//       'ADDRESS UPDATE ERROR:',
+//       result.userErrors
+//     );
+
+//     throw new Error(
+//       result.userErrors
+//         .map((error: any) => error.message)
+//         .join(', ')
+//     );
+//   }
+
+//   /* =========================================================
+//      RETURN UPDATED ADDRESS
+//   ========================================================= */
+
+//   return result.customerAddress;
+// };
+
+
+// /* =========================================================
+//    DELETE CUSTOMER ADDRESS
+// ========================================================= */
+
+// export const deleteCustomerAddress = async (
+//   addressId: string
+// ) => {
+
+//   const token = await getStoredAccessToken();
+
+//   if (!token) {
+//     throw new Error('User not logged in.');
+//   }
+
+//   const mutation = `
+//     mutation CustomerAddressDelete(
+//       $addressId: ID!
+//     ) {
+//       customerAddressDelete(
+//         addressId: $addressId
+//       ) {
+//         deletedAddressId
+
+//         userErrors {
+//           field
+//           message
+//         }
+//       }
+//     }
+//   `;
+
+//   const response = await fetch(GRAPHQL_ENDPOINT, {
+//     method: 'POST',
+
+//     headers: {
+//       'Content-Type': 'application/json',
+//       Authorization: token,
+//     },
+
+//     body: JSON.stringify({
+//       query: mutation,
+
+//       variables: {
+//         addressId,
+//       },
+//     }),
+//   });
+
+//   const json = await response.json();
+
+//   /* =========================================================
+//      GRAPHQL ERROR
+//   ========================================================= */
+
+//   if (json.errors) {
+//     console.error('GRAPHQL ERROR:', json.errors);
+
+//     throw new Error(
+//       json.errors[0]?.message ?? 'GraphQL error'
+//     );
+//   }
+
+//   /* =========================================================
+//      ADDRESS DELETE RESULT
+//   ========================================================= */
+
+//   const result = json.data.customerAddressDelete;
+
+//   /* =========================================================
+//      USER ERRORS
+//   ========================================================= */
+
+//   if (result.userErrors?.length) {
+//     console.error(
+//       'ADDRESS DELETE ERROR:',
+//       result.userErrors
+//     );
+
+//     throw new Error(
+//       result.userErrors
+//         .map((error: any) => error.message)
+//         .join(', ')
+//     );
+//   }
+
+//   /* =========================================================
+//      RETURN DELETED ADDRESS ID
+//   ========================================================= */
+
+//   return result.deletedAddressId;
+// };
+
 
 // /* =========================================================
 //    UPDATE CUSTOMER
@@ -297,6 +581,7 @@
 //     zip?: string;
 //   };
 // }) => {
+
 //   const token = await getStoredAccessToken();
 
 //   if (!token) {
@@ -304,8 +589,12 @@
 //   }
 
 //   const mutation = `
-//     mutation customerUpdate($input: CustomerUpdateInput!) {
-//       customerUpdate(input: $input) {
+//     mutation customerUpdate(
+//       $input: CustomerUpdateInput!
+//     ) {
+//       customerUpdate(
+//         input: $input
+//       ) {
 //         customer {
 //           id
 //           firstName
@@ -361,30 +650,37 @@
 //   ========================================================= */
 
 //   if (address) {
+
 //     input.defaultAddress = {};
 
 //     if (address.address1 !== undefined) {
-//       input.defaultAddress.address1 = address.address1;
+//       input.defaultAddress.address1 =
+//         address.address1;
 //     }
 
 //     if (address.address2 !== undefined) {
-//       input.defaultAddress.address2 = address.address2;
+//       input.defaultAddress.address2 =
+//         address.address2;
 //     }
 
 //     if (address.city !== undefined) {
-//       input.defaultAddress.city = address.city;
+//       input.defaultAddress.city =
+//         address.city;
 //     }
 
 //     if (address.province !== undefined) {
-//       input.defaultAddress.province = address.province;
+//       input.defaultAddress.province =
+//         address.province;
 //     }
 
 //     if (address.country !== undefined) {
-//       input.defaultAddress.country = address.country;
+//       input.defaultAddress.country =
+//         address.country;
 //     }
 
 //     if (address.zip !== undefined) {
-//       input.defaultAddress.zip = address.zip;
+//       input.defaultAddress.zip =
+//         address.zip;
 //     }
 //   }
 
@@ -402,6 +698,7 @@
 
 //     body: JSON.stringify({
 //       query: mutation,
+
 //       variables: {
 //         input,
 //       },
@@ -455,6 +752,7 @@
 
 
 
+
 import {
   getStoredAccessToken,
   refreshAccessToken,
@@ -464,6 +762,7 @@ const SHOP_ID = '81785061622';
 const API_VERSION = '2025-01';
 
 const GRAPHQL_ENDPOINT = `https://shopify.com/${SHOP_ID}/account/customer/api/${API_VERSION}/graphql`;
+
 
 /* =========================================================
    GET FULL CUSTOMER DATA
@@ -554,6 +853,7 @@ export const getFullCustomerData = async () => {
     }
   `;
 
+
   /* =========================================================
      API REQUEST FUNCTION
   ========================================================= */
@@ -575,11 +875,13 @@ export const getFullCustomerData = async () => {
     return response.json();
   };
 
+
   /* =========================================================
      FIRST REQUEST
   ========================================================= */
 
   let json = await makeRequest(token);
+
 
   /* =========================================================
      CHECK IF ACCESS TOKEN IS INVALID
@@ -589,6 +891,7 @@ export const getFullCustomerData = async () => {
     (error: any) =>
       error.message === 'Access token is invalid or revoked'
   );
+
 
   /* =========================================================
      REFRESH TOKEN + RETRY
@@ -612,6 +915,7 @@ export const getFullCustomerData = async () => {
     json = await makeRequest(token);
   }
 
+
   /* =========================================================
      FINAL ERROR CHECK
   ========================================================= */
@@ -624,6 +928,7 @@ export const getFullCustomerData = async () => {
     );
   }
 
+
   /* =========================================================
      RETURN CUSTOMER DATA
   ========================================================= */
@@ -635,6 +940,7 @@ export const getFullCustomerData = async () => {
 
   return json.data.customer;
 };
+
 
 /* =========================================================
    CREATE CUSTOMER ADDRESS
@@ -663,6 +969,7 @@ export const createCustomerAddress = async ({
   zip?: string;
   defaultAddress: boolean;
 }) => {
+
   const token = await getStoredAccessToken();
 
   if (!token) {
@@ -700,6 +1007,7 @@ export const createCustomerAddress = async ({
     }
   `;
 
+
   const response = await fetch(GRAPHQL_ENDPOINT, {
     method: 'POST',
 
@@ -729,7 +1037,9 @@ export const createCustomerAddress = async ({
     }),
   });
 
+
   const json = await response.json();
+
 
   /* =========================================================
      GRAPHQL ERROR
@@ -743,11 +1053,13 @@ export const createCustomerAddress = async ({
     );
   }
 
+
   /* =========================================================
      ADDRESS CREATE RESULT
   ========================================================= */
 
   const result = json.data.customerAddressCreate;
+
 
   /* =========================================================
      USER ERRORS
@@ -766,12 +1078,264 @@ export const createCustomerAddress = async ({
     );
   }
 
+
   /* =========================================================
      RETURN CREATED ADDRESS
   ========================================================= */
 
   return result.customerAddress;
 };
+
+
+/* =========================================================
+   UPDATE CUSTOMER ADDRESS
+========================================================= */
+
+export const updateCustomerAddress = async ({
+  addressId,
+  firstName,
+  lastName,
+  phoneNumber,
+  address1,
+  address2,
+  city,
+  province,
+  territoryCode,
+  zip,
+  defaultAddress,
+}: {
+  addressId: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber?: string;
+  address1: string;
+  address2?: string;
+  city: string;
+  province?: string;
+  territoryCode: string;
+  zip?: string;
+  defaultAddress: boolean;
+}) => {
+
+  const token = await getStoredAccessToken();
+
+  if (!token) {
+    throw new Error('User not logged in.');
+  }
+
+  const mutation = `
+    mutation CustomerAddressUpdate(
+      $addressId: ID!
+      $address: CustomerAddressInput
+      $defaultAddress: Boolean
+    ) {
+      customerAddressUpdate(
+        addressId: $addressId
+        address: $address
+        defaultAddress: $defaultAddress
+      ) {
+        customerAddress {
+          id
+          address1
+          address2
+          city
+          province
+          country
+          firstName
+          lastName
+          phoneNumber
+          territoryCode
+          zip
+        }
+
+        userErrors {
+          field
+          message
+        }
+      }
+    }
+  `;
+
+
+  const response = await fetch(GRAPHQL_ENDPOINT, {
+    method: 'POST',
+
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+
+    body: JSON.stringify({
+      query: mutation,
+
+      variables: {
+        addressId,
+
+        address: {
+          firstName,
+          lastName,
+          phoneNumber,
+          address1,
+          address2,
+          city,
+          province,
+          territoryCode,
+          zip,
+        },
+
+        defaultAddress,
+      },
+    }),
+  });
+
+
+  const json = await response.json();
+
+
+  /* =========================================================
+     GRAPHQL ERROR
+  ========================================================= */
+
+  if (json.errors) {
+    console.error('GRAPHQL ERROR:', json.errors);
+
+    throw new Error(
+      json.errors[0]?.message ?? 'GraphQL error'
+    );
+  }
+
+
+  /* =========================================================
+     ADDRESS UPDATE RESULT
+  ========================================================= */
+
+  const result = json.data.customerAddressUpdate;
+
+
+  /* =========================================================
+     USER ERRORS
+  ========================================================= */
+
+  if (result.userErrors?.length) {
+    console.error(
+      'ADDRESS UPDATE ERROR:',
+      result.userErrors
+    );
+
+    throw new Error(
+      result.userErrors
+        .map((error: any) => error.message)
+        .join(', ')
+    );
+  }
+
+
+  /* =========================================================
+     RETURN UPDATED ADDRESS
+  ========================================================= */
+
+  return result.customerAddress;
+};
+
+
+/* =========================================================
+   DELETE CUSTOMER ADDRESS
+========================================================= */
+
+export const deleteCustomerAddress = async (
+  addressId: string
+) => {
+
+  const token = await getStoredAccessToken();
+
+  if (!token) {
+    throw new Error('User not logged in.');
+  }
+
+  const mutation = `
+    mutation CustomerAddressDelete(
+      $addressId: ID!
+    ) {
+      customerAddressDelete(
+        addressId: $addressId
+      ) {
+        deletedAddressId
+
+        userErrors {
+          field
+          message
+        }
+      }
+    }
+  `;
+
+
+  const response = await fetch(GRAPHQL_ENDPOINT, {
+    method: 'POST',
+
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+
+    body: JSON.stringify({
+      query: mutation,
+
+      variables: {
+        addressId,
+      },
+    }),
+  });
+
+
+  const json = await response.json();
+
+
+  /* =========================================================
+     GRAPHQL ERROR
+  ========================================================= */
+
+  if (json.errors) {
+    console.error('GRAPHQL ERROR:', json.errors);
+
+    throw new Error(
+      json.errors[0]?.message ?? 'GraphQL error'
+    );
+  }
+
+
+  /* =========================================================
+     ADDRESS DELETE RESULT
+  ========================================================= */
+
+  const result = json.data.customerAddressDelete;
+
+
+  /* =========================================================
+     USER ERRORS
+  ========================================================= */
+
+  if (result.userErrors?.length) {
+    // console.error(
+    //   'ADDRESS DELETE ERROR:',
+    //   result.userErrors
+    // );
+
+    throw new Error(
+      result.userErrors
+        .map((error: any) => error.message)
+        .join(', ')
+    );
+  }
+
+
+  /* =========================================================
+     RETURN DELETED ADDRESS ID
+  ========================================================= */
+
+  return result.deletedAddressId;
+};
+
 
 /* =========================================================
    UPDATE CUSTOMER
@@ -796,6 +1360,7 @@ export const updateCustomer = async ({
     zip?: string;
   };
 }) => {
+
   const token = await getStoredAccessToken();
 
   if (!token) {
@@ -803,8 +1368,12 @@ export const updateCustomer = async ({
   }
 
   const mutation = `
-    mutation customerUpdate($input: CustomerUpdateInput!) {
-      customerUpdate(input: $input) {
+    mutation customerUpdate(
+      $input: CustomerUpdateInput!
+    ) {
+      customerUpdate(
+        input: $input
+      ) {
         customer {
           id
           firstName
@@ -837,55 +1406,74 @@ export const updateCustomer = async ({
     }
   `;
 
+
   /* =========================================================
      CREATE INPUT
   ========================================================= */
 
   const input: any = {};
 
+
   if (firstName !== undefined) {
     input.firstName = firstName;
   }
+
 
   if (lastName !== undefined) {
     input.lastName = lastName;
   }
 
+
   if (phoneNumber !== undefined) {
     input.phoneNumber = phoneNumber;
   }
+
 
   /* =========================================================
      ADDRESS
   ========================================================= */
 
   if (address) {
+
     input.defaultAddress = {};
 
+
     if (address.address1 !== undefined) {
-      input.defaultAddress.address1 = address.address1;
+      input.defaultAddress.address1 =
+        address.address1;
     }
+
 
     if (address.address2 !== undefined) {
-      input.defaultAddress.address2 = address.address2;
+      input.defaultAddress.address2 =
+        address.address2;
     }
+
 
     if (address.city !== undefined) {
-      input.defaultAddress.city = address.city;
+      input.defaultAddress.city =
+        address.city;
     }
+
 
     if (address.province !== undefined) {
-      input.defaultAddress.province = address.province;
+      input.defaultAddress.province =
+        address.province;
     }
+
 
     if (address.country !== undefined) {
-      input.defaultAddress.country = address.country;
+      input.defaultAddress.country =
+        address.country;
     }
 
+
     if (address.zip !== undefined) {
-      input.defaultAddress.zip = address.zip;
+      input.defaultAddress.zip =
+        address.zip;
     }
   }
+
 
   /* =========================================================
      UPDATE REQUEST
@@ -901,13 +1489,16 @@ export const updateCustomer = async ({
 
     body: JSON.stringify({
       query: mutation,
+
       variables: {
         input,
       },
     }),
   });
 
+
   const json = await response.json();
+
 
   /* =========================================================
      GRAPHQL ERROR
@@ -921,11 +1512,13 @@ export const updateCustomer = async ({
     );
   }
 
+
   /* =========================================================
      CUSTOMER UPDATE RESULT
   ========================================================= */
 
   const result = json.data.customerUpdate;
+
 
   /* =========================================================
      USER ERRORS
@@ -943,6 +1536,7 @@ export const updateCustomer = async ({
         .join(', ')
     );
   }
+
 
   /* =========================================================
      RETURN UPDATED CUSTOMER

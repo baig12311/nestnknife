@@ -6,11 +6,12 @@ import { fonts } from '../../constants/typography';
 import { router } from 'expo-router';
 interface Props{
     title?:string
+    onPress?:()=>void
 }
-const Header:React.FC<Props> = ({title}) => {
+const Header:React.FC<Props> = ({title, onPress}) => {
     return (
        <View style={styles.iconContainer}>
-                <TouchableOpacity onPress={() => router.replace('/(tabs)/profile')} style={{ marginRight: wp(4) }} activeOpacity={0.7}>
+                <TouchableOpacity onPress={onPress} style={{ marginRight: wp(4) }} activeOpacity={0.7}>
                     <Icon name="arrow-back" type='MaterialIcons' size={wp(6)} color={Colors.text} />
                 </TouchableOpacity>
 

@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         
         elevation: 3,
         //backgroundColor: 'white',
-        backgroundColor: Colors.background,
+        backgroundColor: 'white',
         width: wp(90),
         alignSelf: 'center',
         borderRadius:wp(2),

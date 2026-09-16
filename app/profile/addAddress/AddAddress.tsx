@@ -2,16 +2,23 @@ import React, { Component, useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import styles from './AddAddressStyle';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
 import Header from '../../../components/profile/Header';
 import FloatingInput from '../../../components/profile/FloatingInput';
 import { Checkbox } from 'expo-checkbox';
-import { createCustomerAddress } from '../../../services/shopify/customer';
+import { createCustomerAddress, updateCustomerAddress } from '../../../services/shopify/customer';
 import { useLocalSearchParams } from 'expo-router';
 import Button from '../../../components/common/Button';
 import { useCustomer } from '../../../hooks/useCustomer';
 import Loader from '../../../components/profile/Loader';
+import CustomToast from '../../../components/common/CustomToast';
 const AddAddress = () => {
-    const { addressId } = useLocalSearchParams();
+    const { addressId } = useLocalSearchParams<{ addressId: string }>();
+    const [toastVisible, setToastVisible] = useState(false)
+    const [type, setType] = useState<'success' | 'error'>('error')
+    const [toastMessage, setToastMessage] = useState('')
+
+
     console.log('Selected Addres ID', addressId)
     const { customer, loading } = useCustomer()
     const selectedAddress = customer?.addresses?.edges.find(
@@ -27,18 +34,23 @@ const AddAddress = () => {
         postalCode: '',
         isDefault: false
     })
+
+
+    // Setting Existing Data in Fields
     const setSelectedAddress = () => {
         if (selectedAddress) {
             const addressNode = selectedAddress.node
+            const isAddressDefault = addressNode.id === customer?.defaultAddress?.id
             setAddressData({
                 firstName: addressNode.firstName ?? '',
                 lastName: addressNode.lastName ?? '',
-                phoneNumber: addressNode.phoneNumber ?? '',
+                phoneNumber: addressNode.phoneNumber?.replace('+92', '') ?? '',
                 address1: addressNode.address1 ?? '',
                 address2: addressNode.address2 ?? '',
                 city: addressNode.city ?? '',
                 postalCode: addressNode.zip ?? '',
-                isDefault: addressNode.isDefault ?? false,
+                //isDefault: addressNode.isDefault ?? false,
+                isDefault: isAddressDefault
             });
         }
     }
@@ -46,23 +58,63 @@ const AddAddress = () => {
 
         setSelectedAddress()
     }, [selectedAddress])
+
+
+    // Adding New Address , Updating Address
     const handleAddressChange = async () => {
-        const fullNumber = '+92' + AddressData.phoneNumber
+        try {
+            const fullNumber = '+92' + AddressData.phoneNumber;
 
-        const result = await createCustomerAddress({
-            firstName: AddressData.firstName,
-            lastName: AddressData.lastName,
-            phoneNumber: fullNumber,
-            address1: AddressData.address1,
-            address2: AddressData.address2,
-            city: AddressData.city,
-            territoryCode: 'PK',
-            zip: AddressData.postalCode,
-            defaultAddress: AddressData.isDefault,
-        })
-        console.log('ADDRESS INFO: ', result)
+            if (addressId) {
+                await updateCustomerAddress({
+                    addressId,
+                    firstName: AddressData.firstName,
+                    lastName: AddressData.lastName,
+                    phoneNumber: fullNumber,
+                    address1: AddressData.address1,
+                    address2: AddressData.address2,
+                    city: AddressData.city,
+                    territoryCode: 'PK',
+                    zip: AddressData.postalCode,
+                    defaultAddress: AddressData.isDefault,
+                });
 
-    }
+                setType('success');
+                setToastMessage('Address has been updated successfully.');
+                setToastVisible(true);
+
+            } else {
+                await createCustomerAddress({
+                    firstName: AddressData.firstName,
+                    lastName: AddressData.lastName,
+                    phoneNumber: fullNumber,
+                    address1: AddressData.address1,
+                    address2: AddressData.address2,
+                    city: AddressData.city,
+                    territoryCode: 'PK',
+                    zip: AddressData.postalCode,
+                    defaultAddress: AddressData.isDefault,
+                });
+
+                setType('success');
+                setToastMessage('New address has been added successfully.');
+                setToastVisible(true);
+            }
+
+            setTimeout(() => {
+                router.back();
+            }, 3200);
+
+        } catch (error: any) {
+            console.log('Address Error:', error);
+
+            setType('error');
+            setToastMessage(
+                error?.message || 'Something went wrong. Please try again.'
+            );
+            setToastVisible(true);
+        }
+    };
     if (loading) {
         return (
             <Loader />
@@ -70,7 +122,20 @@ const AddAddress = () => {
     }
     return (
         <SafeAreaView style={styles.container}>
-            <Header title='Add New Address' />
+            <Header title={selectedAddress ? 'Edit Address' : 'Add New Address'} onPress={() => router.back()} />
+            <CustomToast
+                type='success'
+                visible={toastVisible}
+                messageTitle={
+                    type === 'success'
+                        ? addressId
+                            ? 'Address Updated'
+                            : 'Address Added'
+                        : 'Unable to Save Address'
+                }
+                messageDescription={toastMessage}
+                onHide={() => setToastVisible(false)}
+            />
             <View style={styles.fieldsContainer}>
                 <FloatingInput
                     placeholder='First Name'
