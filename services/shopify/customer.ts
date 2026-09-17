@@ -837,12 +837,25 @@ export const getFullCustomerData = async () => {
 
               fulfillmentStatus
 
+              fulfillments(first: 10) {
+        edges {
+          node {
+            id
+            status
+            latestShipmentStatus
+          }
+        }
+      }
               lineItems(first: 10) {
                 edges {
                   node {
                     id
                     title
                     quantity
+                    image {
+              url
+              altText
+            }
                   }
                 }
               }

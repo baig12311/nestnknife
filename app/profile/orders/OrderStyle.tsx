@@ -38,6 +38,21 @@ const styles = StyleSheet.create({
     },
     scrollContainer:{
         paddingBottom: hp(5)
+    },
+    emptyContainer:{
+        minHeight: hp(80),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    emptyTitle:{
+        fontFamily: fonts.semibold,
+        color:Colors.text,
+        fontSize: wp(5)
+    },
+    emptyDescription:{
+        fontFamily: fonts.medium,
+        color:Colors.secondary,
+        fontSize: wp(4)
     }
    
     

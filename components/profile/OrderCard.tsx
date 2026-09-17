@@ -1,5 +1,5 @@
 
-import { View, Text, StyleSheet, TouchableOpacity, } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import Colors from '../../constants/colors';
 import { fonts } from '../../constants/typography';
 import { ShadowCard } from '../common/ShadowCard';
@@ -7,38 +7,86 @@ import Icon from '../Icon';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useState } from 'react';
 import MoreProductContainer from './MoreProductContainer';
+import { formatStatus } from '../../services/formatStatus';
 interface Props {
     orderID?: string
     orderAmount?: string
     orderItems?: number
     orderDate?: any
-    totalItems?:number
+    totalItems?: number
+    lineItems?: []
+    status: string
+    //fullFillmentStatus:string
+    //imageURL?:string
 }
-const OrderCard: React.FC<Props> = ({ orderID, orderAmount, orderDate, orderItems, totalItems}) => {
+const OrderCard: React.FC<Props> = ({ orderID, orderAmount, orderDate, orderItems, totalItems, lineItems, status }) => {
+    const statusStyles: Record<
+        string,
+        { backgroundColor: string; color: string }
+    > = {
+        Processing: {
+            backgroundColor: '#F3E8C8',
+            color: '#8A6A2F',
+        },
+        Shipped: {
+            backgroundColor: '#E4ECF4',
+            color: '#49657D',
+        },
+        Delivered: {
+            backgroundColor: '#E3EEE7',
+            color: '#3F6B50',
+        },
+        Cancelled: {
+            backgroundColor: '#F1E3E3',
+            color: '#8A5050',
+        },
+    };
     const [showMore, setShowMore] = useState(false)
     const date = new Date(orderDate).toLocaleDateString('en-GB', {
-  day: '2-digit',
-  month: 'short',
-  year: 'numeric',
-})
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+    })
     return (
         <ShadowCard style={styles.container} containerStyle={styles.containerStyle}>
             <View style={styles.orderCard}
             >
                 <View style={styles.orderIdContainer}>
                     <Text style={styles.idText}>Order {orderID}</Text>
-                    <Text style={styles.badgeText}>Badge</Text>
+                    <Text style={[styles.badgeText, {
+                        backgroundColor: statusStyles[status]?.backgroundColor,
+                        color: statusStyles[status]?.color,
+                    }]}>{status}</Text>
                 </View>
                 <Text style={styles.date}>{date}</Text>
                 <View style={styles.productContainer}>
-                    <View style={styles.imageContainer}>
-                        <View style={{ width: wp(20), height: wp(20), borderRadius: wp(2), borderWidth: 1, borderColor: Colors.tertiary }} />
-                        <View style={{ width: wp(20), height: wp(20), borderRadius: wp(2), borderWidth: 1, borderColor: Colors.tertiary }} />
-                        <View style={{ width: wp(20), height: wp(20), borderRadius: wp(2), borderWidth: 1, borderColor: Colors.tertiary }} />
+                    <View
+                        style={styles.imageContainer}
+                    >
+                        {lineItems?.slice(0, 4).map((item: any, index: number) => {
+                            const product = item.node;
+
+                            return (
+                                <View key={product.id} style={styles.imageWrapper}>
+                                    <Image
+                                        source={{ uri: product.image.url }}
+                                        style={styles.image}
+                                    />
+
+                                    {index === 3 && lineItems.length > 3 && (
+                                        <View style={styles.moreOverlay}>
+                                            <Text style={styles.moreItemsText}>
+                                                +{lineItems.length - 3}
+                                            </Text>
+                                        </View>
+                                    )}
+                                </View>
+                            );
+                        })}
                     </View>
                     <TouchableOpacity activeOpacity={0.7} onPress={() => setShowMore(!showMore)}>
                         <Icon
-                            name={showMore ? 'chevron-small-down': 'chevron-small-right'}
+                            name={showMore ? 'chevron-small-down' : 'chevron-small-right'}
                             type='Entypo'
                             size={wp(7)}
                             color={Colors.text}
@@ -47,10 +95,10 @@ const OrderCard: React.FC<Props> = ({ orderID, orderAmount, orderDate, orderItem
 
                 </View>
                 {
-                    showMore && (<MoreProductContainer/>)
+                    showMore && (<MoreProductContainer />)
                 }
                 <View style={styles.orderIdContainer}>
-                    <Text style={styles.date}>{totalItems} Items</Text>
+                    <Text style={styles.date}>{lineItems?.length ?? 0} {(lineItems?.length ?? 0) > 1 ? 'Items' : 'Item'}</Text>
                     <Text style={styles.idText}>Total: PKR {orderAmount}</Text>
                 </View>
             </View>
@@ -85,11 +133,11 @@ const styles = StyleSheet.create({
         height: hp(2.5),
         fontFamily: fonts.medium,
         fontSize: wp(3),
-        color: Colors.text,
-        backgroundColor: Colors.tertiary,
+        //color: Colors.text,
+        // backgroundColor: Colors.tertiary,
         paddingHorizontal: wp(2),
         justifyContent: 'center',
-        borderRadius: wp(1)
+        borderRadius: wp(10)
     },
     date: {
         fontFamily: fonts.regular,
@@ -99,13 +147,39 @@ const styles = StyleSheet.create({
     productContainer: {
         flexDirection: 'row',
         marginVertical: hp(1),
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
     imageContainer: {
         flexDirection: 'row',
         gap: 10,
-        flex: 1
     },
+    image: {
+        width: wp(16),
+        height: wp(16),
+        borderRadius: wp(2),
+        borderWidth: 0.3,
+        borderColor: Colors.secondary
+    },
+    moreOverlay: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        borderRadius: wp(2),
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    imageWrapper: {
+        position: 'relative',
+    },
+    moreItemsText: {
+        fontFamily: fonts.semibold,
+        color: 'white',
+        fontSize: wp(5)
+    }
 
 
 });
