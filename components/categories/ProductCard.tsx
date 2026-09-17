@@ -5,45 +5,54 @@ import { fonts } from '../../constants/typography';
 import { ShadowCard } from '../common/ShadowCard';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Colors from '../../constants/colors';
+import Icon from '../Icon';
 interface ProductCardProps {
   product: Product;
 };
 
-const ProductCard:React.FC<ProductCardProps>=({ product })=>{
+const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <ShadowCard style={styles.container} containerStyle={styles.containerStyle}>
- <TouchableOpacity
- 
- activeOpacity={0.7}
-  onPress={() =>
-  router.push({
-    pathname: '/product/[id]',
-    params: { id: product.id },
-  })
-}
->
-      <Image
-        source={{ uri: product.image }}
-        style={styles.image}
-        resizeMode="cover"
-      />
+      <TouchableOpacity style={{position: 'relative'}}
 
-      <View style={styles.info}>
-        <Text
-          style={styles.title}
-          numberOfLines={2}
-        >
-          {product.title}
-        </Text>
+        activeOpacity={0.7}
+        onPress={() =>
+          router.push({
+            pathname: '/product/[id]',
+            params: { id: product.id },
+          })
+        }
+      >
+        <TouchableOpacity style={styles.saveIcon} activeOpacity={0.7}>
+          <Icon
+          name='heart-outline'
+          type= 'Ionicons'
+          color={Colors.text}
+          size={wp(7)}
+            />
+        </TouchableOpacity>
+        <Image
+          source={{ uri: product.image }}
+          style={styles.image}
+          resizeMode="cover"
+        />
 
-        <Text style={styles.price}>
-          Rs. {product.price.toLocaleString()}
-        </Text>
-      </View>
-    </TouchableOpacity>
+        <View style={styles.info}>
+          <Text
+            style={styles.title}
+            numberOfLines={2}
+          >
+            {product.title}
+          </Text>
+
+          <Text style={styles.price}>
+            Rs. {product.price.toLocaleString()}
+          </Text>
+        </View>
+      </TouchableOpacity>
     </ShadowCard>
- 
- 
+
+
   );
 }
 
@@ -59,11 +68,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#EEEEEE',
   },
-  containerStyle:{
+  containerStyle: {
     width: wp(44),
-    marginBottom:hp(2)
+    marginBottom: hp(2)
   },
- 
+
   image: {
     width: '100%',
     height: hp(17),
@@ -80,10 +89,22 @@ const styles = StyleSheet.create({
     color: Colors.text,
   },
   price: {
-    marginTop:hp(1),
+    marginTop: hp(1),
     fontSize: wp(4),
     fontFamily: fonts.displayBold,
     //fontWeight: '700',
     color: Colors.primary,
   },
+  saveIcon:{
+    width: wp(10),
+    height: wp(10),
+    borderRadius:wp(7),
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    top:5,
+    right:5,
+    zIndex: 10
+  }
 });

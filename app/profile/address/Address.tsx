@@ -122,7 +122,8 @@ const Address = () => {
                     <FlatList
                         data={customerAddresses}
                         renderItem={renderAddress}
-
+                        showsVerticalScrollIndicator={false}
+                        contentContainerStyle={styles.flatlist}
                     />
 
 

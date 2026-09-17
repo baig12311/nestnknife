@@ -124,7 +124,7 @@ const AddAddress = () => {
         <SafeAreaView style={styles.container}>
             <Header title={selectedAddress ? 'Edit Address' : 'Add New Address'} onPress={() => router.back()} />
             <CustomToast
-                type='success'
+                type={type}
                 visible={toastVisible}
                 messageTitle={
                     type === 'success'

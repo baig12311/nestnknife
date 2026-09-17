@@ -46,14 +46,14 @@ const CustomToast: React.FC<Props> = ({ messageDescription, messageTitle, visibl
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        width: '100%',
+        width: wp(90),
         alignSelf: 'center',
         borderRadius: wp(2),
         padding: wp(3),
         backgroundColor: 'white',
         zIndex: 10,
         top: hp(6),
-        borderLeftWidth: 4,
+        borderLeftWidth: 5,
         elevation: 5
     },
     txtHeading: {

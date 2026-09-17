@@ -12,13 +12,15 @@ interface Props {
     badgeData?: number
     count?: number
     onPress?:()=>void
+    color:string,
+    backgroundColor?:string
 }
 // create a component
-const HeaderIcon: React.FC<Props> = ({ iconName, badgeData, count=0, onPress}) => {
+const HeaderIcon: React.FC<Props> = ({ iconName, badgeData, count=0, onPress, color, backgroundColor}) => {
 
     return (
-        <TouchableOpacity style={styles.iconContainer} onPress={onPress} activeOpacity={0.7}>
-            <Icon name={iconName} type='Ionicons' size={wp(6.5)} color={Colors.text} />
+        <TouchableOpacity style={[styles.iconContainer, {backgroundColor: backgroundColor}]} onPress={onPress} activeOpacity={0.7}>
+            <Icon name={iconName} type='Ionicons' size={wp(6.5)} color={color} />
             {
                 count > 0 && (
                     <View style={styles.badge}>

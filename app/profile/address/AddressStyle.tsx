@@ -32,6 +32,9 @@ const styles = StyleSheet.create({
         marginBottom: hp(10)
 
     },
+    flatlist:{
+        paddingBottom: hp(4)
+    }
     
 });
 export default styles

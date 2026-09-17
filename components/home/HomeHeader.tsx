@@ -8,15 +8,20 @@ import { router } from 'expo-router';
 import { useCartBadge } from '../../hooks/useCartBadge';
 interface Props{
   title?:string
-
+  color:string
+  bgColor?:string
+  isProduct?:boolean
 }
-const HomeHeader:React.FC<Props>=({title})=> {
+const HomeHeader:React.FC<Props>=({title, color, bgColor, isProduct})=> {
   const cartCount=useCartBadge()
   return (
-   <View style={[styles.container, !title&&{borderBottomWidth:0.2,}]}>
+   <View style={[styles.container, !isProduct&&{borderBottomWidth:0.3,}]}>
       {/* Left Side: Title ya Logo */}
-      {title ? (
-        <Text style={styles.title}>{title}</Text>
+      {isProduct ? (
+        <HeaderIcon iconName= 'arrow-back' color={color} 
+        backgroundColor={bgColor}
+        onPress={()=>router.back()} 
+        />
       ) : (
         <Image 
           source={require('../../assets/logo.png')} 
@@ -28,10 +33,13 @@ const HomeHeader:React.FC<Props>=({title})=> {
       {/* Right Side: Icons View */}
       <View style={styles.iconView}>
         {/* Notification Icon hamesha dikhega */}
-        <HeaderIcon iconName='notifications-outline'/>
+        <HeaderIcon iconName='notifications-outline' color={color} backgroundColor={bgColor}/>
         
         {/* Cart Icon sirf tab dikhega jab title NAHI hoga */}
-        <HeaderIcon iconName='cart-outline' count={cartCount&&cartCount} onPress={()=>router.replace('/cart')}/>
+        <HeaderIcon iconName='cart-outline' count={cartCount&&cartCount} 
+        backgroundColor={bgColor}
+        color={color}
+        onPress={()=>router.replace('/cart')}/>
       </View>
     </View>
   );

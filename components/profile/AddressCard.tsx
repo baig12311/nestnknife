@@ -60,7 +60,7 @@ const AddressCard: React.FC<Props> = ({ firstName, lastName, phoneNumber, addres
                 <Row
                     iconName='location-outline'
                     iconType='Ionicons'
-                    title={`${address2}, ${address1}`}
+                    title={`${address2 ? `${address2}, ` : ''}${address1}`}
                 />
                 
                 <Row
@@ -109,20 +109,43 @@ const AddressCard: React.FC<Props> = ({ firstName, lastName, phoneNumber, addres
     );
 };
 
-const Row: React.FC<rowProps> = ({ title, iconName, iconType, onPress }) => {
-    return (
-        <TouchableOpacity style={styles.rowContainer} onPress={onPress}>
-            <Icon
-                name={iconName}
-                type={iconType}
-                color={Colors.primary}
-                size={wp(5)}
-            />
-            <Text style={styles.textTitle}>{title}</Text>
-        </TouchableOpacity>
-    )
+const Row: React.FC<rowProps> = ({
+  title,
+  iconName,
+  iconType,
+  onPress,
+}) => {
+  const content = (
+    <>
+      <Icon
+        name={iconName}
+        type={iconType}
+        color={Colors.primary}
+        size={wp(5)}
+      />
 
-}
+      <Text style={styles.textTitle}>{title}</Text>
+    </>
+  );
+
+  if (onPress) {
+    return (
+      <TouchableOpacity
+        style={styles.rowContainer}
+        onPress={onPress}
+        activeOpacity={0.7}
+      >
+        {content}
+      </TouchableOpacity>
+    );
+  }
+
+  return (
+    <View style={styles.rowContainer}>
+      {content}
+    </View>
+  );
+};
 const styles = StyleSheet.create({
     container: {
         borderRadius: wp(2),

@@ -161,5 +161,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10
   },
+  headerContainer:{
+   
+    position: 'absolute',
+    zIndex: 1,
+    top: hp(7),
+    width: wp(95),
+    alignSelf: 'center' 
+  }
 });
 export default styles

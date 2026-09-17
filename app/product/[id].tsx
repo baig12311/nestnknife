@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import Colors from '../../constants/colors';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import FormattedDescription from '../../services/FormattedDescription';
 import { useQueryClient } from '@tanstack/react-query';
@@ -28,12 +29,16 @@ import {
   createCart,
   addToCart,
 } from '../../services/shopify/cart';
-
+import HomeHeader from '../../components/home/HomeHeader';
 import { setCartId } from '../../store/cartSlice';
+import CustomToast from '../../components/common/CustomToast';
 
 const ProductDetailsScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [showToast, setShowToast] = useState(false)
+  const [type, setType] = useState<'success'|'error'>('error')
+  const [toastMessage, setToastMessage] = useState('')
   const queryClient = useQueryClient();
   const addToCartMutation = useAddToCart();
   const dispatch = useDispatch();
@@ -97,9 +102,16 @@ const ProductDetailsScreen = () => {
       });
 
       console.log('CART AFTER ADD:', cart);
+      setType('success')
+      setShowToast(true)
+      setToastMessage('This item is now in your cart.')
 
-    } catch (error) {
+
+    } catch (error:any) {
       console.error('ADD TO CART ERROR:', error);
+      setType('error')
+      setShowToast(true)
+      setToastMessage("We couldn't add the item right now. Please try again.")
     } finally {
       setAdding(false);
     }
@@ -107,7 +119,22 @@ const ProductDetailsScreen = () => {
 
   return (
     <SafeAreaView style={styles.mainContainer}>
+     
+        <CustomToast
+      type={type}
+      visible={showToast}
+      onHide={()=>setShowToast(false)}
+      messageTitle={
+        type==='success' ? 'Added to Your cart' : 'Something went wrong'
+      }
+      messageDescription={toastMessage}
+        />
+        <View style={styles.headerContainer}>
+          {/* <HomeHeader color={Colors.text} bgColor='white' isProduct={true}/> */}
+        <HomeHeader color={Colors.text} bgColor='white' isProduct={true}/>
 
+        </View>
+      
       <View style={styles.imageContainer}>
         <FlatList
           data={product?.images.nodes ?? []}

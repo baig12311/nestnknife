@@ -2,7 +2,7 @@ import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Image, ActivityIn
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useEffect } from 'react';
 import { router } from 'expo-router';
-
+import Colors from '../../constants/colors';
 import HomeHeader from '../../components/home/HomeHeader';
 import SearchBar from '../../components/home/SearchBar';
 import HeroBanner from '../../components/home/HeroBanner';
@@ -43,7 +43,7 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <HomeHeader />
+      <HomeHeader color={Colors.text}/>
       <FadeInView delay={150}>
         <TouchableOpacity
           activeOpacity={0.8}

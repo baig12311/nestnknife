@@ -15,8 +15,10 @@ const Orders = () => {
     const orders = customer?.orders?.edges || [];
     console.log('Full Order:', JSON.stringify(orders[0]?.node, null, 2)); // Full details
     const orderId = orders[0]?.node.name
+    const processedDate = orders[0]?.node.processedAt
     const orderPrice = orders[0]?.node.totalPrice.amount
     const orderItemTitle = orders[0]?.node.lineItems.edges[0]?.node.title
+    const totalItems = orders[0]?.node.lineItems.edges.length
     const orderItemQuantity = orders[0]?.node.lineItems.edges[0]?.node.quantity
     const statuses = [
         "All",
@@ -60,10 +62,15 @@ const Orders = () => {
                 }
             </View>
             <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
-                <OrderCard />
-            <OrderCard />
+                <OrderCard 
+                orderID={orderId}
+                orderAmount={orderPrice}
+                orderDate={processedDate}
+                totalItems={totalItems}
+                />
+            {/* <OrderCard />
 
-            <OrderCard />
+            <OrderCard /> */}
             </ScrollView>
             
 

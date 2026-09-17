@@ -11,19 +11,25 @@ interface Props {
     orderID?: string
     orderAmount?: string
     orderItems?: number
-    orderDate?: Date
+    orderDate?: any
+    totalItems?:number
 }
-const OrderCard: React.FC<Props> = ({ orderID, orderAmount, orderDate, orderItems }) => {
+const OrderCard: React.FC<Props> = ({ orderID, orderAmount, orderDate, orderItems, totalItems}) => {
     const [showMore, setShowMore] = useState(false)
+    const date = new Date(orderDate).toLocaleDateString('en-GB', {
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric',
+})
     return (
         <ShadowCard style={styles.container} containerStyle={styles.containerStyle}>
             <View style={styles.orderCard}
             >
                 <View style={styles.orderIdContainer}>
-                    <Text style={styles.idText}>Order #NK12</Text>
+                    <Text style={styles.idText}>Order {orderID}</Text>
                     <Text style={styles.badgeText}>Badge</Text>
                 </View>
-                <Text style={styles.date}>11 September 2026</Text>
+                <Text style={styles.date}>{date}</Text>
                 <View style={styles.productContainer}>
                     <View style={styles.imageContainer}>
                         <View style={{ width: wp(20), height: wp(20), borderRadius: wp(2), borderWidth: 1, borderColor: Colors.tertiary }} />
@@ -44,8 +50,8 @@ const OrderCard: React.FC<Props> = ({ orderID, orderAmount, orderDate, orderItem
                     showMore && (<MoreProductContainer/>)
                 }
                 <View style={styles.orderIdContainer}>
-                    <Text style={styles.date}>2 Items</Text>
-                    <Text style={styles.idText}>Total: PKR 9,999</Text>
+                    <Text style={styles.date}>{totalItems} Items</Text>
+                    <Text style={styles.idText}>Total: PKR {orderAmount}</Text>
                 </View>
             </View>
         </ShadowCard>

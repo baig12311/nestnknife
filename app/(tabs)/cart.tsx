@@ -25,6 +25,7 @@ const Cart = () => {
   const removeCartLineMutation = useRemoveCartLine();
 
   const [updatingLineId, setUpdatingLineId] = useState<string | null>(null);
+  const [checkingOut, setCheckingOut] = useState(false);
 
   const handleQuantityChange = async (lineId: string, newQuantity: number) => {
     if (!cartId) return;
@@ -91,7 +92,7 @@ const Cart = () => {
     );
   }
 
-  const [checkingOut, setCheckingOut] = useState(false);
+  //const [checkingOut, setCheckingOut] = useState(false);
 
 const handleCheckout = async () => {
   if (!cart?.checkoutUrl) {
