@@ -50,6 +50,7 @@ const OrderCard: React.FC<Props> = ({order, orderId, orderCode, orderAmount, ord
         month: 'short',
         year: 'numeric',
     })
+    const orderPrice=Number(orderAmount)?.toLocaleString()
     return (
         <ShadowCard style={styles.container} containerStyle={styles.containerStyle}>
             <TouchableOpacity
@@ -96,9 +97,9 @@ const OrderCard: React.FC<Props> = ({order, orderId, orderCode, orderAmount, ord
                         );
                     })}
                 </View>
-                <TouchableOpacity activeOpacity={0.7} onPress={() => setShowMore(!showMore)}>
+                <TouchableOpacity>
                     <Icon
-                        name={showMore ? 'chevron-small-down' : 'chevron-small-right'}
+                        name='chevron-small-right'
                         type='Entypo'
                         size={wp(7)}
                         color={Colors.text}
@@ -106,12 +107,9 @@ const OrderCard: React.FC<Props> = ({order, orderId, orderCode, orderAmount, ord
                 </TouchableOpacity>
 
             </View>
-            {
-                showMore && (<MoreProductContainer />)
-            }
             <View style={styles.orderIdContainer}>
                 <Text style={styles.date}>{lineItems?.length ?? 0} {(lineItems?.length ?? 0) > 1 ? 'Items' : 'Item'}</Text>
-                <Text style={styles.idText}>Total: PKR {orderAmount}</Text>
+                <Text style={styles.idText}>Total: PKR {orderPrice}</Text>
             </View>
         </TouchableOpacity>
         </ShadowCard >

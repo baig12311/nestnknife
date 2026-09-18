@@ -30,6 +30,6 @@ export const orderInfo=(order:any)=>[
         iconName: 'cash-outline',
         iconType: 'Ionicons',
         title: 'Total Amount',
-        desc: Number(order?.totalPrice?.amount).toString()
+        desc: `PKR ${Number(order?.totalPrice?.amount).toLocaleString()}`
     }
 ]

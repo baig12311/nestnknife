@@ -141,7 +141,7 @@ const handleCheckout = async () => {
       return total + price * node.quantity;
     }, 0) ?? 0;
 
-  const renderCartItem = ({ item }: any) => {
+  const renderCartItem = ({ item, index}: any) => {
     const { node } = item;
 
     return (
@@ -154,6 +154,7 @@ const handleCheckout = async () => {
         onDecrease={() => handleQuantityChange(node.id, node.quantity - 1)}
         onRemove={() => handleRemoveItem(node.id)}
         updating={updatingLineId === node.id}
+        showBorder={index !== cart.lines.edges.length - 1}
       />
     );
   };

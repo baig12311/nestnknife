@@ -22,8 +22,7 @@ const Address = () => {
     const [selectedAddress, setSelectedAddress] = useState<any>(null)
     const [error, setError] = useState('')
     const [openMenuIndex, setOpenMenuIndex] = useState<number | null>(null);
-    //const customerAddresses = customer?.addresses?.edges
-    const customerAddresses = ''
+    const customerAddresses = customer?.addresses?.edges
     const defaultAddressId = customer?.defaultAddress?.id
     console.log(customerAddresses)
     const handleEditAddress = (address: any) => {

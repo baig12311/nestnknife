@@ -11,7 +11,8 @@ interface Props{
 }
 const OrderInfoCard:React.FC<Props> = ({iconName, iconType, title, desc}) => {
     return (
-        <View style={styles.container}>
+        <View style={styles.container}
+        >
             <View style={styles.iconContainer}>
                 <Icon
                 name={iconName}
@@ -31,9 +32,10 @@ const OrderInfoCard:React.FC<Props> = ({iconName, iconType, title, desc}) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: wp(40),
+        width: '100%',
         flexDirection: 'row',
-        marginVertical:hp(0.5)
+        marginVertical:hp(0.5),
+        
     },
     iconContainer:{
         width: wp(10),
@@ -53,7 +55,7 @@ const styles = StyleSheet.create({
     },
     txtDesc:{
         fontFamily: fonts.medium,
-        fontSize: wp(3.5),
+        fontSize: wp(3.3),
         color: Colors.primary
     }
 });

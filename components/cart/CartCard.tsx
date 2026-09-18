@@ -14,11 +14,13 @@ interface props{
     onIncrease?:()=>void
     quantity:number
     onRemove?:()=>void,
-    updating:boolean
+    updating:boolean,
+    showBorder?:boolean
 }
-const CartCard:React.FC<props> = ({productName, price, image, onDecrease, onIncrease, quantity, onRemove}) => {
+const CartCard:React.FC<props> = ({productName, price, image, onDecrease, onIncrease, quantity, onRemove, showBorder}) => {
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, showBorder&&{borderBottomWidth:0.2,
+        borderColor:Colors.secondary}]}>
             <Image style={styles.image} source={{uri:image}}/>
             <View style={styles.contentContainer}>
                 <View style={styles.header} >
@@ -49,8 +51,7 @@ const CartCard:React.FC<props> = ({productName, price, image, onDecrease, onIncr
 // define your styles
 const styles = StyleSheet.create({
     container: {
-        borderBottomWidth:0.2,
-        borderColor:Colors.secondary,
+        
         //borderRadius:15,
         padding: wp(3),
         flexDirection: 'row',
