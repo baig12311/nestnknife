@@ -8,26 +8,35 @@ import Colors from '../../../constants/colors';
 import { router } from 'expo-router';
 import Header from '../../../components/profile/Header';
 import { orderInfo } from '../../../services/orderDetailData';
+import { getOrderStatus } from '../../../services/getOrderStatus';
 import { ShadowCard } from '../../../components/common/ShadowCard';
 import OrderInfoCard from '../../../components/profile/orderComponents/OrderInfoCard';
 import CustomSection from '../../../components/profile/orderComponents/CustomeSection';
 import OrderItemCard from '../../../components/profile/orderComponents/OrderItemCard';
 import PriceSectionRow from '../../../components/profile/orderComponents/PriceSectionRow';
+import AddressCard from '../../../components/profile/orderComponents/AddressCard';
+import EventTracking from '../../../components/profile/orderComponents/EventTracking';
 import Icon from '../../../components/Icon';
 const OrderDetail = () => {
     const [showAllItems, setShowAllItems] = useState(false)
     const { id, order } = useLocalSearchParams()
     const orderData = order ? JSON.parse(order as string) : null
     const orderDetails = orderInfo(orderData)
-    const lineItems = orderData.lineItems.edges
+    const lineItems = orderData?.lineItems?.edges
+    const shippingAddress = orderData?.shippingAddress
     const visibleItems = showAllItems ? lineItems : lineItems.slice(0, 3)
     const orderAmount = Number(orderData?.totalPrice.amount).toLocaleString();
+    const orderStatus = getOrderStatus(orderData)
     return (
         <SafeAreaView style={styles.container}>
             <Header title='Order Summary' onPress={() => router.back()} />
             <ScrollView
                 showsVerticalScrollIndicator={false}
             >
+                {/* Order Tracking */}
+                <CustomSection>
+                    <EventTracking orderStatus={orderStatus}/>
+                </CustomSection>
                 {/* Order Section */}
                 <CustomSection heading='Order Information'>
                     <ShadowCard containerStyle={styles.containerStyle}>
@@ -63,7 +72,7 @@ const OrderDetail = () => {
                                             itemPrice={orderItem.price.amount}
                                             quantity={orderItem.quantity}
                                             image={orderItem.image.url}
-                                            //showBorder={index !== lineItems.length - 1}
+                                        //showBorder={index !== lineItems.length - 1}
                                         />
                                     )
                                 })
@@ -79,7 +88,7 @@ const OrderDetail = () => {
                                             : `+${lineItems.length - 3} more items`}
                                     </Text>
                                     <Icon
-                                        name={showAllItems ? 'chevron-small-up' : 'chevron-small-right'}
+                                        name={showAllItems ? 'chevron-small-up' : 'chevron-small-down'}
                                         type='Entypo'
                                         size={wp(7)}
                                         color={Colors.secondary}
@@ -89,6 +98,17 @@ const OrderDetail = () => {
                         </View>
 
                     </ShadowCard>
+                </CustomSection>
+                {/* Delivery Section */}
+                <CustomSection heading='Delivery Address'>
+                    <AddressCard
+                        fName={shippingAddress.firstName}
+                        lName={shippingAddress.lastName}
+                        address1={shippingAddress.address1}
+                        address2={shippingAddress.address2}
+                        city={shippingAddress.city}
+                        phone={shippingAddress.phoneNumber}
+                    />
                 </CustomSection>
                 {/* Price Section */}
                 <CustomSection heading='Price Summary'>

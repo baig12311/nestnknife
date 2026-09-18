@@ -3,7 +3,7 @@ import Colors from '../../../constants/colors';
 import { fonts } from '../../../constants/typography';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 interface Props {
-    heading: string;
+    heading?: string;
     children: React.ReactNode;
 }
 

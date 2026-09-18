@@ -9,13 +9,14 @@ import Header from '../../../components/profile/Header';
 import OrderCard from '../../../components/profile/OrderCard';
 import { router } from 'expo-router';
 import Loader from '../../../components/profile/Loader';
+import { getOrderStatus } from '../../../services/getOrderStatus';
 import CustomEmptyComponent from '../../../components/common/CustomEmptyComponent';
 const Orders = () => {
     const pagerRef = useRef<PagerView>(null)
     const [selectedStatus, setSelectedStatus] = useState('All')
     const { customer, loading } = useCustomer();
     const orders = customer?.orders?.edges || [];
-    const order1 = orders[0]?.node
+    const order1 = orders[3]?.node
     console.log('Order: ', order1)
     console.log(
         "Order: ",
@@ -38,37 +39,12 @@ const Orders = () => {
         setSelectedStatus(statuses[index])
         pagerRef.current?.setPage(index)
     }
-    const getOrderStatus = (order: any) => {
-        const fulfillmentStatus = order.fulfillmentStatus;
-
-        const shipmentStatus =
-            order.fulfillments?.edges?.[0]?.node?.latestShipmentStatus;
-
-        if (shipmentStatus === 'DELIVERED') {
-            return 'Delivered';
-        }
-
-        if (
-            shipmentStatus === 'CONFIRMED' ||
-            shipmentStatus === 'IN_TRANSIT' ||
-            shipmentStatus === 'OUT_FOR_DELIVERY'
-        ) {
-            return 'Shipped';
-        }
-
-        if (
-            fulfillmentStatus === 'IN_PROGRESS' ||
-            fulfillmentStatus === 'UNFULFILLED'
-        ) {
-            return 'Processing';
-        }
-
-        return 'Processing';
-    };
+    
 
     const renderOrder = ({ item }: any) => {
         const order = item.node
         const lineItems = order.lineItems.edges
+        const createdAt = order.fulfillments?.edges?.[0]?.node?.createdAt;
         //const orderFullfillmentStatus= order.fulfillments?.edges?.[0]?.node?.latestShipmentStatus;
         return (
             <OrderCard
@@ -79,6 +55,7 @@ const Orders = () => {
                 orderDate={order.processedAt}
                 lineItems={lineItems}
                 status={getOrderStatus(order)}
+                createdAt={createdAt}
 
             />
 

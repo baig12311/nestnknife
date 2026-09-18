@@ -842,13 +842,35 @@ export const getFullCustomerData = async () => {
           node {
             id
             status
+            createdAt
             latestShipmentStatus
+            events(first: 20) {
+        edges {
+          node {
+            id
+            status
+            happenedAt
+          }
+        }
+      }
           }
         }
       }
 
       
-      
+      shippingAddress {
+  id
+  address1
+  address2
+  city
+  province
+  country
+  firstName
+  lastName
+  phoneNumber
+  territoryCode
+  zip
+}
 
               lineItems(first: 10) {
                 edges {

@@ -19,10 +19,11 @@ interface Props {
     totalItems?: number
     lineItems?: []
     status: string
+    createdAt?:any
     //fullFillmentStatus:string
     //imageURL?:string
 }
-const OrderCard: React.FC<Props> = ({order, orderId, orderCode, orderAmount, orderDate, orderItems, totalItems, lineItems, status }) => {
+const OrderCard: React.FC<Props> = ({createdAt, order, orderId, orderCode, orderAmount, orderDate, orderItems, totalItems, lineItems, status }) => {
     const statusStyles: Record<
         string,
         { backgroundColor: string; color: string }
@@ -72,6 +73,7 @@ const OrderCard: React.FC<Props> = ({order, orderId, orderCode, orderAmount, ord
                 }]}>{status}</Text>
             </View>
             <Text style={styles.date}>{date}</Text>
+
             <View style={styles.productContainer}>
                 <View
                     style={styles.imageContainer}

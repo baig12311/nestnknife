@@ -120,7 +120,7 @@ const Row: React.FC<rowProps> = ({
       <Icon
         name={iconName}
         type={iconType}
-        color={Colors.primary}
+        color={Colors.secondary}
         size={wp(5)}
       />
 
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     textTitle: {
         fontFamily: fonts.regular,
         fontSize: wp(3.5),
-        color: Colors.text,
+        color: Colors.secondary,
         marginLeft: wp(2)
     },
     menuButton: {
@@ -220,3 +220,4 @@ const styles = StyleSheet.create({
 });
 
 export default AddressCard;
+export {Row}
