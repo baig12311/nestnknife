@@ -12,6 +12,7 @@ import ConfirmatinDialog from '../../../components/profile/ConfirmationDialog';
 import AddressCard from '../../../components/profile/AddressCard';
 import Loader from '../../../components/profile/Loader';
 import Toast from 'react-native-toast-message';
+import CustomEmptyComponent from '../../../components/common/CustomEmptyComponent';
 import CustomToast from '../../../components/common/CustomToast';
 const Address = () => {
     const { customer, loading, refetch } = useCustomer()
@@ -21,7 +22,8 @@ const Address = () => {
     const [selectedAddress, setSelectedAddress] = useState<any>(null)
     const [error, setError] = useState('')
     const [openMenuIndex, setOpenMenuIndex] = useState<number | null>(null);
-    const customerAddresses = customer?.addresses?.edges
+    //const customerAddresses = customer?.addresses?.edges
+    const customerAddresses = ''
     const defaultAddressId = customer?.defaultAddress?.id
     console.log(customerAddresses)
     const handleEditAddress = (address: any) => {
@@ -97,7 +99,7 @@ const Address = () => {
     return (
         <SafeAreaView style={styles.container}>
             <CustomToast
-            type={type}
+                type={type}
                 visible={toastVisible}
                 messageTitle={type === 'success' ? 'Address Deleted' : 'Cannot delete address'}
                 messageDescription={type === 'success' ? 'Address has been deleted successfully.' :
@@ -117,32 +119,26 @@ const Address = () => {
                     />
                 )
             }
-            {
-                customerAddresses ? (
-                    <FlatList
-                        data={customerAddresses}
-                        renderItem={renderAddress}
-                        showsVerticalScrollIndicator={false}
-                        contentContainerStyle={styles.flatlist}
-                    />
+            <FlatList
+                data={customerAddresses}
+                renderItem={renderAddress}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.flatlist}
+                ListEmptyComponent={<CustomEmptyComponent
+                    illustration={require('../../../assets/illustrations/address.png')}
+                    mainText='No Address Yet'
+                    subText='Add your delivery address to make checkout faster and easier.'
+                    buttonTitle='Add Address'
+                    onPress={() => router.push('/profile/addAddress/AddAddress')}
+
+                />}
+            />
 
 
-                ) : (
-                    <View style={styles.contentContainer}>
-                        <Image
-                            source={require('../../../assets/illustrations/address.png')}
-                            style={styles.image}
-                            resizeMode='contain'
-                        />
-                        <Text style={styles.mainText}>No Address Yet</Text>
-                        <Text style={styles.subText}>Add your delivery address to make checkout faster and easier</Text>
-                        {/* <Button title='Add Address' onPress={()=>router.push('/profile/addAddress/AddAddress')}/> */}
-                    </View>
-                )
-
-            }
-
-            <Button title={customerAddresses ? 'Add New Address' : 'Add Address'} onPress={() => router.push('/profile/addAddress/AddAddress')} />
+            {customerAddresses && (<Button
+                title={customerAddresses ? 'Add New Address' : 'Add Address'}
+                onPress={() => router.push('/profile/addAddress/AddAddress')}
+            />)}
 
 
         </SafeAreaView>

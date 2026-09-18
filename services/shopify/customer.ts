@@ -846,6 +846,10 @@ export const getFullCustomerData = async () => {
           }
         }
       }
+
+      
+      
+
               lineItems(first: 10) {
                 edges {
                   node {
@@ -856,6 +860,10 @@ export const getFullCustomerData = async () => {
               url
               altText
             }
+              price {
+          amount,
+          currencyCode
+        }
                   }
                 }
               }

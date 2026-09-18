@@ -10,25 +10,39 @@ interface Props{
   title?:string
   color:string
   bgColor?:string
-  isProduct?:boolean
+  //isProduct?:boolean
+  leftType?: 'image' | 'title' | 'back';
+
 }
-const HomeHeader:React.FC<Props>=({title, color, bgColor, isProduct})=> {
+const HomeHeader:React.FC<Props>=({title, color, bgColor, leftType})=> {
   const cartCount=useCartBadge()
   return (
-   <View style={[styles.container, !isProduct&&{borderBottomWidth:0.3,}]}>
+   <View style={[styles.container, leftType==='image'&&{borderBottomWidth:0.3,}]}>
       {/* Left Side: Title ya Logo */}
-      {isProduct ? (
-        <HeaderIcon iconName= 'arrow-back' color={color} 
-        backgroundColor={bgColor}
-        onPress={()=>router.back()} 
-        />
-      ) : (
-        <Image 
-          source={require('../../assets/logo.png')} 
-          style={styles.logo} 
-          resizeMode='contain'
-        />
-      )}
+      <View>
+  {leftType === 'image' && (
+    <Image
+      source={require('../../assets/logo.png')}
+      style={styles.logo}
+      resizeMode="contain"
+    />
+  )}
+
+  {leftType === 'title' && (
+    <Text style={styles.title}>
+      {title}
+    </Text>
+  )}
+
+  {leftType === 'back' && (
+    <HeaderIcon
+      iconName="arrow-back"
+      color={color}
+      backgroundColor={bgColor}
+      onPress={() => router.back()}
+    />
+  )}
+</View>
       
       {/* Right Side: Icons View */}
       <View style={styles.iconView}>

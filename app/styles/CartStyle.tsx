@@ -30,32 +30,7 @@ const styles=StyleSheet.create({
     //   alignSelf: 'center',
     //   backgroundColor: Colors.background
     // },
-    emptyContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    //padding: 20,
-    //backgroundColor: '#FFFFFF',
-  },
-
-  emptyTitle: {
-    fontSize: wp(6),
-    fontFamily:fonts.semibold
-  },
-
-  emptyText: {
-    fontSize: wp(4),
-    fontFamily: fonts.regular,
-    color:Colors.secondary,
-    textAlign: 'center',
-  },
-  emptyText1:{
-     marginBottom: hp(3),
-  },
-  emptyCart:{
-    width:wp(80),
-    height: hp(30),
-  }
+    
 
 })
 export default styles;

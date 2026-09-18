@@ -8,31 +8,21 @@ import PagerView from "react-native-pager-view";
 import Header from '../../../components/profile/Header';
 import OrderCard from '../../../components/profile/OrderCard';
 import { router } from 'expo-router';
+import Loader from '../../../components/profile/Loader';
+import CustomEmptyComponent from '../../../components/common/CustomEmptyComponent';
 const Orders = () => {
     const pagerRef = useRef<PagerView>(null)
     const [selectedStatus, setSelectedStatus] = useState('All')
     const { customer, loading } = useCustomer();
     const orders = customer?.orders?.edges || [];
-    console.log('Full Order:', JSON.stringify(orders)); // Full details
-    orders.forEach((item: any) => {
-        const order = item.node;
+    const order1 = orders[0]?.node
+    console.log('Order: ', order1)
+    console.log(
+        "Order: ",
+        JSON.stringify(order1, null, 2)
+    );
 
-        console.log(
-            'ORDER:',
-            order.name,
-            '| fulfillmentStatus:',
-            order.fulfillmentStatus,
-            '| latestShipmentStatus:',
-            order.fulfillments?.edges?.[0]?.node?.latestShipmentStatus || 'NO FULFILLMENT'
-        );
-    });
-    // const orderId = orders[0]?.node.name
-    // const processedDate = orders[0]?.node.processedAt
-    // const orderPrice = orders[0]?.node.totalPrice.amount
-    // const orderItemTitle = orders[0]?.node.lineItems.edges[0]?.node.title
-    // const totalItems = orders[0]?.node.lineItems.edges.length
-    // const orderItemQuantity = orders[0]?.node.lineItems.edges[0]?.node.quantity
-    // const itemImage = orders[0]?.node.lineItems.edges[0]?.node.image.url
+
     const statuses = [
         "All",
         "Processing",
@@ -75,14 +65,16 @@ const Orders = () => {
 
         return 'Processing';
     };
-    
+
     const renderOrder = ({ item }: any) => {
         const order = item.node
         const lineItems = order.lineItems.edges
         //const orderFullfillmentStatus= order.fulfillments?.edges?.[0]?.node?.latestShipmentStatus;
         return (
             <OrderCard
-                orderID={order.name}
+            order={order}
+                orderId={order.id}
+                orderCode={order.name}
                 orderAmount={order.totalPrice.amount}
                 orderDate={order.processedAt}
                 lineItems={lineItems}
@@ -93,39 +85,60 @@ const Orders = () => {
         )
     }
     const EmptyOrders = ({ status }: { status: string }) => {
-    const emptyMessages: Record<string, { title: string; description: string }> = {
-        Processing: {
-            title: 'No processing orders',
-            description: 'Your orders being prepared will appear here.',
-        },
-        Shipped: {
-            title: 'No shipped orders',
-            description: 'Orders on the way will appear here.',
-        },
-        Delivered: {
-            title: 'No delivered orders',
-            description: 'Your completed orders will appear here.',
-        },
-        Cancelled: {
-            title: 'No cancelled orders',
-            description: 'Cancelled orders will appear here.',
-        },
+        const emptyMessages: Record<string, { title: string; description: string }> = {
+            Processing: {
+                title: 'No processing orders',
+                description: 'Your orders being prepared will appear here.',
+            },
+            Shipped: {
+                title: 'No shipped orders',
+                description: 'Orders on the way will appear here.',
+            },
+            Delivered: {
+                title: 'No delivered orders',
+                description: 'Your completed orders will appear here.',
+            },
+            Cancelled: {
+                title: 'No cancelled orders',
+                description: 'Cancelled orders will appear here.',
+            },
+        };
+
+        const message = emptyMessages[status];
+
+        return (
+            <View style={styles.emptyContainer}>
+                <Text style={styles.emptyTitle}>
+                    {message?.title}
+                </Text>
+
+                <Text style={styles.emptyDescription}>
+                    {message?.description}
+                </Text>
+            </View>
+        );
     };
+    if (loading) {
+        return (
+            <Loader />
+        )
+    }
+    if (orders.length === 0) {
+        return (
+            <SafeAreaView style={styles.container}>
+                <Header title='Orders' onPress={() => router.replace('/profile')} />
+                <CustomEmptyComponent
+                    illustration={require('../../../assets/illustrations/NoOrder.png')}
+                    mainText="No Orders Yet"
+                    subText="Your orders will appear here once you place an order."
+                    buttonTitle="Start Shopping"
+                    onPress={() => router.replace('/categories')}
+                />
 
-    const message = emptyMessages[status];
+            </SafeAreaView>
+        )
+    }
 
-    return (
-        <View style={styles.emptyContainer}>
-            <Text style={styles.emptyTitle}>
-                {message?.title}
-            </Text>
-
-            <Text style={styles.emptyDescription}>
-                {message?.description}
-            </Text>
-        </View>
-    );
-};
     return (
         <SafeAreaView style={styles.container}>
             <Header title='Orders' onPress={() => router.replace('/profile')} />
@@ -166,7 +179,7 @@ const Orders = () => {
                                 showsVerticalScrollIndicator={false}
                                 contentContainerStyle={{
                                     paddingBottom: 20,
-                                    flexGrow:1
+                                    flexGrow: 1
                                 }}
                                 ListEmptyComponent={<EmptyOrders status={status} />}
                             />

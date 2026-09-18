@@ -43,7 +43,7 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <HomeHeader color={Colors.text}/>
+      <HomeHeader color={Colors.text} leftType='image'/>
       <FadeInView delay={150}>
         <TouchableOpacity
           activeOpacity={0.8}

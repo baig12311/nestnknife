@@ -37,12 +37,12 @@ const ProductDetailsScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [activeIndex, setActiveIndex] = useState(0);
   const [showToast, setShowToast] = useState(false)
-  const [type, setType] = useState<'success'|'error'>('error')
+  const [type, setType] = useState<'success' | 'error'>('error')
   const [toastMessage, setToastMessage] = useState('')
   const queryClient = useQueryClient();
   const addToCartMutation = useAddToCart();
-  const dispatch = useDispatch();
-  const flatListRef=useRef<FlatList>(null)
+  const dispatch = useDispatch<any>();
+  const flatListRef = useRef<FlatList>(null)
 
   const cartId = useSelector(
     (state: RootState) => state.cart.cartId
@@ -89,29 +89,61 @@ const ProductDetailsScreen = () => {
 
       let currentCartId = cartId;
 
+      // No cart ID → create a new cart
       if (!currentCartId) {
-        const cart = await createCart();
-        currentCartId = cart.id;
-        dispatch(setCartId(cart.id));
+        const newCart = await createCart();
+
+        currentCartId = newCart.id;
+
+        dispatch(setCartId(newCart.id));
       }
 
-      const cart = await addToCartMutation.mutateAsync({
-        cartId: currentCartId,
-        merchandiseId: variant.id,
-        quantity,
-      });
+      try {
+        // Try adding to existing cart
+        const cart = await addToCartMutation.mutateAsync({
+          cartId: currentCartId,
+          merchandiseId: variant.id,
+          quantity,
+        });
 
-      console.log('CART AFTER ADD:', cart);
-      setType('success')
-      setShowToast(true)
-      setToastMessage('This item is now in your cart.')
+        console.log('CART AFTER ADD:', cart);
 
+        setType('success');
+        setShowToast(true);
+        setToastMessage('This item is now in your cart.');
+      } catch (error: any) {
+        // Existing cart ID is invalid → create a fresh cart
+        if (error?.message?.toLowerCase().includes('does not exist')) {
+          console.log('Old cart expired. Creating a new cart...');
 
-    } catch (error:any) {
+          const newCart = await createCart();
+
+          dispatch(setCartId(newCart.id));
+
+          // Add product to the new cart
+          const cart = await addToCartMutation.mutateAsync({
+            cartId: newCart.id,
+            merchandiseId: variant.id,
+            quantity,
+          });
+
+          console.log('NEW CART AFTER ADD:', cart);
+
+          setType('success');
+          setShowToast(true);
+          setToastMessage('This item is now in your cart.');
+        } else {
+          throw error;
+        }
+      }
+    } catch (error: any) {
       console.error('ADD TO CART ERROR:', error);
-      setType('error')
-      setShowToast(true)
-      setToastMessage("We couldn't add the item right now. Please try again.")
+
+      setType('error');
+      setShowToast(true);
+      setToastMessage(
+        "We couldn't add the item right now. Please try again.",
+      );
     } finally {
       setAdding(false);
     }
@@ -119,22 +151,22 @@ const ProductDetailsScreen = () => {
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-     
-        <CustomToast
-      type={type}
-      visible={showToast}
-      onHide={()=>setShowToast(false)}
-      messageTitle={
-        type==='success' ? 'Added to Your cart' : 'Something went wrong'
-      }
-      messageDescription={toastMessage}
-        />
-        <View style={styles.headerContainer}>
-          {/* <HomeHeader color={Colors.text} bgColor='white' isProduct={true}/> */}
-        <HomeHeader color={Colors.text} bgColor='white' isProduct={true}/>
 
-        </View>
-      
+      <CustomToast
+        type={type}
+        visible={showToast}
+        onHide={() => setShowToast(false)}
+        messageTitle={
+          type === 'success' ? 'Added to Your cart' : 'Something went wrong'
+        }
+        messageDescription={toastMessage}
+      />
+      <View style={styles.headerContainer}>
+        {/* <HomeHeader color={Colors.text} bgColor='white' isProduct={true}/> */}
+        <HomeHeader color={Colors.text} bgColor='white' leftType='back' />
+
+      </View>
+
       <View style={styles.imageContainer}>
         <FlatList
           data={product?.images.nodes ?? []}
@@ -163,33 +195,33 @@ const ProductDetailsScreen = () => {
         />
 
       </View>
-      <View 
-      
-      style={styles.imageMapperContainer} 
+      <View
+
+        style={styles.imageMapperContainer}
       >
         {product?.images.nodes.map((itemImage, index) => (
           <TouchableOpacity
-          activeOpacity={0.7}
-          onPress={()=>{
-            flatListRef.current?.scrollToIndex({
-              index:index,
-              animated:true
-            })
-            setActiveIndex(index)
-          }}
+            activeOpacity={0.7}
+            onPress={() => {
+              flatListRef.current?.scrollToIndex({
+                index: index,
+                animated: true
+              })
+              setActiveIndex(index)
+            }}
           >
             <Image
-            key={index}
-            style={[
-              styles.mapImage, 
-              activeIndex === index && styles.activeImage,
-            ]}
-            source={{ uri: itemImage.url }} />
+              key={index}
+              style={[
+                styles.mapImage,
+                activeIndex === index && styles.activeImage,
+              ]}
+              source={{ uri: itemImage.url }} />
           </TouchableOpacity>
-          
+
         ))}
       </View>
-      <View style={styles.dividerLine}/>
+      <View style={styles.dividerLine} />
       <ScrollView
         style={styles.container}
         showsVerticalScrollIndicator={false}

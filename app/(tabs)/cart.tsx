@@ -13,6 +13,7 @@ import { setCartId } from '../../store/cartSlice';
 import { useCart } from '../../hooks/useProducts';
 import CartAmount from '../../components/cart/CartAmount';
 import Button from '../../components/common/Button';
+import CustomEmptyComponent from '../../components/common/CustomEmptyComponent';
 import { Linking, Alert } from 'react-native';
 
 const Cart = () => {
@@ -77,18 +78,17 @@ const Cart = () => {
     return (
       <SafeAreaView style={styles.container}>
         <Header title="Cart" />
+        <CustomEmptyComponent
+        illustration={require('../../assets/illustrations/emptyCart.png')}
+        mainText='Your Cart is Empty'
+        subText="Looks like you haven't added anything yet."
+        buttonTitle='Explore Colllection'
+        onPress={()=>router.replace('/categories')}
 
-        <View style={styles.emptyContainer}>
-          <Image source={require('../../assets/illustrations/emptyCart.png')} style={styles.emptyCart}/>
-          <Text style={styles.emptyTitle}>Your Cart is Empty</Text>
-          <Text style={styles.emptyText}>Looks like you haven't added anything yet.</Text>
-          <Text style={[styles.emptyText, styles.emptyText1]}>Discover our collection!</Text>
-          <View style={{width:'60%', alignSelf: 'center'}}>
-                      <Button title='Shop Now' onPress={()=>router.replace('./categories')}/>
-
-          </View>
-        </View>
+        isCart={true}
+        />
       </SafeAreaView>
+      
     );
   }
 
@@ -96,26 +96,40 @@ const Cart = () => {
 
 const handleCheckout = async () => {
   if (!cart?.checkoutUrl) {
-    Alert.alert('Error', 'Unable to proceed to checkout. Please try again.');
+    Alert.alert(
+      'Error',
+      'Unable to proceed to checkout. Please try again.',
+    );
     return;
   }
 
   try {
     setCheckingOut(true);
- // ✅✅✅ YEH 3 LINES ADD KAR ✅✅✅
-    console.log('💾 Saving cart ID to storage...');
-    dispatch(setCartId(cart.id) as any);
-    console.log('✅ Cart ID saved:', cart.id);
-    const supported = await Linking.canOpenURL(cart.checkoutUrl);
+
+    console.log('CHECKOUT URL:', cart.checkoutUrl);
+
+    const checkoutUrl = `${cart.checkoutUrl}&sso=silent`;
+
+    const supported = await Linking.canOpenURL(
+      checkoutUrl,
+    );
 
     if (supported) {
-      await Linking.openURL(cart.checkoutUrl);
+      await Linking.openURL(checkoutUrl);
     } else {
-      Alert.alert('Error', 'Unable to open checkout page.');
+      Alert.alert(
+        'Error',
+        'Unable to open checkout page.',
+      );
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('CHECKOUT ERROR:', error);
-    Alert.alert('Error', 'Something went wrong. Please try again.');
+
+    Alert.alert(
+      'Error',
+      error?.message ??
+        'Something went wrong. Please try again.',
+    );
   } finally {
     setCheckingOut(false);
   }

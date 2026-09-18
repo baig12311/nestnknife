@@ -95,7 +95,7 @@ const ProfileScreen = () => {
   if (isLoading) {
     return (
       <SafeAreaView style={styles.container}>
-        <HomeHeader title="Account" />
+        <HomeHeader title="Account" leftType='title' color={Colors.text}/>
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <ActivityIndicator size="large" color={Colors.primary || '#000'} />
         </View>
@@ -106,7 +106,7 @@ const ProfileScreen = () => {
   // Session restore complete - ab accessToken check kar
   return (
     <SafeAreaView style={styles.container}>
-      <HomeHeader title='Account'/>
+      <HomeHeader title='Account' leftType='title' color={Colors.text}/>
       {accessToken ? <LoggedIn /> : <NotLoggedIn />}
     </SafeAreaView>
   );

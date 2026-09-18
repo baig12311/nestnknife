@@ -7,9 +7,12 @@ import Icon from '../Icon';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useState } from 'react';
 import MoreProductContainer from './MoreProductContainer';
+import { router } from 'expo-router';
 import { formatStatus } from '../../services/formatStatus';
 interface Props {
-    orderID?: string
+    order?:any
+    orderId?: string
+    orderCode?: string
     orderAmount?: string
     orderItems?: number
     orderDate?: any
@@ -19,7 +22,7 @@ interface Props {
     //fullFillmentStatus:string
     //imageURL?:string
 }
-const OrderCard: React.FC<Props> = ({ orderID, orderAmount, orderDate, orderItems, totalItems, lineItems, status }) => {
+const OrderCard: React.FC<Props> = ({order, orderId, orderCode, orderAmount, orderDate, orderItems, totalItems, lineItems, status }) => {
     const statusStyles: Record<
         string,
         { backgroundColor: string; color: string }
@@ -49,60 +52,69 @@ const OrderCard: React.FC<Props> = ({ orderID, orderAmount, orderDate, orderItem
     })
     return (
         <ShadowCard style={styles.container} containerStyle={styles.containerStyle}>
-            <View style={styles.orderCard}
+            <TouchableOpacity
+                style={styles.orderCard}
+                activeOpacity={0.7}
+                onPress={() =>
+                    router.push({
+                        pathname: '/profile/orderDetail/[id]',
+                        params: { id: orderId,
+                            order: JSON.stringify(order)
+                        },
+                    })}
             >
-                <View style={styles.orderIdContainer}>
-                    <Text style={styles.idText}>Order {orderID}</Text>
-                    <Text style={[styles.badgeText, {
-                        backgroundColor: statusStyles[status]?.backgroundColor,
-                        color: statusStyles[status]?.color,
-                    }]}>{status}</Text>
-                </View>
-                <Text style={styles.date}>{date}</Text>
-                <View style={styles.productContainer}>
-                    <View
-                        style={styles.imageContainer}
-                    >
-                        {lineItems?.slice(0, 4).map((item: any, index: number) => {
-                            const product = item.node;
-
-                            return (
-                                <View key={product.id} style={styles.imageWrapper}>
-                                    <Image
-                                        source={{ uri: product.image.url }}
-                                        style={styles.image}
-                                    />
-
-                                    {index === 3 && lineItems.length > 3 && (
-                                        <View style={styles.moreOverlay}>
-                                            <Text style={styles.moreItemsText}>
-                                                +{lineItems.length - 3}
-                                            </Text>
-                                        </View>
-                                    )}
-                                </View>
-                            );
-                        })}
-                    </View>
-                    <TouchableOpacity activeOpacity={0.7} onPress={() => setShowMore(!showMore)}>
-                        <Icon
-                            name={showMore ? 'chevron-small-down' : 'chevron-small-right'}
-                            type='Entypo'
-                            size={wp(7)}
-                            color={Colors.text}
-                        />
-                    </TouchableOpacity>
-
-                </View>
-                {
-                    showMore && (<MoreProductContainer />)
-                }
-                <View style={styles.orderIdContainer}>
-                    <Text style={styles.date}>{lineItems?.length ?? 0} {(lineItems?.length ?? 0) > 1 ? 'Items' : 'Item'}</Text>
-                    <Text style={styles.idText}>Total: PKR {orderAmount}</Text>
-                </View>
+            <View style={styles.orderIdContainer}>
+                <Text style={styles.idText}>Order {orderCode}</Text>
+                <Text style={[styles.badgeText, {
+                    backgroundColor: statusStyles[status]?.backgroundColor,
+                    color: statusStyles[status]?.color,
+                }]}>{status}</Text>
             </View>
-        </ShadowCard>
+            <Text style={styles.date}>{date}</Text>
+            <View style={styles.productContainer}>
+                <View
+                    style={styles.imageContainer}
+                >
+                    {lineItems?.slice(0, 4).map((item: any, index: number) => {
+                        const product = item.node;
+
+                        return (
+                            <View key={product.id} style={styles.imageWrapper}>
+                                <Image
+                                    source={{ uri: product.image.url }}
+                                    style={styles.image}
+                                />
+
+                                {index === 3 && lineItems.length > 3 && (
+                                    <View style={styles.moreOverlay}>
+                                        <Text style={styles.moreItemsText}>
+                                            +{lineItems.length - 3}
+                                        </Text>
+                                    </View>
+                                )}
+                            </View>
+                        );
+                    })}
+                </View>
+                <TouchableOpacity activeOpacity={0.7} onPress={() => setShowMore(!showMore)}>
+                    <Icon
+                        name={showMore ? 'chevron-small-down' : 'chevron-small-right'}
+                        type='Entypo'
+                        size={wp(7)}
+                        color={Colors.text}
+                    />
+                </TouchableOpacity>
+
+            </View>
+            {
+                showMore && (<MoreProductContainer />)
+            }
+            <View style={styles.orderIdContainer}>
+                <Text style={styles.date}>{lineItems?.length ?? 0} {(lineItems?.length ?? 0) > 1 ? 'Items' : 'Item'}</Text>
+                <Text style={styles.idText}>Total: PKR {orderAmount}</Text>
+            </View>
+        </TouchableOpacity>
+        </ShadowCard >
     );
 };
 

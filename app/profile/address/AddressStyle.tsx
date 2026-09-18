@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
 
     },
     flatlist:{
-        paddingBottom: hp(4)
+        paddingBottom: hp(4),
+        flexGrow:1
     }
     
 });
