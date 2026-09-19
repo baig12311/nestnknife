@@ -35,7 +35,12 @@ const OrderDetail = () => {
             >
                 {/* Order Tracking */}
                 <CustomSection>
-                    <EventTracking orderStatus={orderStatus}/>
+                    <EventTracking
+                        orderStatus={orderStatus}
+                        placedAt={orderData.processedAt}
+                        shippedAt={orderData.fulfillments?.edges[0]?.node?.createdAt}
+                        deliveredAt={orderData.fulfillments?.edges[0]?.node?.events?.edges[0]?.node?.happenedAt}
+                    />
                 </CustomSection>
                 {/* Order Section */}
                 <CustomSection heading='Order Information'>
@@ -72,7 +77,7 @@ const OrderDetail = () => {
                                             itemPrice={orderItem.price.amount}
                                             quantity={orderItem.quantity}
                                             image={orderItem.image.url}
-                                        //showBorder={index !== lineItems.length - 1}
+                                            showBorder={index !== lineItems.length - 1}
                                         />
                                     )
                                 })

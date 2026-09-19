@@ -6,14 +6,56 @@ import Icon from '../../Icon';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 interface Props {
     orderStatus?: string
+    placedAt?:any
+    shippedAt?:any
+    deliveredAt?:any
 }
-const EventTracking: React.FC<Props> = ({ orderStatus }) => {
-    const EventType = [
-        'Order Placed',
-        'Processing',
-        'Shipped',
-        'Delivered'
+const EventType = [
+    'Order Placed',
+    'Processing',
+    'Shipped',
+    'Delivered'
+]
+const formatDate = (date?: string) => {
+    if (!date) return '';
+
+    return new Date(date).toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+    });
+};
+const EventTracking: React.FC<Props> = ({orderStatus, placedAt, shippedAt, deliveredAt}) => {
+    const EventDate = [
+        formatDate(placedAt),
+        formatDate(placedAt),
+        formatDate(shippedAt),
+        formatDate(deliveredAt)
     ]
+    const getStatusIcon = () => {
+        switch (orderStatus) {
+            case 'Processing':
+                return {
+                    name: 'package-variant-closed',
+                    type: 'MaterialDesignIcons',
+                };
+            case 'Shipped':
+                return {
+                    name: 'truck-fast-outline',
+                    type: 'MaterialDesignIcons',
+                }
+            case 'Delivered':
+                return {
+                    name: 'package-variant-closed-check',
+                    type: 'MaterialDesignIcons'
+                }
+            default:
+                return {
+                    name: 'package-variant-closed',
+                    type: 'MaterialDesignIcons',
+                }
+        }
+    }
+    const statusIcon = getStatusIcon()
     const subtext = orderStatus === 'Shipped' ? 'Your order is on the way.' :
         orderStatus === 'Processing' ? "We're preparing these items for shipping." :
             "Your order has been delivered."
@@ -24,8 +66,8 @@ const EventTracking: React.FC<Props> = ({ orderStatus }) => {
                 <View style={styles.header}>
                     <View style={styles.icon}>
                         <Icon
-                            name='package'
-                            type='Feather'
+                            name={statusIcon.name}
+                            type={statusIcon.type}
                             color={Colors.primary}
                             size={wp(9)}
                         />
@@ -81,6 +123,9 @@ const EventTracking: React.FC<Props> = ({ orderStatus }) => {
                                     <Text style={[styles.type,
                                     (isCompleted || current) && { color: Colors.primary }
                                     ]}>{type}</Text>
+                                    <Text style={[styles.type,
+                                    (isCompleted || current) && { color: Colors.primary }
+                                    ]}>{EventDate[index]}</Text>
                                 </View>
                             )
 
@@ -147,7 +192,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: wp(1),
         borderColor: Colors.primary,
-       
+
     },
     trackerCircle: {
         width: wp(8),

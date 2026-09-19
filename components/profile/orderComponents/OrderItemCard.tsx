@@ -13,7 +13,7 @@ const OrderItemCard:React.FC<Props> = ({itemName, itemPrice, quantity, image, sh
     const total = quantity * itemPrice
     const formatTotal = total?.toLocaleString()
     return (
-        <View style={[styles.container,styles.borderApply]}>
+        <View style={[styles.container,showBorder && styles.borderApply]}>
             <Image 
             source={{uri:image}}
             style={styles.image}
