@@ -80,7 +80,8 @@ export const getFullCustomerData = async () => {
               id
               name
               processedAt
-
+               cancelledAt
+      cancelReason
               totalPrice {
                 amount
                 currencyCode

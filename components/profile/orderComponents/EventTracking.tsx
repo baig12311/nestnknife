@@ -1,14 +1,16 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../../../constants/colors';
 import { fonts } from '../../../constants/typography';
 import { ShadowCard } from '../../common/ShadowCard';
 import Icon from '../../Icon';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, 
+    heightPercentageToDP as hp } from 'react-native-responsive-screen';
 interface Props {
     orderStatus?: string
-    placedAt?:any
-    shippedAt?:any
-    deliveredAt?:any
+    placedAt?: any
+    shippedAt?: any
+    deliveredAt?: any
+    onPress?:()=>void
 }
 const EventType = [
     'Order Placed',
@@ -24,7 +26,7 @@ const formatDate = (date?: string) => {
         month: 'short',
     });
 };
-const EventTracking: React.FC<Props> = ({orderStatus, placedAt, shippedAt, deliveredAt}) => {
+const EventTracking: React.FC<Props> = ({onPress,orderStatus, placedAt, shippedAt, deliveredAt }) => {
     const EventDate = [
         formatDate(placedAt),
         formatDate(placedAt),
@@ -37,38 +39,50 @@ const EventTracking: React.FC<Props> = ({orderStatus, placedAt, shippedAt, deliv
                 return {
                     name: 'package-variant-closed',
                     type: 'MaterialDesignIcons',
+                    color: Colors.primary
                 };
             case 'Shipped':
                 return {
                     name: 'truck-fast-outline',
                     type: 'MaterialDesignIcons',
+                    color: Colors.primary
                 }
             case 'Delivered':
                 return {
                     name: 'package-variant-closed-check',
-                    type: 'MaterialDesignIcons'
+                    type: 'MaterialDesignIcons',
+                    color: Colors.primary
+                }
+            case 'Cancelled':
+                return {
+                    name: 'close-circle-outline',
+                    type: 'Ionicons',
+                    color: '#C84037'
                 }
             default:
                 return {
                     name: 'package-variant-closed',
                     type: 'MaterialDesignIcons',
+                    color: Colors.primary
                 }
         }
     }
     const statusIcon = getStatusIcon()
     const subtext = orderStatus === 'Shipped' ? 'Your order is on the way.' :
         orderStatus === 'Processing' ? "We're preparing these items for shipping." :
-            "Your order has been delivered."
+            orderStatus === 'Delivered' ? 'Your order has been delivered.' : 'Your order has been cancelled.'
     const statusIndex = EventType.indexOf(orderStatus || '')
     return (
         <ShadowCard style={styles.container} containerStyle={styles.contentContainer}>
             <View style={styles.mainContainer}>
                 <View style={styles.header}>
-                    <View style={styles.icon}>
+                    <View style={[styles.icon, orderStatus==='Cancelled' && {
+                        backgroundColor: '#F1E3E3'
+                    }]}>
                         <Icon
                             name={statusIcon.name}
                             type={statusIcon.type}
-                            color={Colors.primary}
+                            color={statusIcon.color}
                             size={wp(9)}
                         />
                     </View>
@@ -77,13 +91,15 @@ const EventTracking: React.FC<Props> = ({orderStatus, placedAt, shippedAt, deliv
                         <Text style={styles.subText}>{subtext}</Text>
                     </View>
                 </View>
-                <View style={styles.tracker}>
+                {
+                    orderStatus==='Cancelled' ? null : (<View>
+                        <View style={styles.tracker}>
                     {
                         EventType.map((type, index) => {
                             const isCompleted = index < statusIndex
                             const current = index === statusIndex
                             return (
-                                <View style={styles.trackerContainer}>
+                                <View style={styles.trackerContainer} key ={index}>
                                     <View style={[styles.traclerCircleWrapper,
                                     (current && orderStatus !== 'Delivered') && { borderWidth: 1.5 }
 
@@ -132,6 +148,24 @@ const EventTracking: React.FC<Props> = ({orderStatus, placedAt, shippedAt, deliv
                         })
                     }
                 </View>
+                <TouchableOpacity 
+                style={styles.trackButton}
+                activeOpacity={0.7}
+                onPress={onPress}
+                >
+                    <Text style={styles.txtButton}>
+                        Track Order
+                    </Text>
+                    <Icon name="arrow-forward" 
+                    type='Ionicons' 
+                    size={wp(5)} 
+                    color={Colors.background} 
+                    />
+
+                </TouchableOpacity>
+                </View>
+                    )
+                }                
 
             </View>
         </ShadowCard>
@@ -160,7 +194,7 @@ const styles = StyleSheet.create({
         width: wp(14),
         height: wp(14),
         borderRadius: wp(8),
-        backgroundColor: '#E8F0EA',
+        backgroundColor: Colors.secondaryBackground,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -180,7 +214,8 @@ const styles = StyleSheet.create({
     },
     tracker: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+         marginBottom: wp(2)
     },
     traclerCircleWrapper: {
         //overflow: 'hidden', 
@@ -209,7 +244,8 @@ const styles = StyleSheet.create({
     trackerContainer: {
         alignItems: 'center',
         flex: 1,
-        position: 'relative'
+        position: 'relative',
+       
     },
     type: {
         fontFamily: fonts.medium,
@@ -229,6 +265,22 @@ const styles = StyleSheet.create({
         right: '50%',
         top: wp(5)
 
+    },
+    trackButton:{
+        backgroundColor: Colors.primary,
+        height: hp(4),
+        width: wp(40),
+        borderRadius: wp(2),
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'flex-end',
+        flexDirection: 'row'
+    },
+    txtButton:{
+        fontFamily: fonts.medium,
+        fontSize: wp(4),
+        color: Colors.background,
+        marginRight: wp(2)
     }
 });
 

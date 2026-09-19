@@ -1,4 +1,3 @@
-//import liraries
 import { useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import styles from './OrderStyle';
@@ -14,7 +13,7 @@ import CustomEmptyComponent from '../../../components/common/CustomEmptyComponen
 const Orders = () => {
     const pagerRef = useRef<PagerView>(null)
     const [selectedStatus, setSelectedStatus] = useState('All')
-    const { customer, loading } = useCustomer();
+    const { customer, loading, error, refetch} = useCustomer();
     const orders = customer?.orders?.edges || [];
     const order1 = orders[3]?.node
     console.log('Order: ', order1)
@@ -99,6 +98,22 @@ const Orders = () => {
         return (
             <Loader />
         )
+    }
+    if(error)
+    {
+        return(
+            <SafeAreaView style={styles.container}>
+                <Header title='Orders' onPress={() => router.replace('/profile')} />
+                <CustomEmptyComponent
+                    illustration={require('../../../assets/illustrations/NetworkError.png')}
+                    mainText="Connection Problem"
+                    subText="We couldn’t connect to the server. Please check your internet connection and try again."
+                    buttonTitle="Try Again"
+                    onPress={()=>refetch()}
+                />
+
+            </SafeAreaView>
+        )        
     }
     if (orders.length === 0) {
         return (

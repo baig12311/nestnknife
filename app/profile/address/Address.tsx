@@ -15,12 +15,12 @@ import Toast from 'react-native-toast-message';
 import CustomEmptyComponent from '../../../components/common/CustomEmptyComponent';
 import CustomToast from '../../../components/common/CustomToast';
 const Address = () => {
-    const { customer, loading, refetch } = useCustomer()
+    const { customer, loading, error,refetch } = useCustomer()
     const [DeleteDialogShow, setDeleteDialogShow] = useState(false)
     const [toastVisible, setToastVisible] = useState(false)
     const [type, setType] = useState<'success' | 'error'>('error')
     const [selectedAddress, setSelectedAddress] = useState<any>(null)
-    const [error, setError] = useState('')
+    //const [error, setError] = useState('')
     const [openMenuIndex, setOpenMenuIndex] = useState<number | null>(null);
     const customerAddresses = customer?.addresses?.edges
     const defaultAddressId = customer?.defaultAddress?.id
@@ -44,7 +44,6 @@ const Address = () => {
                 selectedAddress.id
             );
 
-            //console.log('Deleted Address ID:', result);
             await refetch()
             setDeleteDialogShow(false);
             setSelectedAddress(null);
@@ -65,9 +64,24 @@ const Address = () => {
             <Loader />
         )
     }
+    if(error)
+    {
+        return(
+            <SafeAreaView style={styles.container}>
+                <Header title='Address' onPress={() => router.replace('/profile')} />
+                <CustomEmptyComponent
+                    illustration={require('../../../assets/illustrations/NetworkError.png')}
+                    mainText="Connection Problem"
+                    subText="We couldn’t connect to the server. Please check your internet connection and try again."
+                    buttonTitle="Try Again"
+                    onPress={()=>refetch()}
+                />
+
+            </SafeAreaView>
+        )        
+    }
     const renderAddress = ({ item, index }: any) => {
         const isAddressDefault = item.node.id === defaultAddressId
-        console.log('Default Address', isAddressDefault)
         return (
             <AddressCard
                 firstName={item.node.firstName}

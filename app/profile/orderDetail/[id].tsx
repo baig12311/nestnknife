@@ -24,6 +24,7 @@ const OrderDetail = () => {
     const orderDetails = orderInfo(orderData)
     const lineItems = orderData?.lineItems?.edges
     const shippingAddress = orderData?.shippingAddress
+    const trackingInfo = orderData?.fulfillments?.edges[0]?.node?.trackingInformation
     const visibleItems = showAllItems ? lineItems : lineItems.slice(0, 3)
     const orderAmount = Number(orderData?.totalPrice.amount).toLocaleString();
     const orderStatus = getOrderStatus(orderData)
@@ -38,6 +39,15 @@ const OrderDetail = () => {
                     <EventTracking
                         orderStatus={orderStatus}
                         placedAt={orderData.processedAt}
+                        onPress={()=>router.push(
+                            {
+                                pathname:'/profile/trackOrder/TrackOrder',
+                                params:{
+                                    trackingData: JSON.stringify(trackingInfo),
+                                    currentOrderStatus: orderStatus
+                                }
+                            }
+                        )}
                         shippedAt={orderData.fulfillments?.edges[0]?.node?.createdAt}
                         deliveredAt={orderData.fulfillments?.edges[0]?.node?.events?.edges[0]?.node?.happenedAt}
                     />
@@ -73,6 +83,7 @@ const OrderDetail = () => {
                                     const orderItem = item.node
                                     return (
                                         <OrderItemCard
+                                        key={orderItem.id}
                                             itemName={orderItem.title}
                                             itemPrice={orderItem.price.amount}
                                             quantity={orderItem.quantity}

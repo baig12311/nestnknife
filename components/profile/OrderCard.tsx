@@ -51,7 +51,7 @@ const OrderCard: React.FC<Props> = ({createdAt, order, orderId, orderCode, order
         month: 'short',
         year: 'numeric',
     })
-    const orderPrice=Number(orderAmount)?.toLocaleString()
+    const orderPrice=Number(orderAmount)
     return (
         <ShadowCard style={styles.container} containerStyle={styles.containerStyle}>
             <TouchableOpacity
@@ -111,7 +111,12 @@ const OrderCard: React.FC<Props> = ({createdAt, order, orderId, orderCode, order
             </View>
             <View style={styles.orderIdContainer}>
                 <Text style={styles.date}>{lineItems?.length ?? 0} {(lineItems?.length ?? 0) > 1 ? 'Items' : 'Item'}</Text>
-                <Text style={styles.idText}>Total: PKR {orderPrice}</Text>
+                {
+                    orderPrice > 0 &&(
+                         <Text style={styles.idText}>Total: PKR {orderPrice.toLocaleString()}</Text>
+                    )
+                }
+               
             </View>
         </TouchableOpacity>
         </ShadowCard >

@@ -5,6 +5,7 @@ const Colors={
     accent: '#C9743C',
     secondary: '#777777',
     secondary2: '#E5E7EB',
-    tertiary:'#F2F2F2'
+    tertiary:'#F2F2F2',
+    secondaryBackground: '#E8F0EA'
 }
 export default Colors;
