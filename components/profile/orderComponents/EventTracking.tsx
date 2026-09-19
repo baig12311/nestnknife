@@ -3,10 +3,11 @@ import Colors from '../../../constants/colors';
 import { fonts } from '../../../constants/typography';
 import { ShadowCard } from '../../common/ShadowCard';
 import Icon from '../../Icon';
+import getStatusIcon from '../../../services/getStatusIcon';
 import { widthPercentageToDP as wp, 
     heightPercentageToDP as hp } from 'react-native-responsive-screen';
 interface Props {
-    orderStatus?: string
+    orderStatus: string
     placedAt?: any
     shippedAt?: any
     deliveredAt?: any
@@ -33,41 +34,8 @@ const EventTracking: React.FC<Props> = ({onPress,orderStatus, placedAt, shippedA
         formatDate(shippedAt),
         formatDate(deliveredAt)
     ]
-    const getStatusIcon = () => {
-        switch (orderStatus) {
-            case 'Processing':
-                return {
-                    name: 'package-variant-closed',
-                    type: 'MaterialDesignIcons',
-                    color: Colors.primary
-                };
-            case 'Shipped':
-                return {
-                    name: 'truck-fast-outline',
-                    type: 'MaterialDesignIcons',
-                    color: Colors.primary
-                }
-            case 'Delivered':
-                return {
-                    name: 'package-variant-closed-check',
-                    type: 'MaterialDesignIcons',
-                    color: Colors.primary
-                }
-            case 'Cancelled':
-                return {
-                    name: 'close-circle-outline',
-                    type: 'Ionicons',
-                    color: '#C84037'
-                }
-            default:
-                return {
-                    name: 'package-variant-closed',
-                    type: 'MaterialDesignIcons',
-                    color: Colors.primary
-                }
-        }
-    }
-    const statusIcon = getStatusIcon()
+    
+    const statusIcon = getStatusIcon(orderStatus)
     const subtext = orderStatus === 'Shipped' ? 'Your order is on the way.' :
         orderStatus === 'Processing' ? "We're preparing these items for shipping." :
             orderStatus === 'Delivered' ? 'Your order has been delivered.' : 'Your order has been cancelled.'
@@ -268,7 +236,7 @@ const styles = StyleSheet.create({
     },
     trackButton:{
         backgroundColor: Colors.primary,
-        height: hp(4),
+        height: hp(4.5),
         width: wp(40),
         borderRadius: wp(2),
         justifyContent: 'center',

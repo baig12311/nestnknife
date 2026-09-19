@@ -2,7 +2,8 @@ import { View, Text, StyleSheet } from 'react-native';
 import Colors from '../../../constants/colors';
 import { fonts } from '../../../constants/typography';
 
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, 
+    heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const styles = StyleSheet.create({
     container: {
@@ -14,13 +15,19 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     statusContainer:{
+        flexDirection:'row'
+    },
+    customContainer:{
         width: '100%',
         borderRadius: wp(2),
         padding: wp(3),
-        flexDirection: 'row'
+    },
+    trackingView:{
+        width: '50%',
+        borderRightWidth:1
     },
     iconWrapper:{
-        borderWidth:2,
+        borderWidth:1.5,
         borderColor: Colors.primary,
         width: wp(16),
         height: wp(16),
@@ -50,7 +57,18 @@ const styles = StyleSheet.create({
         paddingHorizontal: wp(5),
         paddingVertical: wp(1),
         borderRadius: wp(50),
-        textAlign: 'center'
+        textAlign: 'center',
+        marginBottom: wp(2)
+    },
+    textMain:{
+        fontFamily: fonts.semibold,
+        fontSize: wp(4.5),
+        color: Colors.primary
+    },
+    textSub:{
+        fontFamily: fonts.regular,
+        fontSize: wp(3.5),
+        color: Colors.secondary
     }
 });
 
