@@ -12,6 +12,7 @@ interface Props {
     shippedAt?: any
     deliveredAt?: any
     onPress?:()=>void
+    hasTrackingInfo?:boolean
 }
 const EventType = [
     'Order Placed',
@@ -27,7 +28,7 @@ const formatDate = (date?: string) => {
         month: 'short',
     });
 };
-const EventTracking: React.FC<Props> = ({onPress,orderStatus, placedAt, shippedAt, deliveredAt }) => {
+const EventTracking: React.FC<Props> = ({onPress,orderStatus, placedAt, shippedAt, deliveredAt, hasTrackingInfo}) => {
     const EventDate = [
         formatDate(placedAt),
         formatDate(placedAt),
@@ -116,7 +117,9 @@ const EventTracking: React.FC<Props> = ({onPress,orderStatus, placedAt, shippedA
                         })
                     }
                 </View>
-                <TouchableOpacity 
+                {
+                    hasTrackingInfo && (
+                        <TouchableOpacity 
                 style={styles.trackButton}
                 activeOpacity={0.7}
                 onPress={onPress}
@@ -131,6 +134,9 @@ const EventTracking: React.FC<Props> = ({onPress,orderStatus, placedAt, shippedA
                     />
 
                 </TouchableOpacity>
+                    )
+                }
+                
                 </View>
                     )
                 }                

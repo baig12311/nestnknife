@@ -25,6 +25,7 @@ const OrderDetail = () => {
     const lineItems = orderData?.lineItems?.edges
     const shippingAddress = orderData?.shippingAddress
     const trackingInfo = orderData?.fulfillments?.edges[0]?.node?.trackingInformation
+    const isTracking = trackingInfo && trackingInfo.length>0
     const visibleItems = showAllItems ? lineItems : lineItems.slice(0, 3)
     const orderAmount = Number(orderData?.totalPrice.amount).toLocaleString();
     const orderStatus = getOrderStatus(orderData)
@@ -39,6 +40,7 @@ const OrderDetail = () => {
                     <EventTracking
                         orderStatus={orderStatus}
                         placedAt={orderData.processedAt}
+                        hasTrackingInfo={isTracking}
                         onPress={()=>router.push(
                             {
                                 pathname:'/profile/trackOrder/TrackOrder',
