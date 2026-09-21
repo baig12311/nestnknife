@@ -15,6 +15,7 @@ import { useProductsByCollection } from '../../hooks/useProductsByCollection';
 import { useLocalSearchParams, router } from 'expo-router';
 import FadeInView from '../../components/animations/FadeInView';
 import ProductSkelton from '../../components/skeleton/ProductSkeleton';
+import CustomEmptyComponent from '../../components/common/CustomEmptyComponent';
 //import { useCollectionProducts } from '../../hooks/useProducts';
 
 const CollectionScreen = () => {
@@ -28,6 +29,7 @@ const CollectionScreen = () => {
     data: products,
     isLoading,
     error,
+    refetch
   } = useProductsByCollection(handle);
 
   if (isLoading) {
@@ -37,15 +39,23 @@ const CollectionScreen = () => {
     );
   }
 
-  if (error) {
-    return (
-      <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>
-          Unable to load products.
-        </Text>
-      </View>
-    );
-  }
+  if(error)
+    {
+        return(
+            <SafeAreaView style={styles.container}>
+                <Header title={title ?? 'Collection'} />
+                <CustomEmptyComponent
+                    illustration={require('../../assets/illustrations/mainError.png')}
+                     mainText="Something Went Wrong"
+                    subText="We couldn't retrieve products right now. Please try again."
+                    buttonTitle="Try Again"
+                    onPress={()=>refetch()}
+                   
+                />
+
+            </SafeAreaView>
+        )        
+    }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -82,21 +92,20 @@ const CollectionScreen = () => {
                 title: item.title,
                 price: Number(item.price),
                 image: item.image ?? 'https://placehold.co/600x600',
+                
               }}
             />
           </FadeInView>
 
         )}
         ListEmptyComponent={
-          <View style={styles.empty}>
-            <Text style={styles.emptyTitle}>
-              No products found
-            </Text>
-
-            <Text style={styles.emptyText}>
-              This collection doesn't have any products yet.
-            </Text>
-          </View>
+          <CustomEmptyComponent
+          mainText='No Products Found'
+          subText='There are no products available in this collection right now.'
+          illustration={require('../../assets/illustrations/emptyProduct.png')}
+          buttonTitle='Browse All Products'
+          onPress={()=>router.replace('/categories')}
+          />
         }
       />
     </SafeAreaView>

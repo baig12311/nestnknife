@@ -15,6 +15,7 @@ import FadeInView from '../../components/animations/FadeInView';
 import { Shadow } from 'react-native-shadow-2';
 import HomeSkeleton from '../../components/skeleton/HomeSkeleton';
 import styles from '../styles/HStyle';
+import TrustBadge from '../../components/home/TrustBadge';
 import ProductCardSkeleton from '../../components/skeleton/ProductCardSkeleton';
 
 const categories = [
@@ -66,8 +67,34 @@ const HomeScreen = () => {
           <HeroBanner />
         </FadeInView>
 
-        {/* REMOVED outer FadeInView here to prevent double-animating shadows */}
         <FadeInView delay={450}>
+           <View style={styles.badgeContainer}>
+          <TrustBadge
+          name='truck-fast-outline'
+          type='MaterialDesignIcons'
+          title='NationWide Delivery'
+          />
+          <TrustBadge
+          name='cash-outline'
+          type='Ionicons'
+          title='Cash on Delivery (COD)'
+          />
+           <TrustBadge
+          name='refresh-outline'
+          type='Ionicons'
+          title='7-Day Easy Return'
+          />
+          <TrustBadge
+          name='lock-closed-outline'
+          type='Ionicons'
+          title='Secure Checkout'
+          />
+        </View>     
+        </FadeInView>
+       
+
+        {/* REMOVED outer FadeInView here to prevent double-animating shadows */}
+        <FadeInView delay={600}>
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>Shop by Category</Text>
@@ -82,7 +109,7 @@ const HomeScreen = () => {
             //contentContainerStyle={styles.horizontalListContent}
             >
               {collections?.map((collection, index) => (
-                <FadeInView key={collection.id} delay={450 + index * 100}>
+                <FadeInView key={collection.id} delay={600 + index * 100}>
                   {/* <Shadow
                       distance={6}
                       startColor="rgba(0, 0, 0, 0.06)"
@@ -120,7 +147,7 @@ const HomeScreen = () => {
           </View>
         </FadeInView>
 
-        <FadeInView delay={600}>
+        <FadeInView delay={750}>
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>Everyday Essentials</Text>
@@ -131,7 +158,7 @@ const HomeScreen = () => {
 
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               {products.map((product, index) => (
-                <FadeInView key={product.id} delay={600 + index * 100}>
+                <FadeInView key={product.id} delay={750 + index * 100}>
                   <ProductCard
                     product={{
                       id: product.id,

@@ -113,6 +113,10 @@ const TabLayout = () => {
                         iconName = focused ? 'account' : 'account-outline';  
                         type = 'MaterialCommunityIcons';
                     }
+                    // else{
+                    //     iconName = focused ? 'heart' : 'heart-outline';  
+                    //     type = 'Ionicons';
+                    // }
 
                     return (
                         <Icon 
@@ -133,6 +137,10 @@ const TabLayout = () => {
                 name="cart" 
                 options={{ tabBarLabel: 'Cart' }} 
             />
+             {/* <Tabs.Screen 
+                name="wishlist" 
+                options={{ tabBarLabel: 'Wishlist' }} 
+            /> */}
             <Tabs.Screen 
                 name="categories" 
                 options={{ tabBarLabel: 'Categories' }} 

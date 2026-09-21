@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         height: hp(6),
         marginBottom: hp(0.5),
         overflow: 'hidden',
-        borderRadius: wp(2),
+        borderRadius: wp(2)
         //marginTop: hp(1.5)
         //borderWidthiddenh:1
     },
@@ -49,7 +49,8 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.primary,
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingHorizontal: wp(5)
     },
     text: {
         fontSize: wp(5),

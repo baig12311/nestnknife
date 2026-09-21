@@ -7,16 +7,28 @@ import Greeting from '../../../components/profile/Greeting';
 import Incomplete from '../../../components/profile/Incomplete';
 import MoreInfoSection from '../../../components/profile/MoreInfoSection';
 import SignOut from '../../../components/profile/SignOutButton';
+import { router } from 'expo-router';
 import { useLogout } from '../../../hooks/useAuth';
 import { useCustomer } from '../../../hooks/useCustomer';
 import ConfirmatinDialog from '../../../components/profile/ConfirmationDialog';
 const LoggedIn = () => {
     const logoutMutation = useLogout()
-    const { customer, loading } = useCustomer();
+    const { customer, loading, error} = useCustomer();
     const [ModalShow, setModalShow] = useState(false)
     const email = customer?.emailAddress?.emailAddress
     const fName = customer?.firstName
     const lName = customer?.lastName
+   
+
+    const handleNavigate=()=>{
+        router.push({
+            pathname:'/profile/detailform/DetailForm',
+            params:{
+                fName: fName,
+                lName: lName
+            }
+        })
+    }
     return (
         <View style={styles.container}>
             {
@@ -37,9 +49,10 @@ const LoggedIn = () => {
                     fName={fName}
                     lName={lName}
                     loading={loading}
+                    onPress={handleNavigate}
                 />
                 {
-                    (!loading&&(!fName && !lName)) && (<Incomplete />)
+                    (!loading&&!fName && !lName && !error) && (<Incomplete />)
                 }
                 <Text style={styles.heading}>Account</Text>
                 <MoreInfoSection />

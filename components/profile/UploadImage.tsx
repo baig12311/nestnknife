@@ -1,14 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import Icon from '../Icon';
 import Colors from '../../constants/colors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { fonts } from '../../constants/typography';
 import * as ImagePicker from 'expo-image-picker';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const UploadImage = () => {
     const [image, setImage] = useState<string | null>(null)
+    useEffect(() => {
+    const loadImage = async () => {
+        const savedImage = await AsyncStorage.getItem('profileImage');
 
+        if (savedImage) {
+            setImage(savedImage);
+        }
+    };
+
+    loadImage();
+}, []);
     // Gallery se select karna
     const pickFromLibrary = async () => {
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
@@ -25,9 +37,19 @@ const UploadImage = () => {
             quality: 1,
         });
 
-        if (!result.canceled) {
-            setImage(result.assets[0].uri);
-        }
+       if (!result.canceled) {
+    const imageUri = result.assets[0].uri;
+
+    console.log('SELECTED IMAGE:', imageUri);
+
+    setImage(imageUri);
+
+    await AsyncStorage.setItem(
+        'profileImage',
+        imageUri
+    );
+}
+         
     }
 
     // Camera se photo lena
@@ -46,8 +68,17 @@ const UploadImage = () => {
         });
 
         if (!result.canceled) {
-            setImage(result.assets[0].uri);
-        }
+    const imageUri = result.assets[0].uri;
+
+
+
+    setImage(imageUri);
+
+    await AsyncStorage.setItem(
+        'profileImage',
+        imageUri
+    );
+}
     }
 
     // User se pehle poochna — Camera ya Gallery

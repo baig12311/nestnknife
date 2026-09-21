@@ -162,7 +162,7 @@ const TrackOrder = () => {
                                             const isCurrent = index <= currentStep
                                             if (!isCurrent) return
                                             return (
-                                                <>
+                                                <View key = {index}>
                                                     <View style={styles.trackerInfo}>
                                                         <View style={[styles.trackerCircle,
                                                             {backgroundColor: step.bg}
@@ -182,7 +182,7 @@ const TrackOrder = () => {
                                                             <View style={styles.line} />
                                                         )
                                                     }
-                                                </>
+                                                </View>
 
                                             )
                                         })

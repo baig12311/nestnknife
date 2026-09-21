@@ -105,9 +105,9 @@ const Orders = () => {
             <SafeAreaView style={styles.container}>
                 <Header title='Orders' onPress={() => router.replace('/profile')} />
                 <CustomEmptyComponent
-                    illustration={require('../../../assets/illustrations/NetworkError.png')}
-                    mainText="Connection Problem"
-                    subText="We couldn’t connect to the server. Please check your internet connection and try again."
+                    illustration={require('../../../assets/illustrations/mainError.png')}
+                     mainText="Something Went Wrong"
+                    subText="We couldn't retrieve your orders right now. Please try again."
                     buttonTitle="Try Again"
                     onPress={()=>refetch()}
                 />

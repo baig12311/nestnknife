@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
 
   list: {
     paddingBottom: 30,
+    flexGrow:1
   },
 
   row: {
@@ -76,6 +77,7 @@ const styles = StyleSheet.create({
 
   empty: {
     alignItems: 'center',
+    justifyContent: 'center',
     paddingTop: 60,
   },
 

@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         borderRadius: wp(2),
         borderColor: Colors.secondary,
         backgroundColor: '#FFF5E6',
-        marginBottom: hp(4)
+        marginVertical: hp(6)
     },
     heading: {
         fontFamily: fonts.semibold,
@@ -94,6 +94,6 @@ const Row: React.FC<Props> = ({ point }) => {
             <Text style={styles.rowText}>
                 {point}
             </Text>
-        // </View>
+         </View>
     )
 }

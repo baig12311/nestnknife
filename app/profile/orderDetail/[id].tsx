@@ -35,7 +35,7 @@ const OrderDetail = () => {
             <ScrollView
                 showsVerticalScrollIndicator={false}
             >
-               {/* Order Tracking */}
+                   {/* Order Tracking */}
                 <CustomSection>
                     <EventTracking
                         orderStatus={orderStatus}
@@ -126,6 +126,7 @@ const OrderDetail = () => {
                         address2={shippingAddress.address2}
                         city={shippingAddress.city}
                         phone={shippingAddress.phoneNumber}
+                       
                     />
                 </CustomSection>
                 {/* Price Section */}

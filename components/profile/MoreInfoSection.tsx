@@ -16,14 +16,7 @@ const MoreInfoSection = () => {
                     borderBottomWidth={0.3}
                     onPress={()=>router.push('/profile/orders/Orders')}
                 />
-                <CustomSectionRow
-                    iconName='truck'
-                    iconType='Feather'
-                    mainText='Track Order'
-                    subText='Track your current orders'
-                    paddingVertical={hp(1)}
-                    borderBottomWidth={0.3}
-                />
+                
                 <CustomSectionRow
                     iconName='location-outline'
                     iconType='Ionicons'
@@ -42,6 +35,7 @@ const MoreInfoSection = () => {
                     subText='Your saved items'
                     paddingVertical={hp(1)}
                     borderBottomWidth={0.3}
+                    onPress={()=>router.push('/profile/wishlist/Wishlist')}
                 />
                 <CustomSectionRow
                     iconName='headset-mic'

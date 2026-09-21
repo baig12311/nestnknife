@@ -86,6 +86,15 @@ const styles = StyleSheet.create({
     },
     searchContainer: {
         marginBottom: hp(2)
+    },
+    badgeContainer:{
+        //borderWidth:0.5,
+        justifyContent: 'space-between',
+        borderColor: Colors.secondary,
+        borderRadius: wp(2),
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        marginBottom: hp(2),
     }
 
 });

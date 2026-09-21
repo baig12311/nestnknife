@@ -201,6 +201,7 @@ const ProductDetailsScreen = () => {
       >
         {product?.images.nodes.map((itemImage, index) => (
           <TouchableOpacity
+          key={index}
             activeOpacity={0.7}
             onPress={() => {
               flatListRef.current?.scrollToIndex({

@@ -27,7 +27,7 @@ const CustomEmptyComponent: React.FC<Props> = ({ mainText, subText, illustration
 
         )
       }
-      <View style={{ width: '60%', alignSelf: 'center' }}>
+      <View style={{ alignSelf: 'center' }}>
         <Button title={buttonTitle} onPress={onPress} />
 
       </View>

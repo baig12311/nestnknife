@@ -6,9 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
-import Icon from '../../components/Icon';
+import CustomEmptyComponent from '../../components/common/CustomEmptyComponent';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styles from '../styles/CStyle';
 import FadeInView from '../../components/animations/FadeInView';
@@ -22,6 +20,7 @@ export default function CategoriesScreen() {
     data: collections,
     isLoading,
     error,
+    refetch
   } = useCollections();
 
 
@@ -30,23 +29,26 @@ export default function CategoriesScreen() {
   if (isLoading) {
     return (
       <ProductSkelton/>
-      // <ActivityIndicator
-      //   style={styles.loader}
-      //   size="large"
-      //   color="#1F5B3A"
-      // />
     );
   }
 
-  if (error) {
-    return (
-      <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>
-          Unable to load collections.
-        </Text>
-      </View>
-    );
-  }
+  if(error)
+    {
+        return(
+            <SafeAreaView style={styles.mainContainer}>
+                <Header title='Collections' />
+                <CustomEmptyComponent
+                    illustration={require('../../assets/illustrations/mainError.png')}
+                    mainText="Something Went Wrong"
+                    subText="We couldn't retrieve categories data right now. Please try again."
+                    buttonTitle="Try Again"
+                    onPress={()=>refetch()}
+                   
+                />
+
+            </SafeAreaView>
+        )        
+    }
 
   return (
     <SafeAreaView style={styles.mainContainer}>
