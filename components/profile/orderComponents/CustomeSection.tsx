@@ -10,9 +10,14 @@ interface Props {
 const CustomSection: React.FC<Props> = ({ heading, children }) => {
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>
+            {
+                heading && (
+                    <Text style={styles.heading}>
                 {heading}
             </Text>
+                )
+            }
+            
 
             {children}
         </View>

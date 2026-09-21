@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
         color: Colors.secondary
     },
     textCompany: {
-        color: Colors.text,
+        color: Colors.primary,
         fontSize: wp(4),
         fontFamily: fonts.medium
     },
@@ -100,6 +100,51 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: Colors.secondaryBackground
+    },
+    hintText:{
+       
+        fontSize: wp(3.3),
+        textAlign: 'center'
+    },
+    regularText:{
+         color: Colors.secondary,
+        fontFamily: fonts.regular
+    },
+    boldText:{
+        color: Colors.primary,
+        fontFamily: fonts.semibold
+    },
+    trackerCircle:{
+        width: wp(10),
+        height: wp(10),
+        borderRadius: wp(8),
+        justifyContent: 'center',
+        alignItems: 'center',
+        //backgroundColor: Colors.secondaryBackground
+    },
+    line:{
+      
+        marginLeft: wp(5),
+        borderLeftWidth:2,
+        height: hp(5),
+        borderStyle: 'dotted',
+        marginVertical: wp(1),
+        borderLeftColor: '#A8B8AE'
+      
+    },
+    trackerStep:{
+        alignSelf:'flex-start',
+        //alignItems: 'center'
+    },
+    statusText:{
+        fontFamily: fonts.medium,
+        color: Colors.primary,
+        fontSize:wp(4),
+        marginLeft: wp(3)
+    },
+    trackerInfo:{ 
+        flexDirection: 'row', 
+        alignItems: 'center'
     }
 });
 
