@@ -63,7 +63,7 @@ const Wishlist = () => {
                 buttonTitle='Discover Products'
                 onPress={()=>router.replace('/categories')}
                 illustration={require('../../../assets/illustrations/emptyWish.png')}
-                mainText='Your Wihslist is Empty'
+                mainText='Your Wishlist is Empty'
                 subText='Save your favourite products and find them here whenever you need.'
                 />}
                 />

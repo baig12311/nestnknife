@@ -5,6 +5,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
 
 import {
@@ -65,10 +66,13 @@ export default function RootLayout() {
   }
 
   return (
-    <Provider store={store}>
+    <GestureHandlerRootView style={{flex:1}}>
+      <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <AppContent />
       </QueryClientProvider>
     </Provider>
+    </GestureHandlerRootView>
+    
   );
 }

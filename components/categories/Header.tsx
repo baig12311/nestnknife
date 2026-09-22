@@ -33,7 +33,7 @@ const Header: React.FC<headerProps> = ({ title, onSearchPress, onFilterPress }) 
                     {
                         title !== 'Collections' && (
                             <TouchableOpacity onPress={onFilterPress} style={{ marginLeft: wp(4) }} activeOpacity={0.7}>
-                                <Icon name="filter" type='Feather' size={wp(5)} color={Colors.text} />
+                                <Icon name="options-outline" type='Ionicons' size={wp(5.5)} color={Colors.text} />
                             </TouchableOpacity>
                         )
                     }

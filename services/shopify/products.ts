@@ -267,6 +267,12 @@ const COLLECTION_PRODUCTS_QUERY = `
             featuredImage {
               url
             }
+              collections(first: 10) {
+  nodes {
+    title
+    handle
+  }
+}
 
             priceRange {
               minVariantPrice {
