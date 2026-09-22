@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 
   count: {
     //marginTop: 5,
-    marginBottom: hp(1),
+    marginBottom: hp(0.5),
     fontSize:wp(4),
     fontFamily: fonts.regular,
     color: Colors.secondary,
@@ -99,6 +99,12 @@ const styles = StyleSheet.create({
         marginBottom: hp(2),
 
   },
+  filtersContainer:{
+    flexDirection: 'row', 
+    flexWrap: 'wrap',
+    gap:5,
+    marginBottom: hp(1)
+  }
 });
 
 export default styles;

@@ -66,7 +66,7 @@ export default function CategoriesScreen() {
 
         <View style={styles.grid}>
           {collections?.map((collection, index) => (
-            <FadeInView key={collection.id} delay={index * 100}>
+            // <FadeInView key={collection.id} delay={index * 100}>
               <CategoryCard
 
                 image={collection.image?.url}
@@ -79,7 +79,7 @@ export default function CategoriesScreen() {
                   }
                 })}
               />
-            </FadeInView>
+            // </FadeInView>
 
 
           ))}

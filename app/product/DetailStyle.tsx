@@ -8,6 +8,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#FAF7F2',
     //padding:20
   },
+  errorContainer:{
+    flex:1, 
+    padding:hp(2),
+    borderWidth:1
+  },
   container: {
     flex: 1,
     backgroundColor: Colors.background,

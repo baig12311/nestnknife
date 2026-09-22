@@ -19,11 +19,12 @@ interface Props {
 }
 
 const CustomBottomSheet: React.FC<Props> = ({ bottomSheetRef, category, Filters}) => {
-    const [selectedSort, setSelectedSort] = useState<number>(0)
-    const [selectedCategory, setSelectedCategory] = useState<number>(0)
-    const [priceRange, setPriceRange] = useState<[number, number]>([
-        0,
-        25000,
+    const [selectedSort, setSelectedSort] = useState<number | null>(null)
+    const [selectedCategory, setSelectedCategory] = useState<number | null>(null)
+    const [isPriceFiltered, setIsPriceFiltered] = useState(false)
+    const [priceRange, setPriceRange] = useState<[number, number] | null>([
+        100,
+        10000,
     ]);
     const SortHeading = [
         'Relevance',
@@ -32,48 +33,63 @@ const CustomBottomSheet: React.FC<Props> = ({ bottomSheetRef, category, Filters}
         'Newest'
     ]
     const Category = [
+        'Shop All',
         'Featured Products',
         'Everyday Essentials',
         'Organize & Store',
         'Prep & Cook',
     ]
-    const handleDataTransfer=()=>{
-        const sortValue = SortHeading[selectedSort]
-        const categoryValue = Category[selectedCategory]
-        Filters({
-            priceRange,
-            sortValue,
-            categoryValue
-        })
-    }
+    const handleDataTransfer = () => {
+    const sortValue =
+        selectedSort === null
+            ? null
+            : SortHeading[selectedSort];
+
+    const categoryValue =
+        selectedCategory === null
+            ? null
+            : Category[selectedCategory];
+
+    const priceSlider =
+        isPriceFiltered
+            ? priceRange
+            : null;
+
+    Filters({
+        priceRange: priceSlider,
+        sortValue,
+        categoryValue,
+    });
+};
     const handlePress=()=>{
         handleDataTransfer()
         bottomSheetRef.current?.close()
     }
     
     
-    const min = 0;
-    const max = 25000;
+    // const min = 0;
+    // const max = 10000;
 
-    const minPosition =
-        ((priceRange[0] - min) / (max - min)) * 100;
+    // const minPosition =
+    //     ((priceRange[0] - min) / (max - min)) * 100;
 
-    const maxPosition =
-        ((priceRange[1] - min) / (max - min)) * 100;
+    // const maxPosition =
+    //     ((priceRange[1] - min) / (max - min)) * 100;
 
         const handleReset=()=>{
-            setPriceRange([0, 25000]),
-            setSelectedCategory(0),
-            setSelectedSort(0)
+            setPriceRange([100, 10000]),
+            setSelectedCategory(null),
+            setSelectedSort(null),
+            setIsPriceFiltered(false)
 
         }
     return (
         <BottomSheet
             ref={bottomSheetRef}
             //index={-1}
-            snapPoints={['65%']}
+            //snapPoints={['65%']}
             enablePanDownToClose
-            enableDynamicSizing={false}
+            enableDynamicSizing={true}
             backdropComponent={(props) => (
                 <BottomSheetBackdrop
                     {...props}
@@ -101,7 +117,9 @@ const CustomBottomSheet: React.FC<Props> = ({ bottomSheetRef, category, Filters}
                 <View style={styles.subContainer}>
                     <Text style={styles.heading}>Price Range</Text>
                     <View style={styles.sliderContainer}>
-                        <Text>{`Rs. ${priceRange[0]} - Rs. ${priceRange[1]}`}</Text>
+                        <Text style={styles.priceLabel}>
+                            {`Rs. ${priceRange?.[0]} - Rs. ${priceRange?.[1]}`}
+                            </Text>
                         {/* <View >
                             <Text style={[styles.priceLabel,
                             { left: `${minPosition}%` },
@@ -114,8 +132,8 @@ const CustomBottomSheet: React.FC<Props> = ({ bottomSheetRef, category, Filters}
                         <RangeSlider
                             style={styles.slider}
                             range={priceRange}
-                            minimumValue={0}
-                            maximumValue={25000}
+                            minimumValue={100}
+                            maximumValue={10000}
                             step={100}
                             inboundColor={Colors.primary}
                             outboundColor="#D9D9D9"
@@ -126,6 +144,7 @@ const CustomBottomSheet: React.FC<Props> = ({ bottomSheetRef, category, Filters}
 
                             onValueChange={(range) => {
                                 setPriceRange(range as [number, number]);
+                                setIsPriceFiltered(true)
                             }}
                         />
                     </View>
@@ -218,17 +237,14 @@ const styles = StyleSheet.create({
     },
     sliderContainer: {
 
-        position: 'relative',
-        marginTop: hp(3)
+        // position: 'relative',
+        // marginTop: hp(3)
     },
     slider: {
-        width: wp(80),
+        width: '95%',
         alignSelf: 'center'
     },
     priceLabel: {
-        position: 'absolute',
-        top: -20,
-        transform: [{ translateX: -25 }],
         fontFamily: fonts.regular,
         fontSize: wp(3.3),
         color: Colors.primary

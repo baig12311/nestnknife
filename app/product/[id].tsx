@@ -22,6 +22,7 @@ import { RootState } from '../../store';
 import { useProduct } from '../../hooks/useProducts';
 import QuantityCard from '../../components/cart/QuantityCard';
 import Button from '../../components/common/Button';
+import CustomEmptyComponent from '../../components/common/CustomEmptyComponent';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import ProductDetailSkeleton from '../../components/skeleton/ProductDetailSkeleton';
 import ButtonOutline from '../../components/common/ButtonOutline';
@@ -55,6 +56,7 @@ const ProductDetailsScreen = () => {
     data: product,
     isLoading,
     error,
+    refetch
   } = useProduct(id);
 
   if (isLoading) {
@@ -68,12 +70,27 @@ const ProductDetailsScreen = () => {
     );
   }
 
-  if (error || !product) {
+   if (error || !product) {
     return (
-      <Text style={styles.error}>
-        Unable to load product.
-      </Text>
-    );
+      <SafeAreaView style={styles.errorContainer}>
+         <View style={styles.headerContainer}>
+        {/* <HomeHeader color={Colors.text} bgColor='white' isProduct={true}/> */}
+        <HomeHeader color={Colors.text} bgColor='white' leftType='back' />
+
+      </View>
+        <CustomEmptyComponent
+          illustration={require('../../assets/illustrations/mainError.png')}
+          mainText="Something Went Wrong"
+          subText="We couldn't retrieve product details right now. Please try again."
+          buttonTitle="Try Again"
+          onPress={() => {refetch()
+            console.log('Refetch Called')
+          }}
+
+        />
+
+      </SafeAreaView>
+    )
   }
 
   const variant = product.variants.edges[0]?.node;
