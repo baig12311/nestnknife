@@ -6,6 +6,7 @@ import Header from '../../../components/home/HomeHeader';
 import Greeting from '../../../components/profile/Greeting';
 import Incomplete from '../../../components/profile/Incomplete';
 import MoreInfoSection from '../../../components/profile/MoreInfoSection';
+import HelpSection from '../../../components/profile/HelpSection';
 import SignOut from '../../../components/profile/SignOutButton';
 import { router } from 'expo-router';
 import { useLogout } from '../../../hooks/useAuth';
@@ -56,6 +57,8 @@ const LoggedIn = () => {
                 }
                 <Text style={styles.heading}>Account</Text>
                 <MoreInfoSection />
+                <Text style={styles.heading}>Help</Text>
+                <HelpSection />
                 <SignOut onPress={() => setModalShow(true)} />
 
                 {/* <SignOut onPress={() => logoutMutation.mutate()} /> */}

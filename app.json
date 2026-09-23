@@ -1,18 +1,18 @@
 {
   "expo": {
-    "name": "nestnknife",
+    "name": "Nest & Knife",
     "slug": "nestnknife",
     "scheme": "shop.81785061622.app",
     "owner": "baig1212",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FAF7F2"
     },
     "ios": {
       "supportsTablet": true

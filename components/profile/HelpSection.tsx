@@ -3,45 +3,37 @@ import { router } from 'expo-router';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import CustomSectionRow from './CustomSectionrow';
 import { ShadowCard } from '../common/ShadowCard';
-const MoreInfoSection = () => {
+const HelpSection = () => {
     return (
         <ShadowCard style={styles.container} containerStyle={styles.containerStyle}>
             <View style={styles.contentContainer}>
                 <CustomSectionRow
-                    iconName='cube-outline'
+                    iconName='headset-outline'
                     iconType='Ionicons'
-                    mainText='My Orders'
-                    subText='View your order history'
+                    mainText='Help & Support'
+                    subText='Get help and find answers'
                     paddingVertical={hp(1)}
                     borderBottomWidth={0.3}
-                    onPress={() => router.push('/profile/orders/Orders')}
                 />
+                
                 <CustomSectionRow
-                    iconName='location-outline'
+                    iconName='mail-outline'
                     iconType='Ionicons'
-                    mainText='Saved Addresses'
-                    subText='Add you delivery addresses'
+                    mainText='Contact Us'
+                    subText='Contact our support team'
                     paddingVertical={hp(1)}
-                    borderBottomWidth={0.3}
-                    onPress={() => router.push('/profile/address/Address')}
-                />
-                <CustomSectionRow
-                    iconName='heart-outline'
-                    iconType='Ionicons'
-                    mainText='Wishlist'
-                    subText='Your saved items'
-                    paddingVertical={hp(1)}
-                    onPress={() => router.push('/profile/wishlist/Wishlist')}
+                    onPress={() => router.push('/profile/contactUs/ContactUs')}
                 />
             </View>
         </ShadowCard>
+
     );
 };
-
 const styles = StyleSheet.create({
     container: {
+        //borderWidth: 1,
         borderRadius: wp(2),
-        marginBottom: hp(2)
+        marginBottom: hp(4)
     },
     containerStyle: {
         width: '100%'
@@ -52,4 +44,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default MoreInfoSection;
+export default HelpSection;

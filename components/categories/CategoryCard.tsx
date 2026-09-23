@@ -36,7 +36,7 @@ const CategoryCard:React.FC<Props> = ({cardTitle, image, onPress}) => {
 const styles = StyleSheet.create({
     container: {
         //width:wp(40),
-        height: hp(23),
+        height: hp(22),
         overflow: 'hidden',
         borderRadius:wp(3)
         
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    height: '28%',
+    height: '30%',
     paddingHorizontal:wp(2),
    
     backgroundColor: 'rgba(0, 0, 0, 0.5)',

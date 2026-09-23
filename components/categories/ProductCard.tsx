@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { router } from 'expo-router';
 import { Product } from '../../types/product';
@@ -145,14 +145,14 @@ const styles = StyleSheet.create({
     padding: wp(2.5),
   },
   title: {
-    fontSize: wp(4),
-    lineHeight: hp(2.4),
+    fontSize: wp(3.5),
+    //lineHeight: hp(2.4),
     fontFamily: fonts.medium,
     //fontWeight: '500',
     color: Colors.text,
   },
   price: {
-    marginTop: hp(1),
+    //marginTop: hp(1),
     fontSize: wp(4),
     fontFamily: fonts.displayBold,
     //fontWeight: '700',

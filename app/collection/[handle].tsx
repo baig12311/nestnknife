@@ -93,7 +93,23 @@ const CollectionScreen = () => {
     // }
 
     return filtered;
+   
 }, [products, filterData, title]);
+const handlePressEmpty=()=>{
+  
+  if(filterData)
+  {
+    setFilterData({
+      priceRange:null,
+      sorValue:null,
+      categoryValue:null
+    })
+  }
+  else
+  {
+    router.replace('/categories')
+  }
+}
   if (isLoading) {
     return (
       <ProductSkelton />
@@ -188,9 +204,14 @@ const CollectionScreen = () => {
         }
 
 
-        <Text style={styles.count}>
+{
+  filterProducts?.length > 0 && (
+    <Text style={styles.count}>
           {filterProducts?.length ?? 0} Products
         </Text>
+  )
+}
+        
 
         <FlatList
           data={filterProducts}
@@ -217,10 +238,14 @@ const CollectionScreen = () => {
           ListEmptyComponent={
             <CustomEmptyComponent
               mainText='No Products Found'
-              subText='There are no products available in this collection right now.'
+              //subText='There are no products available in this collection right now.'
+              subText={filterData ? "We couldn't find any products matching your selected filters." : 
+                'There are no products available in this collection right now.'}
               illustration={require('../../assets/illustrations/emptyProduct.png')}
-              buttonTitle='Browse All Products'
-              onPress={() => router.replace('/categories')}
+              //buttonTitle='Browse All Products'
+              buttonTitle={filterData ? "Clear Filters" : 
+                "Browse All Products"}
+              onPress={handlePressEmpty}
             />
           }
         />

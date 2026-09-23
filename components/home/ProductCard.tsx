@@ -75,14 +75,14 @@ const styles = StyleSheet.create({
     padding: wp(2.5),
   },
   title: {
-    fontSize: wp(4),
-    lineHeight: hp(2.4),
+    fontSize: wp(3.5),
+    //lineHeight: hp(2.4),
     //fontWeight: '500',
     fontFamily:fonts.medium,
     color: Colors.text,
   },
   price: {
-    marginTop:hp(1),
+    //marginTop:hp(1),
     fontSize: wp(4),
     fontFamily:fonts.displayBold,
     //fontWeight: '700',

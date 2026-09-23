@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     },
     heading:{
         fontFamily:fonts.semibold,
-        fontSize: wp(5),
+        fontSize: wp(4.5),
         //marginBottom: hp(0.5)
     }
 });

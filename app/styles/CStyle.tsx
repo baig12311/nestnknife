@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     
     fontSize: wp(4),
     color: Colors.secondary,
-    fontFamily: fonts.regular,
+    fontFamily: fonts.medium,
         marginBottom: hp(2),
 
   },

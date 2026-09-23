@@ -75,7 +75,7 @@ const ProductDetailsScreen = () => {
       <SafeAreaView style={styles.errorContainer}>
          <View style={styles.headerContainer}>
         {/* <HomeHeader color={Colors.text} bgColor='white' isProduct={true}/> */}
-        <HomeHeader color={Colors.text} bgColor='white' leftType='back' />
+        <HomeHeader color={Colors.text} bgColor='white' leftType='back'/>
 
       </View>
         <CustomEmptyComponent
