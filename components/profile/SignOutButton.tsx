@@ -18,7 +18,7 @@ const SignOut:React.FC<Props> = ({onPress}) => {
                     <Icon
                     name='log-out-outline'
                     type='Ionicons'
-                    size={wp(8)}
+                    size={wp(7)}
                     color='#C84037'
                 />
                 </View>
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontFamily: fonts.semibold,
-        fontSize: wp(5),
+        fontSize: wp(4.5),
         color: '#C84037',
         textAlign: 'center'
     },

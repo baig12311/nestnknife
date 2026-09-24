@@ -16,7 +16,7 @@ const TrustBadge:React.FC<Props> = ({name, type, title}) => {
             <Icon
             name={name}
             type={type}
-            size={wp(7)}
+            size={wp(5)}
             color={Colors.primary}
             />
             <Text style={styles.title}>{title}</Text>
@@ -26,19 +26,20 @@ const TrustBadge:React.FC<Props> = ({name, type, title}) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: '49.5%' ,
+        width: '25%' ,
         alignItems: 'center',
-        paddingVertical: hp(1),
-        borderWidth:0.5,
+        justifyContent: 'center',
+        padding: wp(1),
+        //borderWidth:1,
         borderColor: Colors.secondary,
         borderRadius: wp(2),
-        marginVertical: wp(0.5)
     },
     title:{
         fontFamily: fonts.semibold,
-        fontSize:wp(3),
-        color: Colors.text,
-        marginTop: hp(1)
+        fontSize:wp(2.7),
+        color: Colors.primary,
+        marginTop: hp(0.3),
+        textAlign: 'center'
     }
 });
 

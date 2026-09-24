@@ -1,4 +1,4 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect, useRef} from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import Icon from '../Icon';
 import Colors from '../../constants/colors';
@@ -7,93 +7,163 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fonts } from '../../constants/typography';
 import * as ImagePicker from 'expo-image-picker';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import ImageSheet from './uploadImage/ImageSheet';
+import BottomSheet from '@gorhom/bottom-sheet';
+interface Props{
+  onPress?:()=>void
+  isEdit?:boolean,
+  image: any
+}
+const UploadImage:React.FC<Props> = ({onPress, isEdit, image}) => {
+//     const [image, setImage] = useState<string | null>(null)
+//     const [edit, setEdit] = useState(false)
+//     useEffect(() => {
+//     const loadImage = async () => {
+//         const savedImage = await AsyncStorage.getItem('profileImage');
 
-const UploadImage = () => {
-    const [image, setImage] = useState<string | null>(null)
-    useEffect(() => {
-    const loadImage = async () => {
-        const savedImage = await AsyncStorage.getItem('profileImage');
+//         if (savedImage) {
+//             setImage(savedImage);
+//             setEdit(true)
+//         }
+//     };
 
-        if (savedImage) {
-            setImage(savedImage);
-        }
-    };
-
-    loadImage();
-}, []);
+//     loadImage();
+// }, []);
     // Gallery se select karna
-    const pickFromLibrary = async () => {
-        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
+//     const pickFromLibrary = async () => {
+//         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
 
-        if (!permissionResult.granted) {
-            Alert.alert('Permission Required', 'Permission to access media library is required')
-            return;
-        }
+//         if (!permissionResult.granted) {
+//             Alert.alert('Permission Required', 'Permission to access media library is required')
+//             return;
+//         }
 
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ['images'],
-            allowsEditing: true,
-            aspect: [1, 1],
-            quality: 1,
-        });
+//         let result = await ImagePicker.launchImageLibraryAsync({
+//             mediaTypes: ['images'],
+//             allowsEditing: true,
+//             aspect: [1, 1],
+//             quality: 1,
+//         });
 
-       if (!result.canceled) {
-    const imageUri = result.assets[0].uri;
+//        if (!result.canceled) {
+//     const imageUri = result.assets[0].uri;
 
-    console.log('SELECTED IMAGE:', imageUri);
+//     console.log('SELECTED IMAGE:', imageUri);
 
-    setImage(imageUri);
+//     setImage(imageUri);
 
-    await AsyncStorage.setItem(
-        'profileImage',
-        imageUri
-    );
-}
+//     await AsyncStorage.setItem(
+//         'profileImage',
+//         imageUri
+//     );
+// }
          
-    }
+//     }
 
-    // Camera se photo lena
-    const takePhoto = async () => {
-        const permissionResult = await ImagePicker.requestCameraPermissionsAsync()
+//     const removeImage = async () => {
+//   try {
+//     await AsyncStorage.removeItem('profileImage');
+//     setImage(null);
+//     setEdit(false);
+//   } catch (error) {
+//     console.log('REMOVE IMAGE ERROR:', error);
+//   }
+// };
 
-        if (!permissionResult.granted) {
-            Alert.alert('Permission Required', 'Permission to access camera is required')
-            return;
-        }
+//     // Camera se photo lena
+//     const takePhoto = async () => {
+//         const permissionResult = await ImagePicker.requestCameraPermissionsAsync()
 
-        let result = await ImagePicker.launchCameraAsync({
-            allowsEditing: true,
-            aspect: [1, 1],
-            quality: 1,
-        });
+//         if (!permissionResult.granted) {
+//             Alert.alert('Permission Required', 'Permission to access camera is required')
+//             return;
+//         }
 
-        if (!result.canceled) {
-    const imageUri = result.assets[0].uri;
+//         let result = await ImagePicker.launchCameraAsync({
+//             allowsEditing: true,
+//             aspect: [1, 1],
+//             quality: 1,
+//         });
+
+//         if (!result.canceled) {
+//     const imageUri = result.assets[0].uri;
 
 
 
-    setImage(imageUri);
+//     setImage(imageUri);
 
-    await AsyncStorage.setItem(
-        'profileImage',
-        imageUri
-    );
-}
-    }
+//     await AsyncStorage.setItem(
+//         'profileImage',
+//         imageUri
+//     );
+// }
+//     }
 
     // User se pehle poochna — Camera ya Gallery
-    const uploadImage = () => {
-        Alert.alert(
-            'Upload Photo',
-            'Choose an option',
-            [
-                { text: 'Take Photo', onPress: takePhoto },
-                { text: 'Choose from Library', onPress: pickFromLibrary },
-                { text: 'Cancel', style: 'cancel' },
-            ],
-            { cancelable: true }
-        );
-    }
+//     const uploadImage = () => {
+//   if (edit) {
+//     Alert.alert(
+//       'Profile Photo',
+//       'Choose an option',
+//       [
+//         {
+//           text: 'Change Photo',
+//           onPress: () => {
+//             Alert.alert(
+//               'Change Photo',
+//               'Choose an option',
+//               [
+//                 {
+//                   text: 'Take Photo',
+//                   onPress: takePhoto,
+//                 },
+//                 {
+//                   text: 'Choose from Library',
+//                   onPress: pickFromLibrary,
+//                 },
+//                 {
+//                   text: 'Cancel',
+//                   style: 'cancel',
+//                 },
+//               ],
+//               { cancelable: true }
+//             );
+//           },
+//         },
+//         {
+//           text: 'Remove Photo',
+//           onPress: removeImage,
+//           style: 'destructive',
+//         },
+//         {
+//           text: 'Cancel',
+//           style: 'cancel',
+//         },
+//       ],
+//       { cancelable: true }
+//     );
+//   } else {
+//     Alert.alert(
+//       'Upload Photo',
+//       'Choose an option',
+//       [
+//         {
+//           text: 'Take Photo',
+//           onPress: takePhoto,
+//         },
+//         {
+//           text: 'Choose from Library',
+//           onPress: pickFromLibrary,
+//         },
+//         {
+//           text: 'Cancel',
+//           style: 'cancel',
+//         },
+//       ],
+//       { cancelable: true }
+//     );
+//   }
+// };
 
     return (
         <View style={styles.container}>
@@ -109,17 +179,18 @@ const UploadImage = () => {
             <TouchableOpacity
                 style={styles.button}
                 activeOpacity={0.7}
-                onPress={uploadImage}
+                onPress={onPress}
             >
                 <Icon
-                    name='camera-outline'
-                    type='Ionicons'
+                    name={isEdit ? 'image-edit-outline' : 'camera-outline'}
+                    type={isEdit ? 'MaterialDesignIcons' : 'Ionicons'}
                     color={Colors.background}
                     size={wp(5)}
                 />
             </TouchableOpacity>
-            
+           
         </View>
+
     );
 };
 

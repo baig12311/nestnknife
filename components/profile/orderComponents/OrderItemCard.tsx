@@ -12,6 +12,7 @@ interface Props{
 const OrderItemCard:React.FC<Props> = ({itemName, itemPrice, quantity, image, showBorder}) => {
     const total = quantity * itemPrice
     const formatTotal = total?.toLocaleString()
+    const unitPrice=Number(itemPrice).toLocaleString()
     return (
         <View style={[styles.container,showBorder && styles.borderApply]}>
             <Image 
@@ -21,7 +22,7 @@ const OrderItemCard:React.FC<Props> = ({itemName, itemPrice, quantity, image, sh
             <View style={styles.contentContainer}>
                 <Text numberOfLines={2} style={styles.txtName}>{itemName}</Text>
                 <View style={styles.priceContainer}>
-                    <Text style={styles.txtQuantity}>Qty: {quantity}</Text>
+                    <Text style={styles.txtQuantity}>Qty: {quantity} × {unitPrice}</Text>
                     <Text style={styles.txtPrice}>PKR {formatTotal}</Text>
                 </View>
             </View>         

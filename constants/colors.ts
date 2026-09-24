@@ -6,6 +6,8 @@ const Colors={
     secondary: '#777777',
     secondary2: '#E5E7EB',
     tertiary:'#F2F2F2',
-    secondaryBackground: '#E8F0EA'
+    secondaryBackground: '#E8F0EA',
+    red: '#C84037',
+    redBG: '#F1E3E3'
 }
 export default Colors;

@@ -44,7 +44,7 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <HomeHeader color={Colors.text} leftType='image'/>
+      <HomeHeader color={Colors.text} leftType='image' />
       <FadeInView delay={150}>
         <TouchableOpacity
           activeOpacity={0.8}
@@ -68,30 +68,38 @@ const HomeScreen = () => {
         </FadeInView>
 
         <FadeInView delay={450}>
-           <View style={styles.badgeContainer}>
-          <TrustBadge
-          name='truck-fast-outline'
-          type='MaterialDesignIcons'
-          title='NationWide Delivery'
-          />
-          <TrustBadge
-          name='cash-outline'
-          type='Ionicons'
-          title='Cash on Delivery (COD)'
-          />
-           <TrustBadge
-          name='refresh-outline'
-          type='Ionicons'
-          title='7-Day Easy Return'
-          />
-          <TrustBadge
-          name='lock-closed-outline'
-          type='Ionicons'
-          title='Secure Checkout'
-          />
-        </View>     
+          <View style={styles.badgeContainer}>
+            <TrustBadge
+              name='truck-fast-outline'
+              type='MaterialDesignIcons'
+              title='NationWide Delivery'
+
+            />
+            <View style={styles.dividerLine} />
+
+
+            <TrustBadge
+              name='cash-outline'
+              type='Ionicons'
+              title='Cash on Delivery (COD)'
+
+            />
+            <View style={styles.dividerLine} />
+            <TrustBadge
+              name='refresh-outline'
+              type='Ionicons'
+              title='7-Day Easy Return'
+
+            />
+            <View style={styles.dividerLine} />
+            <TrustBadge
+              name='lock-closed-outline'
+              type='Ionicons'
+              title='Secure Checkout'
+            />
+          </View>
         </FadeInView>
-       
+
 
         {/* REMOVED outer FadeInView here to prevent double-animating shadows */}
         <FadeInView delay={600}>

@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     },
     txtDesc:{
         fontFamily: fonts.medium,
-        fontSize: wp(3.3),
+        fontSize: wp(3.2),
         color: Colors.primary
     }
 });

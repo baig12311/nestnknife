@@ -19,6 +19,7 @@ const LoggedIn = () => {
     const email = customer?.emailAddress?.emailAddress
     const fName = customer?.firstName
     const lName = customer?.lastName
+    
    
 
     const handleNavigate=()=>{

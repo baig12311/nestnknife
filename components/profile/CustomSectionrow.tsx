@@ -65,7 +65,7 @@ const CustomSectionRow: React.FC<Props> = ({ paddingHorizontal,
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        //justifyContent: 'space-between',
         alignItems: 'center',
         borderColor: Colors.secondary
     },

@@ -36,7 +36,7 @@ const ButtonOutline: React.FC<Props> = ({ onPress, title, loading, disabled }) =
 const styles = StyleSheet.create({
    
     button: {
-        height:hp(6),
+        height:hp(5.5),
         borderWidth:0.3,
         borderColor:Colors.primary,
         justifyContent: 'center',
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 
     },
     text: {
-        fontSize: wp(5),
+        fontSize: wp(4.5),
         color: Colors.primary,
         fontFamily: fonts.semibold
     }

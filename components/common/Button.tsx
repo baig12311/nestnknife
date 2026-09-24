@@ -35,7 +35,7 @@ const Button: React.FC<Props> = ({ onPress, title, loading, disabled }) => {
 // define your styles
 const styles = StyleSheet.create({
     container: {
-        height: hp(6),
+        height: hp(5.5),
         marginBottom: hp(0.5),
         overflow: 'hidden',
         borderRadius: wp(2)
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: wp(5)
     },
     text: {
-        fontSize: wp(5),
+        fontSize: wp(4.5),
         color: Colors.background,
         fontFamily: fonts.semibold
     }

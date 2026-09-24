@@ -119,6 +119,7 @@ const TrackOrder = () => {
                                     </Text>
                                     <Text style={styles.textCompany}>
                                         {trackingInfo.company}
+                                        
                                     </Text>
                                 </View>
                                 <View style={styles.tracking}>
@@ -130,6 +131,7 @@ const TrackOrder = () => {
                                         <Text
                                             style={styles.textCompany}>
                                             {trackingInfo.number}
+                                            
                                         </Text>
                                     </View>
                                     <TouchableOpacity

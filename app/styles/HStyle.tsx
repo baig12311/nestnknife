@@ -88,13 +88,18 @@ const styles = StyleSheet.create({
         marginBottom: hp(2)
     },
     badgeContainer:{
-        //borderWidth:0.5,
-        justifyContent: 'space-between',
-        borderColor: Colors.secondary,
         borderRadius: wp(2),
         flexDirection: 'row',
-        flexWrap: 'wrap',
         marginBottom: hp(2),
+        borderWidth:0.3,
+        borderColor:Colors.secondary
+    },
+    dividerLine:{
+        height: hp(5.5),
+        borderWidth:0.2,
+        borderColor: Colors.secondary,
+        alignSelf: 'center'
+        
     }
 
 });
