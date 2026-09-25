@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         //width:'20%',
         //paddingVertical: hp(1),
         fontFamily: fonts.regular,
-        fontSize: wp(3.5),
+        fontSize: wp(3),
         color: Colors.secondary,
     },
     selectedText:{

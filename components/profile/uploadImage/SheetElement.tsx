@@ -5,33 +5,38 @@ import { fonts } from '../../../constants/typography';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Icon from '../../Icon';
 interface Props {
-    Color:string
-    bgColor:string
-    iconName:string
-    iconType:string
-    title?:string
+    Color: string
+    bgColor: string
+    iconName: string
+    iconType: string
+    title?: string
+    onPress?: () => void
 }
 
-const SheetElement: React.FC<Props> = ({bgColor, iconName, iconType, Color, title}) => {
-   
+const SheetElement: React.FC<Props> = ({ onPress, bgColor, iconName, iconType, Color, title }) => {
+
     return (
-    <View style={[styles.container, {borderColor:Color}]}>
-        <View style={[styles.icon, {backgroundColor: bgColor}]}>
+        <TouchableOpacity
+            style={[styles.container, { borderColor: Color }]}
+            onPress={onPress}
+            activeOpacity={0.7}
+        >
+            <View style={[styles.icon, { backgroundColor: bgColor }]}>
+                <Icon
+                    name={iconName}
+                    type={iconType}
+                    color={Color}
+                    size={wp(5)}
+                />
+            </View>
+            <Text style={[styles.title, { color: Color }]}>{title}</Text>
             <Icon
-            name={iconName}
-            type={iconType}
-            color={Color}
-            size={wp(5)}
-            />
-        </View>
-        <Text style={[styles.title, {color:Color}]}>{title}</Text>
-        <Icon
                 name='chevron-small-right'
                 type='Entypo'
                 size={wp(7)}
                 color={Color}
             />
-    </View>
+        </TouchableOpacity>
 
     );
 };
@@ -42,25 +47,25 @@ const styles = StyleSheet.create({
         borderRadius: wp(2),
         marginBottom: hp(1),
         padding: wp(2),
-        borderWidth: 0.3, 
+        borderWidth: 0.3,
         flexDirection: 'row',
         alignItems: 'center'
-       
+
     },
-    icon:{
+    icon: {
         width: wp(10),
         height: wp(10),
         borderRadius: wp(5),
         justifyContent: 'center',
         alignItems: 'center',
     },
-    title:{
+    title: {
         fontFamily: fonts.medium,
         fontSize: wp(3.5),
         marginLeft: wp(3),
-        flex:1
+        flex: 1
     }
-   
+
 });
 
 export default SheetElement;

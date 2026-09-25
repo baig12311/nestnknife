@@ -36,39 +36,35 @@ const QuantityCard:React.FC<Props> = ({quantity, onDecrease, onIncrease}) => {
 // define your styles
 const styles = StyleSheet.create({
     container: {
-         borderColor:Colors.secondary,
+        borderColor:Colors.secondary,
         borderWidth:0.4,
         flexDirection: 'row',
         borderRadius:wp(2),
-        width:wp(30),
+        width: wp(27),
         height: hp(5),
-        //justifyContent:'space-between',
         alignItems: 'center'
     },
     QText:{
-        fontSize:wp(7),
+        fontSize:wp(5),
         fontFamily: fonts.medium,
         color:Colors.primary
     },
     quantity:{
-        // borderLeftWidth:1,
-        // borderRightWidth:1,
-        fontSize:wp(5),
+        fontSize:wp(4),
         fontFamily:fonts.medium
        
     },
     button:{
-        //borderWidth:1,
-        //padding:wp(2)
         justifyContent: 'center',
         paddingHorizontal:wp(2.5)
+       
     },
     quantityView:{
         height:'100%',
         borderLeftWidth:0.4,
         borderRightWidth:0.4,
         borderColor:Colors.secondary,
-         justifyContent: 'center',
+        justifyContent: 'center',
         alignItems: 'center',
         flex:1
     }

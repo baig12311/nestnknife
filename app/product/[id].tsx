@@ -39,6 +39,7 @@ const ProductDetailsScreen = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [showToast, setShowToast] = useState(false)
   const [type, setType] = useState<'success' | 'error'>('error')
+  const [toastTitle, setToastTitle] = useState('')
   const [toastMessage, setToastMessage] = useState('')
   const queryClient = useQueryClient();
   const addToCartMutation = useAddToCart();
@@ -95,76 +96,113 @@ const ProductDetailsScreen = () => {
 
   const variant = product.variants.edges[0]?.node;
 
-  const handleAddToCart = async () => {
-    if (!variant) {
-      console.error('No product variant found.');
-      return;
+ const handleAddToCart = async () => {
+  console.log(quantity);
+
+  if (!variant) {
+    console.error('No product variant found.');
+    return;
+  }
+
+  try {
+    setAdding(true);
+
+    let currentCartId = cartId;
+
+    // No cart ID → create a new cart
+    if (!currentCartId) {
+      const newCart = await createCart();
+
+      currentCartId = newCart.id;
+
+      dispatch(setCartId(newCart.id));
     }
 
     try {
-      setAdding(true);
+      // Try adding to existing cart
+      const result = await addToCartMutation.mutateAsync({
+        cartId: currentCartId,
+        merchandiseId: variant.id,
+        quantity,
+      });
 
-      let currentCartId = cartId;
+      console.log('CART AFTER ADD:', result);
 
-      // No cart ID → create a new cart
-      if (!currentCartId) {
-        const newCart = await createCart();
-
-        currentCartId = newCart.id;
-
-        dispatch(setCartId(newCart.id));
+      if (result.addedQuantity === 0) {
+        setType('error');
+        setToastTitle('Already in your cart');
+        setToastMessage(
+          'The maximum quantity of this item is already in your cart.',
+        );
+      } else if (
+        result.addedQuantity < result.requestedQuantity
+      ) {
+        setType('error');
+        setToastTitle('Limited Availability');
+        setToastMessage(
+          `Only ${result.addedQuantity} item${
+            result.addedQuantity > 1 ? 's' : ''
+          } were added due to availability.`,
+        );
+      } else {
+        setType('success');
+        setToastTitle('Added to cart');
+        setToastMessage('This item is now in your cart.');
       }
 
-      try {
-        // Try adding to existing cart
-        const cart = await addToCartMutation.mutateAsync({
-          cartId: currentCartId,
+      setShowToast(true);
+
+    } catch (error: any) {
+      // Cart ID expired
+      if (
+        error?.message?.toLowerCase().includes('does not exist')
+      ) {
+        console.log(
+          'Old cart expired. Creating a new cart...',
+        );
+
+        const newCart = await createCart();
+
+        dispatch(setCartId(newCart.id));
+
+        const result = await addToCartMutation.mutateAsync({
+          cartId: newCart.id,
           merchandiseId: variant.id,
           quantity,
         });
 
-        console.log('CART AFTER ADD:', cart);
+        console.log('NEW CART AFTER ADD:', result);
 
         setType('success');
         setShowToast(true);
+        setToastTitle('Added to cart');
         setToastMessage('This item is now in your cart.');
-      } catch (error: any) {
-        // Existing cart ID is invalid → create a fresh cart
-        if (error?.message?.toLowerCase().includes('does not exist')) {
-          console.log('Old cart expired. Creating a new cart...');
 
-          const newCart = await createCart();
-
-          dispatch(setCartId(newCart.id));
-
-          // Add product to the new cart
-          const cart = await addToCartMutation.mutateAsync({
-            cartId: newCart.id,
-            merchandiseId: variant.id,
-            quantity,
-          });
-
-          console.log('NEW CART AFTER ADD:', cart);
-
-          setType('success');
-          setShowToast(true);
-          setToastMessage('This item is now in your cart.');
-        } else {
-          throw error;
-        }
+      } else {
+        throw error;
       }
-    } catch (error: any) {
-      console.error('ADD TO CART ERROR:', error);
-
-      setType('error');
-      setShowToast(true);
-      setToastMessage(
-        "We couldn't add the item right now. Please try again.",
-      );
-    } finally {
-      setAdding(false);
     }
-  };
+
+  } catch (error: any) {
+    setType('error');
+    setShowToast(true);
+
+    setToastTitle(
+      error?.message?.toLowerCase().includes('only')
+        ? 'Limited Availability'
+        : 'Something Went Wrong',
+    );
+
+    setToastMessage(
+      error?.message ||
+        "We couldn't add the item right now. Please try again.",
+    );
+
+  } finally {
+    setAdding(false);
+  }
+};
+
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -173,9 +211,10 @@ const ProductDetailsScreen = () => {
         type={type}
         visible={showToast}
         onHide={() => setShowToast(false)}
-        messageTitle={
-          type === 'success' ? 'Added to Your cart' : 'Something went wrong'
-        }
+        // messageTitle={
+        //   type === 'success' ? 'Added to Your cart' : 'Something went wrong'
+        // }
+        messageTitle={toastTitle}
         messageDescription={toastMessage}
       />
       <View style={styles.headerContainer}>

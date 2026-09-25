@@ -27,7 +27,9 @@ const styles = StyleSheet.create({
         borderColor: Colors.secondary
     },
     text:{
-        fontSize: wp(3.9),
+        fontSize: wp(3.5
+            
+        ),
         lineHeight: 25
     },
     title:{

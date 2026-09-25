@@ -13,14 +13,14 @@ const styles = StyleSheet.create({
         paddingBottom: hp(6)
     },
     title: {
-        fontSize: wp(5),
+        fontSize: wp(4.5),
         fontFamily: fonts.semibold,
         color: Colors.text,
         textAlign: 'center',
     },
     subTitle: {
-        fontSize: wp(4),
-        fontFamily: fonts.medium,
+        fontSize: wp(3.5),
+        fontFamily: fonts.regular,
         color: Colors.secondary,
         textAlign: 'center',
         marginBottom: hp(3)
@@ -31,6 +31,23 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: hp(4)
     },
+     numberInput:{
+        flexDirection:'row',
+        borderWidth: 0.3,
+        borderColor: Colors.secondary,
+        borderRadius:wp(2),
+        marginBottom:hp(2)
+
+    },
+    codeText:{
+        fontFamily:fonts.semibold,
+        fontSize:wp(4),
+        color:Colors.secondary,
+        textAlignVertical:'center',
+        paddingHorizontal:wp(2),
+        borderRightWidth:0.5,
+        borderColor: Colors.secondary
+    }
    
 });
 export default styles

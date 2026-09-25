@@ -147,18 +147,16 @@ const styles = StyleSheet.create({
         color: Colors.text,
     },
     badgeText: {
-        height: hp(2.5),
+        
         fontFamily: fonts.medium,
         fontSize: wp(3),
-        //color: Colors.text,
-        // backgroundColor: Colors.tertiary,
         paddingHorizontal: wp(2),
         justifyContent: 'center',
         borderRadius: wp(10)
     },
     date: {
         fontFamily: fonts.regular,
-        fontSize: wp(3.5),
+        fontSize: wp(3.2),
         color: Colors.secondary,
     },
     productContainer: {
@@ -194,7 +192,7 @@ const styles = StyleSheet.create({
     },
     moreItemsText: {
         fontFamily: fonts.semibold,
-        color: 'white',
+        color: Colors.background,
         fontSize: wp(5)
     }
 

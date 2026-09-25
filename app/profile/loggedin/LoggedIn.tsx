@@ -19,6 +19,7 @@ const LoggedIn = () => {
     const email = customer?.emailAddress?.emailAddress
     const fName = customer?.firstName
     const lName = customer?.lastName
+    const pNumber = customer?.phoneNumber
     
    
 
@@ -27,7 +28,8 @@ const LoggedIn = () => {
             pathname:'/profile/detailform/DetailForm',
             params:{
                 fName: fName,
-                lName: lName
+                lName: lName,
+                pNumber: pNumber
             }
         })
     }

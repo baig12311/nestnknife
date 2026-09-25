@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    height: '30%',
+    height: '35%',
     paddingHorizontal:wp(2),
    
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   title:{
     fontFamily: fonts.semibold,
     color: Colors.background,
-    fontSize: wp(4.5),
+    fontSize: wp(4),
     textAlign:'center'
   }
 });

@@ -1,6 +1,6 @@
 //import liraries
-import React, { Component, useEffect, useState} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import React, { Component, useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../../constants/colors';
 import { fonts } from '../../constants/typography';
@@ -12,15 +12,15 @@ interface Props {
     lName?: string
     email?: string
     loading?: boolean
-    onPress?:()=>void
+    onPress?: () => void
 }
-const Greeting: React.FC<Props> = ({ fName, lName, email, loading, onPress}) => {
+const Greeting: React.FC<Props> = ({ fName, lName, email, loading, onPress }) => {
     const [profileImage, setProfileImage] = useState<string | null>(null)
-    const loadImage=async()=>{
-        const savedImage=await AsyncStorage.getItem('profileImage')
+    const loadImage = async () => {
+        const savedImage = await AsyncStorage.getItem('profileImage')
         setProfileImage(savedImage)
     }
-    useEffect(()=>{
+    useEffect(() => {
         loadImage()
     }, [])
     return (
@@ -30,20 +30,20 @@ const Greeting: React.FC<Props> = ({ fName, lName, email, loading, onPress}) => 
             <View style={styles.icon}>
                 {
                     profileImage ? (
-<Image 
-source={{uri:profileImage}}
-style={styles.image}
-/>
+                        <Image
+                            source={{ uri: profileImage }}
+                            style={styles.image}
+                        />
                     ) : (
                         <Icon
-                    name='account'
-                    type='MaterialCommunityIcons'
-                    size={wp(15)}
-                    color={Colors.secondary}
-                />
+                            name='account'
+                            type='MaterialCommunityIcons'
+                            size={wp(15)}
+                            color={Colors.secondary}
+                        />
                     )
                 }
-                
+
             </View>
             <View style={styles.textContainer}>
 
@@ -85,17 +85,17 @@ style={styles.image}
                     </View>
                     {
                         (fName || lName) && (
-                            <TouchableOpacity 
-                    style={styles.buttonEdit}
-                    activeOpacity={0.7}
-                    onPress={onPress}
-                    >
-                        <Text style={styles.buttonText}>Edit</Text>
-                    </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.buttonEdit}
+                                activeOpacity={0.7}
+                                onPress={onPress}
+                            >
+                                <Text style={styles.buttonText}>Edit</Text>
+                            </TouchableOpacity>
 
                         )
                     }
-                    
+
                 </View>
 
             </View>
@@ -112,13 +112,13 @@ const styles = StyleSheet.create({
     },
     textName: {
         fontFamily: fonts.semibold,
-        fontSize: wp(4.5),
+        fontSize: wp(4),
         color: Colors.text,
     },
     textEmail: {
         fontFamily: fonts.regular,
         color: Colors.secondary,
-        fontSize: wp(3.3),
+        fontSize: wp(3.2),
         marginBottom: hp(0.5),
         //width: wp(60),
     },
@@ -140,14 +140,14 @@ const styles = StyleSheet.create({
     verifyBadge: {
         borderWidth: 0.3,
         borderColor: Colors.secondary,
-       
+
         width: wp(22),
         borderRadius: wp(50),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
         paddingVertical: hp(0.5),
-       backgroundColor:Colors.secondaryBackground
+        backgroundColor: Colors.secondaryBackground
         //paddingHorizontal: wp(2),
     },
     verifyText: {
@@ -170,14 +170,14 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontFamily: fonts.medium,
-        fontSize: wp(3.5),
+        fontSize: wp(3.2),
         color: Colors.primary
     },
-    image:{
-         width: wp(20),
+    image: {
+        width: wp(20),
         height: wp(20),
         borderRadius: wp(10),
-   }
+    }
 });
 
 //make this component available to the app

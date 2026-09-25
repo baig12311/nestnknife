@@ -16,14 +16,12 @@ const styles = StyleSheet.create({
         paddingBottom: hp(2),
     },
     section: {
-
         marginBottom: hp(1),
-        //padding: hp(2)
-        //paddingLeft: 20,
+       
     },
     sectionTitle: {
         marginBottom: hp(1),
-        fontSize: wp(5.5),
+        fontSize: wp(5),
         fontFamily: fonts.displaySemibold,
         //fontWeight: '600',
         color: Colors.text,
@@ -38,17 +36,14 @@ const styles = StyleSheet.create({
         width: wp(30),
         height: hp(15),
         borderRadius: 16,
-        backgroundColor: '#FFFFFF', // Solid background stops shadow bleed through
-        // REMOVED: elevation, shadowColor, shadowOpacity, shadowRadius, shadowOffset
+        backgroundColor: '#FFFFFF', 
     },
     card: {
-        //flex: 1,
         width: wp(25),
-        height: hp(15),
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 16,
-        overflow: 'hidden', // Cleanly clips the image
+        overflow: 'hidden',
         backgroundColor: Colors.background,
         marginRight: wp(3),
 
@@ -66,7 +61,8 @@ const styles = StyleSheet.create({
     },
 
     cardTitle: {
-        fontSize: wp(4),
+        marginTop:hp(0.5),
+        fontSize: wp(3.5),
         color: Colors.text,
         fontFamily: fonts.medium,
         fontWeight: '500',
@@ -100,7 +96,10 @@ const styles = StyleSheet.create({
         borderColor: Colors.secondary,
         alignSelf: 'center'
         
-    }
+    },
+    // horizontalListContent:{
+    //     paddingBottom:hp(2)
+    // }
 
 });
 export default styles;

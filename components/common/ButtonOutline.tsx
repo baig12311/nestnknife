@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 
     },
     text: {
-        fontSize: wp(4.5),
+        fontSize: wp(4),
         color: Colors.primary,
         fontFamily: fonts.semibold
     }

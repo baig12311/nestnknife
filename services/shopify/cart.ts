@@ -1,5 +1,350 @@
+// import { shopifyFetch } from './client';
+// import { getStoredAccessToken } from './shopify0Auth';
+// type ShopifyCart = {
+//   id: string;
+//   checkoutUrl: string;
+//   totalQuantity: number;
+// };
+
+// type CreateCartResponse = {
+//   cartCreate: {
+//     cart: ShopifyCart | null;
+//     userErrors: {
+//       field: string[];
+//       message: string;
+//     }[];
+//   };
+// };
+
+// type AddToCartResponse = {
+//   cartLinesAdd: {
+//     cart: ShopifyCart | null;
+//     userErrors: {
+//       field: string[];
+//       message: string;
+//     }[];
+//   };
+// };
+
+// type GetCartResponse = {
+//   cart: {
+//     id: string;
+//     checkoutUrl: string;
+//     totalQuantity: number;
+//     lines: {
+//       edges: {
+//         node: {
+//           id: string;
+//           quantity: number;
+//           merchandise: {
+//             id: string;
+//             title: string;
+//             product: {
+//               id: string;
+//               title: string;
+//             };
+//             image: {
+//               url: string;
+//             } | null;
+//             price: {
+//               amount: string;
+//               currencyCode: string;
+//             };
+//           };
+//         };
+//       }[];
+//     };
+//   } | null;
+// };
+
+// type UpdateCartLineResponse = {
+//   cartLinesUpdate: {
+//     cart: ShopifyCart | null;
+//     userErrors: {
+//       field: string[];
+//       message: string;
+//     }[];
+//   };
+// };
+
+// type RemoveCartLineResponse = {
+//   cartLinesRemove: {
+//     cart: ShopifyCart | null;
+//     userErrors: {
+//       field: string[];
+//       message: string;
+//     }[];
+//   };
+// };
+
+// /* =========================
+//    CREATE CART
+// ========================= */
+
+// const CREATE_CART_MUTATION = `
+//   mutation CreateCart {
+//     cartCreate {
+//       cart {
+//         id
+//         checkoutUrl
+//         totalQuantity
+//       }
+//       userErrors {
+//         field
+//         message
+//       }
+//     }
+//   }
+// `;
+
+// export const createCart = async () => {
+//   const data = await shopifyFetch<CreateCartResponse>(
+//     CREATE_CART_MUTATION,
+//   );
+
+//   const result = data.cartCreate;
+
+//   if (result.userErrors.length > 0) {
+//     throw new Error(result.userErrors[0].message);
+//   }
+
+//   if (!result.cart) {
+//     throw new Error('Shopify cart was not created.');
+//   }
+
+//   return result.cart;
+// };
+
+// /* =========================
+//    ADD TO CART
+// ========================= */
+
+// const ADD_TO_CART_MUTATION = `
+//   mutation AddToCart(
+//     $cartId: ID!
+//     $lines: [CartLineInput!]!
+//   ) {
+//     cartLinesAdd(
+//       cartId: $cartId
+//       lines: $lines
+//     ) {
+//       cart {
+//         id
+//         checkoutUrl
+//         totalQuantity
+//       }
+//       userErrors {
+//         field
+//         message
+//       }
+//     }
+//   }
+// `;
+
+// export const addToCart = async (
+//   cartId: string,
+//   merchandiseId: string,
+//   quantity: number,
+// ) => {
+//   console.log('API Quantity:', quantity)
+//   const data = await shopifyFetch<AddToCartResponse>(
+//     ADD_TO_CART_MUTATION,
+//     {
+//       cartId,
+//       lines: [
+//         {
+//           merchandiseId,
+//           quantity,
+//         },
+//       ],
+//     },
+//   );
+
+//   const result = data.cartLinesAdd;
+
+//   if (result.userErrors.length > 0) {
+//     throw new Error(result.userErrors[0].message);
+//   }
+
+//   if (!result.cart) {
+//     throw new Error('Unable to add product to cart.');
+//   }
+
+//   return result.cart;
+// };
+
+// /* =========================
+//    GET CART
+// ========================= */
+
+// const GET_CART_QUERY = `
+//   query GetCart($cartId: ID!) {
+//     cart(id: $cartId) {
+//       id
+//       checkoutUrl
+//       totalQuantity
+
+//       lines(first: 100) {
+//         edges {
+//           node {
+//             id
+//             quantity
+
+//             merchandise {
+//               ... on ProductVariant {
+//                 id
+//                 title
+
+//                 product {
+//                   id
+//                   title
+//                 }
+
+//                 image {
+//                   url
+//                 }
+
+//                 price {
+//                   amount
+//                   currencyCode
+//                 }
+//               }
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// `;
+
+// export const getCart = async (cartId: string) => {
+//   const data = await shopifyFetch<GetCartResponse>(
+//     GET_CART_QUERY,
+//     { cartId },
+//   );
+// console.log(
+//     '🔥 GET CART RESPONSE:',
+//     JSON.stringify(data.cart, null, 2),
+//   );
+//   return data.cart;
+// };
+
+// /* =========================
+//    UPDATE CART LINE
+// ========================= */
+
+// const UPDATE_CART_LINE_MUTATION = `
+//   mutation UpdateCartLine(
+//     $cartId: ID!
+//     $lines: [CartLineUpdateInput!]!
+//   ) {
+//     cartLinesUpdate(
+//       cartId: $cartId
+//       lines: $lines
+//     ) {
+//       cart {
+//         id
+//         checkoutUrl
+//         totalQuantity
+//       }
+//       userErrors {
+//         field
+//         message
+//       }
+//     }
+//   }
+// `;
+
+// export const updateCartLine = async (
+//   cartId: string,
+//   lineId: string,
+//   quantity: number,
+// ) => {
+//   const data = await shopifyFetch<UpdateCartLineResponse>(
+//     UPDATE_CART_LINE_MUTATION,
+//     {
+//       cartId,
+//       lines: [
+//         {
+//           id: lineId,
+//           quantity,
+//         },
+//       ],
+//     },
+//   );
+
+//   const result = data.cartLinesUpdate;
+
+//   if (result.userErrors.length > 0) {
+//     throw new Error(result.userErrors[0].message);
+//   }
+
+//   if (!result.cart) {
+//     throw new Error('Unable to update cart.');
+//   }
+
+//   return result.cart;
+// };
+
+// /* =========================
+//    REMOVE CART LINE
+// ========================= */
+
+// const REMOVE_CART_LINE_MUTATION = `
+//   mutation RemoveCartLine(
+//     $cartId: ID!
+//     $lineIds: [ID!]!
+//   ) {
+//     cartLinesRemove(
+//       cartId: $cartId
+//       lineIds: $lineIds
+//     ) {
+//       cart {
+//         id
+//         checkoutUrl
+//         totalQuantity
+//       }
+//       userErrors {
+//         field
+//         message
+//       }
+//     }
+//   }
+// `;
+
+// export const removeCartLine = async (
+//   cartId: string,
+//   lineId: string,
+// ) => {
+//   const data = await shopifyFetch<RemoveCartLineResponse>(
+//     REMOVE_CART_LINE_MUTATION,
+//     {
+//       cartId,
+//       lineIds: [lineId],
+//     },
+//   );
+
+//   const result = data.cartLinesRemove;
+
+//   if (result.userErrors.length > 0) {
+//     throw new Error(result.userErrors[0].message);
+//   }
+
+//   if (!result.cart) {
+//     throw new Error('Unable to remove item from cart.');
+//   }
+
+//   return result.cart;
+// };
+
+
+
 import { shopifyFetch } from './client';
-import { getStoredAccessToken } from './shopify0Auth';
+
+/* =========================
+   TYPES
+========================= */
+
 type ShopifyCart = {
   id: string;
   checkoutUrl: string;
@@ -18,7 +363,25 @@ type CreateCartResponse = {
 
 type AddToCartResponse = {
   cartLinesAdd: {
-    cart: ShopifyCart | null;
+    cart: {
+      id: string;
+      checkoutUrl: string;
+      totalQuantity: number;
+
+      lines: {
+        edges: {
+          node: {
+            id: string;
+            quantity: number;
+
+            merchandise: {
+              id: string;
+            };
+          };
+        }[];
+      };
+    } | null;
+
     userErrors: {
       field: string[];
       message: string;
@@ -31,21 +394,26 @@ type GetCartResponse = {
     id: string;
     checkoutUrl: string;
     totalQuantity: number;
+
     lines: {
       edges: {
         node: {
           id: string;
           quantity: number;
+
           merchandise: {
             id: string;
             title: string;
+
             product: {
               id: string;
               title: string;
             };
+
             image: {
               url: string;
             } | null;
+
             price: {
               amount: string;
               currencyCode: string;
@@ -59,7 +427,21 @@ type GetCartResponse = {
 
 type UpdateCartLineResponse = {
   cartLinesUpdate: {
-    cart: ShopifyCart | null;
+    cart: {
+      id: string;
+      checkoutUrl: string;
+      totalQuantity: number;
+
+      lines: {
+        edges: {
+          node: {
+            id: string;
+            quantity: number;
+          };
+        }[];
+      };
+    } | null;
+
     userErrors: {
       field: string[];
       message: string;
@@ -70,6 +452,7 @@ type UpdateCartLineResponse = {
 type RemoveCartLineResponse = {
   cartLinesRemove: {
     cart: ShopifyCart | null;
+
     userErrors: {
       field: string[];
       message: string;
@@ -89,6 +472,7 @@ const CREATE_CART_MUTATION = `
         checkoutUrl
         totalQuantity
       }
+
       userErrors {
         field
         message
@@ -132,7 +516,23 @@ const ADD_TO_CART_MUTATION = `
         id
         checkoutUrl
         totalQuantity
+
+        lines(first: 100) {
+          edges {
+            node {
+              id
+              quantity
+
+              merchandise {
+                ... on ProductVariant {
+                  id
+                }
+              }
+            }
+          }
+        }
       }
+
       userErrors {
         field
         message
@@ -146,6 +546,26 @@ export const addToCart = async (
   merchandiseId: string,
   quantity: number,
 ) => {
+  console.log('API Quantity:', quantity);
+
+  // Check current cart quantity before adding
+  const existingCart = await getCart(cartId);
+
+  const existingLine =
+    existingCart?.lines.edges.find(
+      ({ node }) =>
+        node.merchandise.id === merchandiseId,
+    );
+
+  const previousQuantity =
+    existingLine?.node.quantity ?? 0;
+
+  console.log(
+    'Previous Quantity:',
+    previousQuantity,
+  );
+
+  // Add requested quantity
   const data = await shopifyFetch<AddToCartResponse>(
     ADD_TO_CART_MUTATION,
     {
@@ -169,7 +589,37 @@ export const addToCart = async (
     throw new Error('Unable to add product to cart.');
   }
 
-  return result.cart;
+  // Find the product after Shopify processed the request
+  const updatedLine =
+    result.cart.lines.edges.find(
+      ({ node }) =>
+        node.merchandise.id === merchandiseId,
+    );
+
+  const actualQuantity =
+    updatedLine?.node.quantity ?? previousQuantity;
+
+  console.log(
+    'Actual Quantity:',
+    actualQuantity,
+  );
+
+  // How many were actually added?
+  const addedQuantity =
+    actualQuantity - previousQuantity;
+
+  console.log(
+    'Actually Added:',
+    addedQuantity,
+  );
+
+  return {
+    cart: result.cart,
+    previousQuantity,
+    requestedQuantity: quantity,
+    actualQuantity,
+    addedQuantity,
+  };
 };
 
 /* =========================
@@ -222,6 +672,11 @@ export const getCart = async (cartId: string) => {
     { cartId },
   );
 
+  console.log(
+    '🔥 GET CART RESPONSE:',
+    JSON.stringify(data.cart, null, 2),
+  );
+
   return data.cart;
 };
 
@@ -242,7 +697,17 @@ const UPDATE_CART_LINE_MUTATION = `
         id
         checkoutUrl
         totalQuantity
+
+        lines(first: 100) {
+          edges {
+            node {
+              id
+              quantity
+            }
+          }
+        }
       }
+
       userErrors {
         field
         message
@@ -300,6 +765,7 @@ const REMOVE_CART_LINE_MUTATION = `
         checkoutUrl
         totalQuantity
       }
+
       userErrors {
         field
         message
@@ -332,6 +798,3 @@ export const removeCartLine = async (
 
   return result.cart;
 };
-
-
-

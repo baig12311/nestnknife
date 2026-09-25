@@ -679,14 +679,13 @@ export const updateCustomer = async ({
           firstName
           lastName
           displayName
-
+         
+          
           emailAddress {
             emailAddress
           }
 
-          phoneNumber {
-            phoneNumber
-          }
+         
 
           defaultAddress {
             address1
@@ -724,9 +723,9 @@ export const updateCustomer = async ({
   }
 
 
-  if (phoneNumber !== undefined) {
-    input.phoneNumber = phoneNumber;
-  }
+  // if (phoneNumber !== undefined) {
+  //   input.phoneNumber = phoneNumber;
+  // }
 
 
   /* =========================================================

@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: wp(5)
     },
     text: {
-        fontSize: wp(4.5),
+        fontSize: wp(4),
         color: Colors.background,
         fontFamily: fonts.semibold
     }

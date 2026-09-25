@@ -34,7 +34,7 @@ const AddressCard: React.FC<Props> = ({ firstName, lastName, phoneNumber, addres
                 <Icon
                     name='location'
                     type='Ionicons'
-                    size={wp(7)}
+                    size={wp(6)}
                     color={Colors.primary}
                 />
             </View>
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         fontFamily: fonts.regular,
-        fontSize: wp(3.5),
+        fontSize: wp(3.2),
         color: Colors.secondary,
         marginLeft: wp(2)
     },
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     textBadge: {
         fontFamily: fonts.medium,
         color: Colors.primary,
-        fontSize: wp(3.5)
+        fontSize: wp(3)
     }
 });
 

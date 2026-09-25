@@ -50,14 +50,13 @@ export default ProductCard
 
 const styles = StyleSheet.create({
   container: {
-    //
     
-    borderRadius: 16,
-    backgroundColor: '#FFFFFF',
+    
+    borderRadius: wp(3),
+    backgroundColor:'white',
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: '#EEEEEE',
-    //elevation:2,
    
   },
   containerStyle:{
@@ -75,7 +74,7 @@ const styles = StyleSheet.create({
     padding: wp(2.5),
   },
   title: {
-    fontSize: wp(3.5),
+    fontSize: wp(3.2),
     //lineHeight: hp(2.4),
     //fontWeight: '500',
     fontFamily:fonts.medium,

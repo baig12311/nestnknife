@@ -114,18 +114,9 @@ const HomeScreen = () => {
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={false}
-            //contentContainerStyle={styles.horizontalListContent}
             >
               {collections?.map((collection, index) => (
                 <FadeInView key={collection.id} delay={600 + index * 100}>
-                  {/* <Shadow
-                      distance={6}
-                      startColor="rgba(0, 0, 0, 0.06)"
-                      endColor="rgba(0, 0, 0, 0.00)"
-                      offset={[0, 3]}
-                      style={styles.cardShadowWrapper}
-                      containerStyle={styles.shadowContainer}
-                    > */}
                   <TouchableOpacity
                     style={styles.card}
                     activeOpacity={0.85}

@@ -14,6 +14,7 @@ const HelpSection = () => {
                     subText='Get help and find answers'
                     paddingVertical={hp(1)}
                     borderBottomWidth={0.3}
+                    onPress={() => router.push('/profile/helpSupport/HelpSupport')}
                 />
                 
                 <CustomSectionRow

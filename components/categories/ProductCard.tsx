@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     padding: wp(2.5),
   },
   title: {
-    fontSize: wp(3.5),
+    fontSize: wp(3.2),
     //lineHeight: hp(2.4),
     fontFamily: fonts.medium,
     //fontWeight: '500',

@@ -39,7 +39,7 @@ const CustomSectionRow: React.FC<Props> = ({ paddingHorizontal,
                 <Icon
                     name={iconName}
                     type={iconType}
-                    size={wp(7)}
+                    size={wp(6)}
                     color={Colors.text}
                 />
             </View>
@@ -89,8 +89,8 @@ const styles = StyleSheet.create({
         marginRight: wp(2),
     },
     icon: {
-        width: wp(12),
-        height: wp(12),
+        width: wp(11),
+        height: wp(11),
         borderRadius: wp(6),
         backgroundColor: Colors.background,
 

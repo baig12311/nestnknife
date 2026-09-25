@@ -35,7 +35,7 @@ const FormattedDescription = ({ html }: Props) => {
     body: {
       
       color: Colors.text,
-      fontSize: wp(3.8),
+      fontSize: wp(3),
       fontFamily: fonts.regular,
       lineHeight: 22,
     },
@@ -48,7 +48,6 @@ const FormattedDescription = ({ html }: Props) => {
       marginBottom: hp(1),
     },
     h2: {
-       borderWidth:1,
       fontSize: wp(4.8),
       fontFamily: fonts.displayBold,
       color: Colors.text,
@@ -56,8 +55,7 @@ const FormattedDescription = ({ html }: Props) => {
       marginBottom: hp(1),
     },
     h3: {
-      //borderWidth:1,
-      fontSize: wp(4.5),
+      fontSize: wp(3.5),
       fontFamily: fonts.displaySemibold,
       color: Colors.text,
       marginTop: hp(1.5),
@@ -65,7 +63,7 @@ const FormattedDescription = ({ html }: Props) => {
     },
     p: {
      
-      fontSize: wp(3.8),
+      fontSize: wp(3.2),
       fontFamily: fonts.regular,
       marginBottom: hp(1),
       color: Colors.text,
@@ -77,21 +75,19 @@ const FormattedDescription = ({ html }: Props) => {
       marginBottom: hp(1),
     },
     li: {
-     
-      fontSize: wp(3.8),
+      fontSize: wp(3.2),
       fontFamily: fonts.regular,
       marginBottom: hp(0.5),
       color: Colors.text,
     },
     strong: {
-    
-      fontSize: wp(4.2), // Makes bold titles visibly larger
+      fontSize: wp(3.2), // Makes bold titles visibly larger
       fontFamily: fonts.displaySemibold,
       color: Colors.text,
     },
     b: {
      
-      fontSize: wp(4.2),
+      fontSize: wp(3),
       fontFamily: fonts.displayBold,
       color: Colors.text,
     },

@@ -336,7 +336,7 @@ const styles = StyleSheet.create({
 
     status: {
         fontFamily: fonts.semibold,
-        fontSize: wp(5.5),
+        fontSize: wp(5),
         color: Colors.primary
     },
 

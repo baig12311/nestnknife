@@ -30,17 +30,17 @@ const CartCard:React.FC<props> = ({productName, price, image, onDecrease, onIncr
                         name='trash-outline' 
                         type='Ionicons'
                         size={wp(6)}
-                        color={Colors.primary}
+                        color={Colors.red}
                         />
                     </TouchableOpacity>
                 </View>
                 <Text style={styles.price}>
-                    Rs. {price.toLocaleString()}
+                    PKR {price.toLocaleString()}
                 </Text>
                 <View style={[styles.header, {marginTop:hp(1.5)}]}>
                     <QuantityCard onDecrease={onDecrease} onIncrease={onIncrease} quantity={quantity}/>
                     <Text style={styles.price}>
-                       Rs. {(price*quantity).toLocaleString()}
+                       PKR {(price*quantity).toLocaleString()}
                     </Text>
                 </View>
             </View>
@@ -51,8 +51,6 @@ const CartCard:React.FC<props> = ({productName, price, image, onDecrease, onIncr
 // define your styles
 const styles = StyleSheet.create({
     container: {
-        
-        //borderRadius:15,
         padding: wp(3),
         flexDirection: 'row',
         alignItems: 'center'
@@ -61,24 +59,20 @@ const styles = StyleSheet.create({
     image:{
         width: wp(25),
         height: wp(25),
-        //borderWidth:,
-        borderRadius:7,
+        borderRadius:wp(2),
         marginRight:wp(2)
     },
     contentContainer:{
-        //borderWidth:1,
         flex:1,
         justifyContent:'space-between'
     },
     header:{
-        //borderWidth:1,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        //marginBottom:hp(1)
     },
     product:{
-        fontSize:wp(3.5),
+        fontSize:wp(3.2),
         fontFamily: fonts.medium,
         color:Colors.text,
         paddingRight:wp(1.5),

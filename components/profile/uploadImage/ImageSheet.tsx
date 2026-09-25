@@ -4,6 +4,7 @@ import BottomSheet, {
     BottomSheetView,
     BottomSheetBackdrop
 } from '@gorhom/bottom-sheet';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Colors from '../../../constants/colors';
 import { fonts } from '../../../constants/typography';
 import { RangeSlider } from '@react-native-assets/slider';
@@ -14,11 +15,12 @@ import {
 import SheetElement from './SheetElement';
 interface Props {
     bottomSheetRef: React.RefObject<BottomSheet | null>
-    isEdit?:boolean
+    isEdit?: boolean
+    onAction:(action: 'camera' | 'gallery' | 'remove')=>void
 }
 
-const ImageSheet: React.FC<Props> = ({ bottomSheetRef, isEdit}) => {
-    
+const ImageSheet: React.FC<Props> = ({ bottomSheetRef, isEdit, onAction}) => {
+    const inset = useSafeAreaInsets()
     return (
         <BottomSheet
             ref={bottomSheetRef}
@@ -40,36 +42,39 @@ const ImageSheet: React.FC<Props> = ({ bottomSheetRef, isEdit}) => {
             }}
         >
             <BottomSheetView
-                style={styles.sheet}
+                style={[styles.sheet, {paddingBottom:inset.bottom}]}
             >
                 <SheetElement
-                iconName='camera-outline'
-                iconType='Ionicons'
-                title={isEdit ? 'Change Photo' : 'Take Photo'}
-                Color={Colors.primary}
-                bgColor={Colors.secondaryBackground}
+                    iconName='camera-outline'
+                    iconType='Ionicons'
+                    title={isEdit ? 'Change Photo' : 'Take Photo'}
+                    Color={Colors.primary}
+                    bgColor={Colors.secondaryBackground}
+                    onPress={()=>onAction('camera')}
                 />
                 <SheetElement
-                iconName='images-outline'
-                iconType='Ionicons'
-                title='Choose From Gallery'
-                Color={Colors.primary}
-                 bgColor={Colors.secondaryBackground}
+                    iconName='images-outline'
+                    iconType='Ionicons'
+                    title='Choose From Gallery'
+                    Color={Colors.primary}
+                    bgColor={Colors.secondaryBackground}
+                    onPress={()=>onAction('gallery')}
                 />
                 {
                     isEdit && (
                         <SheetElement
-                iconName='trash-outline'
-                iconType='Ionicons'
-                title='Remove Photo'
-                Color={Colors.red}
-                 bgColor={Colors.redBG}
-                />
+                            iconName='trash-outline'
+                            iconType='Ionicons'
+                            title='Remove Photo'
+                            Color={Colors.red}
+                            bgColor={Colors.redBG}
+                            onPress={()=>onAction('remove')}
+                        />
                     )
                 }
-                <Text 
-                style={styles.cancel}
-                onPress={()=>bottomSheetRef.current?.close()}
+                <Text
+                    style={styles.cancel}
+                    onPress={() => bottomSheetRef.current?.close()}
                 >Cancel</Text>
 
             </BottomSheetView>
@@ -81,16 +86,16 @@ const styles = StyleSheet.create({
     sheet: {
         padding: hp(2)
     },
-    cancel:{
-        fontFamily:fonts.medium,
+    cancel: {
+        fontFamily: fonts.medium,
         fontSize: wp(4),
-        color:Colors.primary,
+        color: Colors.primary,
         textAlign: 'center',
         marginTop: hp(1),
         padding: wp(2),
-        
+
     }
-    
+
 });
 
 export default ImageSheet;

@@ -7,6 +7,7 @@ import BottomSheet, {
 import Colors from '../../constants/colors';
 import { fonts } from '../../constants/typography';
 import { RangeSlider } from '@react-native-assets/slider';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp
@@ -19,6 +20,7 @@ interface Props {
 }
 
 const CustomBottomSheet: React.FC<Props> = ({ bottomSheetRef, category, Filters}) => {
+    const insets = useSafeAreaInsets()
     const [selectedSort, setSelectedSort] = useState<number | null>(null)
     const [selectedCategory, setSelectedCategory] = useState<number | null>(null)
     const [isPriceFiltered, setIsPriceFiltered] = useState(false)
@@ -104,7 +106,7 @@ const CustomBottomSheet: React.FC<Props> = ({ bottomSheetRef, category, Filters}
             }}
         >
             <BottomSheetView
-                style={{padding: hp(2) }}
+                style={{padding: hp(2), paddingBottom: insets.bottom}}
             >
                 <View style={styles.header}>
                     <Text style={styles.heading}>Filters</Text>

@@ -63,14 +63,14 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: wp(5.5),
+    fontSize: wp(4.5),
     fontFamily: fonts.bold,
     color: Colors.text,
 
   },
 
   price: {
-    fontSize: wp(6),
+    fontSize: wp(5),
     fontFamily: fonts.displayBold,
     color: Colors.primary,
     marginBottom: hp(0.5)
@@ -90,7 +90,8 @@ const styles = StyleSheet.create({
 
   quantityLabel: {
     fontFamily: fonts.semibold,
-    fontSize: wp(5)
+    fontSize: wp(4),
+    color:Colors.text
   },
 
   quantityControls: {

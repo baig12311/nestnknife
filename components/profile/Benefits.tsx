@@ -35,13 +35,13 @@ const Benefits = () => {
 
 const styles = StyleSheet.create({
     container: {
-        //flexDirection: 'row',
         borderWidth: 0.3,
         padding: wp(3),
         borderRadius: wp(2),
         borderColor: Colors.secondary,
         backgroundColor: '#FFF5E6',
-        marginVertical: hp(6)
+        marginTop: hp(1),
+        marginBottom: hp(3)
     },
     heading: {
         fontFamily: fonts.semibold,
@@ -94,6 +94,6 @@ const Row: React.FC<Props> = ({ point }) => {
             <Text style={styles.rowText}>
                 {point}
             </Text>
-         </View>
+        </View>
     )
 }

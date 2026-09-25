@@ -18,7 +18,7 @@ const OrderInfoCard:React.FC<Props> = ({iconName, iconType, title, desc}) => {
                 name={iconName}
                 type={iconType}
                 color={Colors.primary}
-                size={wp(6)}
+                size={wp(5)}
                 />
             </View>
             <View style={styles.textContainer}>

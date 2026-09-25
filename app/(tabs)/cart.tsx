@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { SafeAreaView} from 'react-native-safe-area-context';
-import { View, Text, FlatList, Image} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Text, FlatList, Image } from 'react-native';
 import { useSelector } from 'react-redux';
 import styles from '../styles/CartStyle';
 import Header from '../../components/categories/Header';
@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux';
 import { setCartId } from '../../store/cartSlice';
 import { useCart } from '../../hooks/useProducts';
 import CartAmount from '../../components/cart/CartAmount';
+import CustomToast from '../../components/common/CustomToast';
 import Button from '../../components/common/Button';
 import CustomEmptyComponent from '../../components/common/CustomEmptyComponent';
 import { Linking, Alert } from 'react-native';
@@ -19,9 +20,11 @@ import { Linking, Alert } from 'react-native';
 const Cart = () => {
   const dispatch = useDispatch<any>();
   const cartId = useSelector((state: RootState) => state.cart.cartId);
-
+  const [showToast, setShowToast] = useState(false);
   const { data: cart, isLoading, error } = useCart(cartId);
-
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastTitle, setToastTitle] = useState('');
+  const [toastType, setToastType] = useState<'success' | 'error'>('error');
   const updateCartLineMutation = useUpdateCartLine();
   const removeCartLineMutation = useRemoveCartLine();
 
@@ -35,11 +38,29 @@ const Cart = () => {
     try {
       setUpdatingLineId(lineId);
 
-      await updateCartLineMutation.mutateAsync({
-        cartId,
-        lineId,
-        quantity: newQuantity,
-      });
+      const updatedCart =
+        await updateCartLineMutation.mutateAsync({
+          cartId,
+          lineId,
+          quantity: newQuantity,
+        });
+
+      const updatedLine =
+        updatedCart.lines.edges.find(
+          ({ node }: any) => node.id === lineId,
+        );
+
+      const actualQuantity =
+        updatedLine?.node.quantity ?? newQuantity;
+
+      if (actualQuantity < newQuantity) {
+        setToastType('error');
+        setToastTitle('Limited Availability');
+        setToastMessage(
+          `Only ${actualQuantity} items were added to your cart due to availability.`,
+        );
+        setShowToast(true);
+      }
     } catch (error) {
       console.error('QUANTITY UPDATE ERROR:', error);
     } finally {
@@ -79,61 +100,61 @@ const Cart = () => {
       <SafeAreaView style={styles.container}>
         <Header title="Cart" />
         <CustomEmptyComponent
-        illustration={require('../../assets/illustrations/emptyCart.png')}
-        mainText='Your Cart is Empty'
-        subText="Looks like you haven't added anything yet."
-        buttonTitle='Explore Colllection'
-        onPress={()=>router.replace('/categories')}
+          illustration={require('../../assets/illustrations/emptyCart.png')}
+          mainText='Your Cart is Empty'
+          subText="Looks like you haven't added anything yet."
+          buttonTitle='Explore Colllection'
+          onPress={() => router.replace('/categories')}
 
-        isCart={true}
+          isCart={true}
         />
       </SafeAreaView>
-      
+
     );
   }
 
   //const [checkingOut, setCheckingOut] = useState(false);
 
-const handleCheckout = async () => {
-  if (!cart?.checkoutUrl) {
-    Alert.alert(
-      'Error',
-      'Unable to proceed to checkout. Please try again.',
-    );
-    return;
-  }
-
-  try {
-    setCheckingOut(true);
-
-    console.log('CHECKOUT URL:', cart.checkoutUrl);
-
-    const checkoutUrl = `${cart.checkoutUrl}&sso=silent`;
-
-    const supported = await Linking.canOpenURL(
-      checkoutUrl,
-    );
-
-    if (supported) {
-      await Linking.openURL(checkoutUrl);
-    } else {
+  const handleCheckout = async () => {
+    if (!cart?.checkoutUrl) {
       Alert.alert(
         'Error',
-        'Unable to open checkout page.',
+        'Unable to proceed to checkout. Please try again.',
       );
+      return;
     }
-  } catch (error: any) {
-    console.error('CHECKOUT ERROR:', error);
 
-    Alert.alert(
-      'Error',
-      error?.message ??
+    try {
+      setCheckingOut(true);
+
+      console.log('CHECKOUT URL:', cart.checkoutUrl);
+
+      const checkoutUrl = `${cart.checkoutUrl}&sso=silent`;
+
+      const supported = await Linking.canOpenURL(
+        checkoutUrl,
+      );
+
+      if (supported) {
+        await Linking.openURL(checkoutUrl);
+      } else {
+        Alert.alert(
+          'Error',
+          'Unable to open checkout page.',
+        );
+      }
+    } catch (error: any) {
+      console.error('CHECKOUT ERROR:', error);
+
+      Alert.alert(
+        'Error',
+        error?.message ??
         'Something went wrong. Please try again.',
-    );
-  } finally {
-    setCheckingOut(false);
-  }
-};
+      );
+    } finally {
+      setCheckingOut(false);
+    }
+  };
 
   const cartTotal =
     cart?.lines.edges.reduce((total, { node }) => {
@@ -141,7 +162,7 @@ const handleCheckout = async () => {
       return total + price * node.quantity;
     }, 0) ?? 0;
 
-  const renderCartItem = ({ item, index}: any) => {
+  const renderCartItem = ({ item, index }: any) => {
     const { node } = item;
 
     return (
@@ -160,15 +181,22 @@ const handleCheckout = async () => {
   };
   return (
     <SafeAreaView style={styles.container}>
+      <CustomToast
+    type={toastType}
+    visible={showToast}
+    onHide={() => setShowToast(false)}
+    messageTitle={toastTitle}
+    messageDescription={toastMessage}
+  />
       <Header title="Cart" />
 
-      <View style={{ flex: 1}}>
+      <View style={{ flex: 1 }}>
         <View
           style={styles.contentContainer}
         >
           <FlatList
             data={cart?.lines.edges}
-            contentContainerStyle={{ paddingBottom: 25}}
+            contentContainerStyle={{ paddingBottom: 25 }}
             keyExtractor={({ node }) => node.id}
             showsVerticalScrollIndicator={false}
             renderItem={renderCartItem}
@@ -184,14 +212,14 @@ const handleCheckout = async () => {
 
 
       <View style={styles.amountContainer}>
-        <CartAmount title='SubTotal' amount={`Rs. ${cartTotal.toLocaleString()}`} />
+        <CartAmount title='SubTotal' amount={`PKR ${cartTotal.toLocaleString()}`} />
         <CartAmount title='Shipping' amount='Calculated at checkout' />
-        <CartAmount title='Total' amount={`Rs. ${cartTotal.toLocaleString()}`} borderWidth={0.3} padding={5} margin={6} />
+        <CartAmount title='Total' amount={`PKR ${cartTotal.toLocaleString()}`} borderWidth={0.3} padding={5} margin={6} />
         <Button
-  title="Proceed to Checkout"
-  onPress={handleCheckout}
-  loading={checkingOut}
-/>
+          title="Proceed to Checkout"
+          onPress={handleCheckout}
+          loading={checkingOut}
+        />
       </View>
 
     </SafeAreaView>
