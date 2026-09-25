@@ -10,9 +10,9 @@ const Incomplete = () => {
         <View style={styles.container}>
            
             <Icon
-                name='info-circle'
-                type='AntDesign'
-                size={wp(6)}
+                name='alert-circle-outline'
+                type='Ionicons'
+                size={wp(6.5)}
                 color={Colors.accent}
             />
             <View style={styles.textContainer}>

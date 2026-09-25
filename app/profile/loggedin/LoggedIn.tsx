@@ -58,6 +58,7 @@ const LoggedIn = () => {
                 {
                     (!loading&&!fName && !lName && !error) && (<Incomplete />)
                 }
+                <Incomplete/>
                 <Text style={styles.heading}>Account</Text>
                 <MoreInfoSection />
                 <Text style={styles.heading}>Help</Text>

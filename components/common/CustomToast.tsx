@@ -4,7 +4,8 @@ import { fonts } from '../../constants/typography';
 import Colors from '../../constants/colors';
 import Animated, { FadeInDown, FadeOutUp } from 'react-native-reanimated';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-type toastType = 'success' | 'error'
+import Icon from '../Icon';
+type toastType = 'success' | 'error' | 'warn'
 interface Props {
     messageTitle?: string
     messageDescription?: string
@@ -13,7 +14,11 @@ interface Props {
     onHide: () => void
 }
 const CustomToast: React.FC<Props> = ({ messageDescription, messageTitle, visible, onHide, type }) => {
-    const toastColor = type === 'success' ? '#2E7D5B' : '#C84037'
+    const toastColor = type === 'success' ? '#2E7D5B' :
+        type === 'error' ? Colors.red : type === 'warn' ? '#D97706' : '#7C6A9B'
+    const icon = type === 'success' ? { name: 'check-circle', type: 'Feather' } :
+        type === 'error' ? { name: 'error-outline', type: 'MaterialIcons' } : type === 'warn' ?
+            { name: 'alert-triangle', type: 'Feather' } : { name: 'information-circle-outline', type: 'Ionicons' }
     useEffect(() => {
         if (!visible) {
             return
@@ -36,8 +41,19 @@ const CustomToast: React.FC<Props> = ({ messageDescription, messageTitle, visibl
                 .stiffness(180)}
             exiting={FadeOutUp.duration(250)}
         >
-            <Text style={[styles.txtHeading, { color: toastColor }]}>{messageTitle}</Text>
-            <Text style={styles.txtDescription}>{messageDescription}</Text>
+
+
+            <Icon
+                name={icon.name}
+                type={icon.type}
+                size={wp(5)}
+                color={toastColor}
+            />
+            <View style={styles.textView}>
+                <Text style={[styles.txtHeading, { color: toastColor }]}>{messageTitle}</Text>
+                <Text style={styles.txtDescription}>{messageDescription}</Text>
+            </View>
+
 
         </Animated.View>
     );
@@ -54,18 +70,23 @@ const styles = StyleSheet.create({
         zIndex: 10,
         top: hp(6),
         borderLeftWidth: 5,
-        elevation: 5
+        elevation: 5,
+        flexDirection: 'row'
     },
     txtHeading: {
         fontFamily: fonts.semibold,
-        fontSize: wp(4),
+        fontSize: wp(3.5),
+
         //color: Colors.text
     },
     txtDescription: {
         fontFamily: fonts.regular,
-        fontSize: wp(3.5),
+        fontSize: wp(3.2),
         color: Colors.secondary
 
+    },
+    textView: {
+        marginLeft: wp(2)
     }
 });
 

@@ -38,7 +38,7 @@ const ProductDetailsScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [activeIndex, setActiveIndex] = useState(0);
   const [showToast, setShowToast] = useState(false)
-  const [type, setType] = useState<'success' | 'error'>('error')
+  const [type, setType] = useState<'success' | 'error' | 'warn' | 'info'>('error')
   const [toastTitle, setToastTitle] = useState('')
   const [toastMessage, setToastMessage] = useState('')
   const queryClient = useQueryClient();
@@ -129,7 +129,7 @@ const ProductDetailsScreen = () => {
       console.log('CART AFTER ADD:', result);
 
       if (result.addedQuantity === 0) {
-        setType('error');
+        setType('info');
         setToastTitle('Already in your cart');
         setToastMessage(
           'The maximum quantity of this item is already in your cart.',

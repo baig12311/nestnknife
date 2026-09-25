@@ -24,7 +24,7 @@ const Cart = () => {
   const { data: cart, isLoading, error } = useCart(cartId);
   const [toastMessage, setToastMessage] = useState('');
   const [toastTitle, setToastTitle] = useState('');
-  const [toastType, setToastType] = useState<'success' | 'error'>('error');
+  const [toastType, setToastType] = useState<'success' | 'error' | 'warn' | 'info'>('error');
   const updateCartLineMutation = useUpdateCartLine();
   const removeCartLineMutation = useRemoveCartLine();
 
@@ -54,7 +54,7 @@ const Cart = () => {
         updatedLine?.node.quantity ?? newQuantity;
 
       if (actualQuantity < newQuantity) {
-        setToastType('error');
+        setToastType('warn');
         setToastTitle('Limited Availability');
         setToastMessage(
           `Only ${actualQuantity} items were added to your cart due to availability.`,
