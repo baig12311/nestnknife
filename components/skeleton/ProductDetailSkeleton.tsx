@@ -44,8 +44,10 @@ const ProductDetailSkeleton = () => {
           <SkeletonBox width={wp(22)} height={hp(2.6)} borderRadius={6} />
           <SkeletonBox width={wp(28)} height={hp(4.5)} borderRadius={8} />
         </View>
-
-        <SkeletonBox width={wp(90)} height={hp(6)} borderRadius={10} style={styles.buttonSpacing} />
+        <View style={styles.buttonView}>
+          <SkeletonBox width={wp(40)} height={hp(5.5)} borderRadius={10} style={styles.buttonSpacing} />
+          <SkeletonBox width={wp(40)} height={hp(5.5)} borderRadius={10} style={styles.buttonSpacing} />
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -88,6 +90,10 @@ const styles = StyleSheet.create({
     marginBottom: hp(1.5),
   },
   buttonSpacing: {
-    alignSelf: 'center',
+    //alignSelf: 'center',
   },
+  buttonView:{
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  }
 });

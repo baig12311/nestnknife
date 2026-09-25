@@ -28,7 +28,10 @@ const CustomEmptyComponent: React.FC<Props> = ({ mainText, subText, illustration
         )
       }
       <View style={{ alignSelf: 'center' }}>
-        <Button title={buttonTitle} onPress={onPress} />
+        {
+          buttonTitle && (<Button title={buttonTitle} onPress={onPress} />)
+        }
+        
 
       </View>
     </View>
@@ -44,12 +47,12 @@ const styles = StyleSheet.create({
   },
 
   emptyTitle: {
-    fontSize: wp(6),
+    fontSize: wp(5),
     fontFamily: fonts.semibold
   },
 
   emptyText: {
-    fontSize: wp(4),
+    fontSize: wp(3.5),
     fontFamily: fonts.regular,
     color: Colors.secondary,
     textAlign: 'center',

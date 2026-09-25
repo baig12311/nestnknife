@@ -138,7 +138,13 @@ const Orders = () => {
                 {
                     statuses.map((status, index) => (
                         <Text key={index}
-                            style={[styles.statusText, selectedStatus === status && styles.selectedText]}
+                            style={[
+                                styles.statusText, 
+                                selectedStatus === status && styles.selectedText,
+                                // {
+                                //     width: `${100 / statuses.length}%`,
+                                // }
+                            ]}
                             onPress={() => handleStatusPress(index)}
                         //onPress={() => setSelectedStatus(status)}
                         >

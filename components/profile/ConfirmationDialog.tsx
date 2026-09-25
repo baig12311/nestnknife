@@ -7,9 +7,10 @@ interface Props{
     onPressCancel?:()=>void,
     onPressDelete?:()=>void,
     msg?:string,
-    txtButton?: string
+    txtButton?: string,
+    title?:string
 }
-const ConfirmatinDialog:React.FC<Props> = ({modalVisible, onPressCancel, onPressDelete, msg, txtButton}) => {
+const ConfirmatinDialog:React.FC<Props> = ({title, modalVisible, onPressCancel, onPressDelete, msg, txtButton}) => {
     return (
        
 
@@ -17,7 +18,7 @@ const ConfirmatinDialog:React.FC<Props> = ({modalVisible, onPressCancel, onPress
         <Modal visible={modalVisible} transparent={true} animationType='fade'>
  <View style={styles.modalView}>
        <View style={styles.modalContentView}>
-            <Text style={styles.txtAtten}>Attention</Text>
+            <Text style={styles.txtAtten}>{title}</Text>
             <Text style={styles.msg}>{msg}</Text>
             <View style={styles.buttonContianer}>
                 <TouchableOpacity onPress={onPressCancel} activeOpacity={0.7}>
@@ -26,7 +27,9 @@ const ConfirmatinDialog:React.FC<Props> = ({modalVisible, onPressCancel, onPress
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={onPressDelete}  activeOpacity={0.7}>
-                    <Text style={[styles.txt, styles.txtDlt]}>
+                    <Text style={[styles.txt, {
+                        color: txtButton === 'Sign In' ? Colors.primary : Colors.red
+                    }]}>
                         {txtButton}</Text>
                 </TouchableOpacity>
             </View>
@@ -67,22 +70,22 @@ const styles = StyleSheet.create({
     },
    
     txtAtten:{
-        fontSize: wp(6),
+        fontSize: wp(5),
         color: Colors.text,
         fontFamily: fonts.semibold,
         textAlign: 'center'
         //marginBottom: hp(0)
     },
     msg:{
-        fontSize: wp(4),
-        color: Colors.text,
+        fontSize: wp(3.7),
+        color: Colors.secondary,
         fontFamily: fonts.medium,
         textAlign: 'center',
         marginBottom: hp(2)
     },
     txt:{
         fontSize: wp(4),
-        fontFamily: fonts.medium,
+        fontFamily: fonts.semibold,
         //borderWidth:0.3,
         borderRadius:wp(2),
         paddingHorizontal:wp(4),

@@ -5,7 +5,7 @@ import Colors from '../../constants/colors';
 import Animated, { FadeInDown, FadeOutUp } from 'react-native-reanimated';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Icon from '../Icon';
-type toastType = 'success' | 'error' | 'warn'
+type toastType = 'success' | 'error' | 'warn' | 'info'
 interface Props {
     messageTitle?: string
     messageDescription?: string
@@ -86,7 +86,8 @@ const styles = StyleSheet.create({
 
     },
     textView: {
-        marginLeft: wp(2)
+        marginLeft: wp(2),
+        flex:1
     }
 });
 

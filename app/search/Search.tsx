@@ -14,6 +14,7 @@ import ProductCard from '../../components/categories/ProductCard';
 import { useSearchProducts } from '../../hooks/useSearchProducts';
 import { useRecentSearches } from '../../hooks/useRecentSearches';
 import SearchProductCard from '../../components/search/SearchProductCard';
+import CustomEmptyComponent from '../../components/common/CustomEmptyComponent';
 // create a component
 const popularSearches = [
     '4 in 1 Seasoning Box',
@@ -104,6 +105,7 @@ const Search = () => {
                         keyExtractor={(item) => item.id}
                         renderItem={renderProduct}
                         showsVerticalScrollIndicator={false}
+                        //contentContainerStyle={{flexGrow:1}}
                     />
                 )
             }
@@ -111,8 +113,12 @@ const Search = () => {
             {/* NO RESULTS — jab search active ho lekin kuch na mile */}
             {
                 isSearching && !isLoading && searchResults.length === 0 && (
-                    <View style={{ paddingTop: hp(4), alignItems: 'center' }}>
-                        <Text style={styles.noFoundText}>No products found.</Text>
+                    <View style={{ alignItems: 'center', flex:1}}>
+                    <CustomEmptyComponent
+                    illustration={require('../../assets/illustrations/noSearch.png')}
+                     mainText="No products found"
+                     subText={`We couldn't find anything matching "${searchText}". Try a different keyword.`}
+                    />
                     </View>
                 )
             }
@@ -120,7 +126,7 @@ const Search = () => {
             {/* POPULAR + RECENT — sirf jab search active NA ho */}
             {!isSearching && (
                 <>
-                    <FadeInView delay={200}>
+                    {/* <FadeInView delay={200}>
                         <View style={styles.sectionContainer}>
                             <Text style={styles.sectionHeading}>Popular Searches</Text>
                             <View style={styles.popularContainer}>
@@ -144,7 +150,7 @@ const Search = () => {
 
 
                         </View>
-                    </FadeInView>
+                    </FadeInView> */}
                     <FadeInView delay={300}>
                         {
                             recentSearches.length > 0 && (

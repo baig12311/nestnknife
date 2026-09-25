@@ -17,14 +17,12 @@ const styles = StyleSheet.create({
         //paddingHorizontal:hp(2)
     },
     statusText:{
-        //borderWidth:1,
-        //textAlign: 'center',
-        paddingHorizontal: wp(2),
-        //width:'20%',
-        //paddingVertical: hp(1),
+        
+        //paddingHorizontal: wp(2),
         fontFamily: fonts.regular,
-        fontSize: wp(3),
+        fontSize: wp(3.3),
         color: Colors.secondary,
+       
     },
     selectedText:{
         borderBottomWidth: 3,

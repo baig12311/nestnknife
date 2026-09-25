@@ -35,7 +35,9 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         marginVertical:hp(0.5),
-        
+        //borderWidth:1,
+        paddingHorizontal:wp(2),
+        paddingVertical:wp(1.5)
     },
     iconContainer:{
         width: wp(10),
@@ -46,17 +48,22 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     textContainer:{
-        marginLeft: wp(2)
+        marginLeft: wp(2),
+        flex:1,
     },
     txtTitle:{
         fontFamily: fonts.medium,
-        fontSize: wp(3),
-        color: Colors.secondary
+        fontSize: wp(2.8),
+        color: Colors.secondary,
     },
     txtDesc:{
         fontFamily: fonts.medium,
-        fontSize: wp(3.2),
+        fontSize: wp(3),
         color: Colors.primary
+    },
+    divider:{
+        height:hp(1),
+        borderWidth:0.3
     }
 });
 

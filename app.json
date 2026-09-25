@@ -32,7 +32,15 @@
     "plugins": [
       "expo-router",
       "expo-font",
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+    "expo-splash-screen",
+    {
+      "image": "./assets/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FAF7F2"
+    }
+  ]
     ]
   }
 }

@@ -1,3 +1,4 @@
+import { useRef, useEffect} from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import Icon from '../Icon';
 import { fonts } from '../../constants/typography';
@@ -12,10 +13,32 @@ interface Props{
   bgColor?:string
   //isProduct?:boolean
   leftType?: 'image' | 'title' | 'back';
+  onCartLayout?: (x: number, y: number, width: number, height: number) => void;
+  onCartPosition?: (
+  x: number,
+  y: number,
+  width: number,
+  height: number
+) => void;
 
 }
-const HomeHeader:React.FC<Props>=({title, color, bgColor, leftType})=> {
+const HomeHeader:React.FC<Props>=({title, color, bgColor, leftType, onCartLayout, onCartPosition})=> {
   const cartCount=useCartBadge()
+  const cartIconRef = useRef<View>(null);
+  const measureCartIcon = () => {
+  cartIconRef.current?.measureInWindow(
+    (x, y, width, height) => {
+      onCartPosition?.(x, y, width, height);
+    }
+  );
+};
+useEffect(() => {
+  const timer = setTimeout(() => {
+    measureCartIcon();
+  }, 100);
+
+  return () => clearTimeout(timer);
+}, []);
   return (
    <View style={[styles.container, leftType==='image'&&{borderBottomWidth:0.3,}]}>
       {/* Left Side: Title ya Logo */}
@@ -51,6 +74,7 @@ const HomeHeader:React.FC<Props>=({title, color, bgColor, leftType})=> {
         
         {/* Cart Icon sirf tab dikhega jab title NAHI hoga */}
         <HeaderIcon iconName='cart-outline' count={cartCount&&cartCount} 
+        ref={cartIconRef}
         backgroundColor={bgColor}
         color={color}
         onPress={()=>router.replace('/cart')}/>

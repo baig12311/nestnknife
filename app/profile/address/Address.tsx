@@ -125,7 +125,8 @@ const Address = () => {
                 DeleteDialogShow && (
                     <ConfirmatinDialog
                         modalVisible={DeleteDialogShow}
-                        msg='Are you sure you want to permanently delete this address?'
+                        title='Delete Address?'
+                        msg='Are you sure you want to delete this address? This action cannot be undone.'
                         txtButton='Delete'
                         onPressCancel={() => setDeleteDialogShow(!DeleteDialogShow)}
                         onPressDelete={handleDeleteAddress}

@@ -78,7 +78,8 @@ const TrackOrder = () => {
                     title='Order Tracking'
                     onPress={() => router.back()}
                 />
-                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 30}}
+                showsVerticalScrollIndicator={false}>
 
 
                     <CustomSection>

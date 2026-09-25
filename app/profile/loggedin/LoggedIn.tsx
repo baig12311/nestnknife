@@ -39,7 +39,8 @@ const LoggedIn = () => {
                 ModalShow && (
                     <ConfirmatinDialog
                     modalVisible={ModalShow}
-                    msg='Are you sure you want to Sign Out ?'
+                    title='Sign Out?'
+                    msg='Are you sure you want to Sign out of your account?'
                     txtButton='Sign Out'
                     onPressCancel={()=>setModalShow(!ModalShow)}
                     onPressDelete={()=>logoutMutation.mutate()}
@@ -58,7 +59,6 @@ const LoggedIn = () => {
                 {
                     (!loading&&!fName && !lName && !error) && (<Incomplete />)
                 }
-                <Incomplete/>
                 <Text style={styles.heading}>Account</Text>
                 <MoreInfoSection />
                 <Text style={styles.heading}>Help</Text>

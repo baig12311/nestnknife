@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     },
     buttonText:{
         color: Colors.background,
-        fontSize: wp(3.2),
+        fontSize: wp(3),
         fontFamily: fonts.medium
     },
     heading:{

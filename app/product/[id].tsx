@@ -8,8 +8,10 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Linking
 } from 'react-native';
 import Colors from '../../constants/colors';
+import AddToCartAnimation from '../../components/animations/AddToCartAnimation';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import FormattedDescription from '../../services/FormattedDescription';
 import { useQueryClient } from '@tanstack/react-query';
@@ -36,7 +38,14 @@ import CustomToast from '../../components/common/CustomToast';
 
 const ProductDetailsScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const productImageRef = useRef<View>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [cartPosition, setCartPosition] = useState({
+  x: 0,
+  y: 0,
+  width: 0,
+  height: 0,
+});
   const [showToast, setShowToast] = useState(false)
   const [type, setType] = useState<'success' | 'error' | 'warn' | 'info'>('error')
   const [toastTitle, setToastTitle] = useState('')
@@ -45,13 +54,20 @@ const ProductDetailsScreen = () => {
   const addToCartMutation = useAddToCart();
   const dispatch = useDispatch<any>();
   const flatListRef = useRef<FlatList>(null)
-
+  const [showAddAnimation, setShowAddAnimation] = useState(false);
+  const [productPosition, setProductPosition] = useState({
+  x: 0,
+  y: 0,
+  width: 0,
+  height: 0,
+});
   const cartId = useSelector(
     (state: RootState) => state.cart.cartId
   );
 
   const [quantity, setQuantity] = useState(1);
   const [adding, setAdding] = useState(false);
+  const [buying, setBuying] = useState(false);
 
   const {
     data: product,
@@ -94,10 +110,25 @@ const ProductDetailsScreen = () => {
     )
   }
 
+  // measuring image 
+ const measureProductImage = () => {
+  productImageRef.current?.measureInWindow(
+    (x, y, width, height) => {
+      setProductPosition({
+        x,
+        y,
+        width,
+        height,
+      });
+    },
+  );
+};
+
   const variant = product.variants.edges[0]?.node;
 
  const handleAddToCart = async () => {
-  console.log(quantity);
+ measureProductImage();
+  
 
   if (!variant) {
     console.error('No product variant found.');
@@ -137,7 +168,7 @@ const ProductDetailsScreen = () => {
       } else if (
         result.addedQuantity < result.requestedQuantity
       ) {
-        setType('error');
+        setType('warn');
         setToastTitle('Limited Availability');
         setToastMessage(
           `Only ${result.addedQuantity} item${
@@ -145,12 +176,13 @@ const ProductDetailsScreen = () => {
           } were added due to availability.`,
         );
       } else {
+        setShowAddAnimation(true);
         setType('success');
         setToastTitle('Added to cart');
         setToastMessage('This item is now in your cart.');
       }
 
-      setShowToast(true);
+      //setShowToast(true);
 
     } catch (error: any) {
       // Cart ID expired
@@ -202,11 +234,87 @@ const ProductDetailsScreen = () => {
     setAdding(false);
   }
 };
+const handleBuyNow = async () => {
+  if (!variant) {
+    console.error('No product variant found.');
+    return;
+  }
 
+  try {
+    setBuying(true);
+
+    let currentCartId = cartId;
+
+    // No cart → create one
+    if (!currentCartId) {
+      const newCart = await createCart();
+
+      currentCartId = newCart.id;
+
+      dispatch(setCartId(newCart.id));
+    }
+
+    try {
+      const result = await addToCartMutation.mutateAsync({
+        cartId: currentCartId,
+        merchandiseId: variant.id,
+        quantity,
+      });
+
+      await Linking.openURL(result.cart.checkoutUrl);
+
+    } catch (error: any) {
+      // Cart expired
+      if (
+        error?.message?.toLowerCase().includes('does not exist')
+      ) {
+        const newCart = await createCart();
+
+        dispatch(setCartId(newCart.id));
+
+        const result = await addToCartMutation.mutateAsync({
+          cartId: newCart.id,
+          merchandiseId: variant.id,
+          quantity,
+        });
+
+        await Linking.openURL(result.cart.checkoutUrl);
+      } else {
+        throw error;
+      }
+    }
+
+  } catch (error: any) {
+    console.log('BUY NOW ERROR:', error);
+
+    setType('error');
+    setToastTitle('Something Went Wrong');
+    setToastMessage(
+      error?.message ||
+        "We couldn't proceed to checkout. Please try again.",
+    );
+    setShowToast(true);
+
+  } finally {
+    setBuying(false);
+  }
+};
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-
+      {showAddAnimation && (
+  <AddToCartAnimation
+    image={product.images.nodes[activeIndex]?.url}
+    startX={productPosition.x}
+    startY={productPosition.y}
+    endX={cartPosition.x}
+    endY={cartPosition.y}
+    onComplete={() => {
+  setShowAddAnimation(false);
+  setShowToast(true);
+}}
+  />
+)}
       <CustomToast
         type={type}
         visible={showToast}
@@ -219,7 +327,15 @@ const ProductDetailsScreen = () => {
       />
       <View style={styles.headerContainer}>
         {/* <HomeHeader color={Colors.text} bgColor='white' isProduct={true}/> */}
-        <HomeHeader color={Colors.text} bgColor='white' leftType='back' />
+        <HomeHeader color={Colors.text} bgColor='white' leftType='back' 
+         onCartPosition={(x, y, width, height) => {
+    setCartPosition({
+      x,
+      y,
+      width,
+      height,
+    });
+  }}/>
 
       </View>
 
@@ -239,13 +355,15 @@ const ProductDetailsScreen = () => {
             setActiveIndex(index);
           }}
           //style={styles.flatContainer}
-          renderItem={({ item }) => (
-
-            <Image
+          renderItem={({ item , index}) => (
+            <View ref={index === activeIndex ? productImageRef : null} key ={index}>
+              <Image
               source={{ uri: item.url }}
               resizeMode='cover'
               style={styles.image}
             />
+            </View>
+            
 
           )}
         />
@@ -361,8 +479,8 @@ const ProductDetailsScreen = () => {
           <View style={{ flex: 1 }}>
             <Button
               title='Buy Now'
-            //onPress={handleAddToCart}
-            //loading={adding}
+            onPress={handleBuyNow}
+            loading={buying}
             />
           </View>
 

@@ -20,7 +20,7 @@ export const orderInfo=(order:any)=>[
     },
     {
         id:3,
-        iconName: 'card-outline',
+        iconName: 'wallet-outline',
         iconType: 'Ionicons',
         title: 'Payment Method',
         desc: 'Cash on Delivery'

@@ -353,7 +353,7 @@ const styles = StyleSheet.create({
 
     tracker: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+
         marginBottom: wp(2),
         position: 'relative',
     },
@@ -405,12 +405,14 @@ const styles = StyleSheet.create({
         flex: 1,
         position: 'relative',
         zIndex: 2,
+        
     },
 
     type: {
         fontFamily: fonts.medium,
         fontSize: wp(3),
-        color: Colors.secondary
+        color: Colors.secondary,
+        textAlign: 'center'
     },
 
     typeSelected: {

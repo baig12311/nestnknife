@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState} from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import styles from './orderDetailStyle';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -25,7 +25,7 @@ const OrderDetail = () => {
     const lineItems = orderData?.lineItems?.edges
     const shippingAddress = orderData?.shippingAddress
     const trackingInfo = orderData?.fulfillments?.edges[0]?.node?.trackingInformation
-    const isTracking = trackingInfo && trackingInfo.length>0
+    const isTracking = trackingInfo && trackingInfo.length > 0
     const visibleItems = showAllItems ? lineItems : lineItems.slice(0, 3)
     const orderAmount = Number(orderData?.totalPrice.amount).toLocaleString();
     const orderStatus = getOrderStatus(orderData)
@@ -35,16 +35,16 @@ const OrderDetail = () => {
             <ScrollView
                 showsVerticalScrollIndicator={false}
             >
-                   {/* Order Tracking */}
+                {/* Order Tracking */}
                 <CustomSection>
                     <EventTracking
                         orderStatus={orderStatus}
                         placedAt={orderData.processedAt}
                         hasTrackingInfo={isTracking}
-                        onPress={()=>router.push(
+                        onPress={() => router.push(
                             {
-                                pathname:'/profile/trackOrder/TrackOrder',
-                                params:{
+                                pathname: '/profile/trackOrder/TrackOrder',
+                                params: {
                                     trackingData: JSON.stringify(trackingInfo),
                                     currentOrderStatus: orderStatus
                                 }
@@ -58,19 +58,31 @@ const OrderDetail = () => {
                 <CustomSection heading='Order Information'>
                     <ShadowCard containerStyle={styles.containerStyle}>
                         <View style={styles.infoGrid} >
+
                             {
-                                orderDetails.map((order, index) => (
-                                    <View key={order.id}>
-                                        <OrderInfoCard
-                                            iconName={order.iconName}
-                                            iconType={order.iconType}
-                                            title={order.title}
-                                            desc={order.desc}
-                                        />
+                                orderDetails.map((order, index) => {
+                                    return (
+                                        
+                                            <View  key={order.id} style={styles.infoMain}>
+                                            <OrderInfoCard
+                                                iconName={order.iconName}
+                                                iconType={order.iconType}
+                                                title={order.title}
+                                                desc={order.desc}
+                                            />
 
-                                    </View>
-
-                                ))
+                                        
+                                        {
+                                            index === 0 || index === 2 ? <View style={styles.divider}/>: null
+                                        }
+                                        </View>
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    )
+                            })
                             }
                         </View>
 
@@ -85,7 +97,7 @@ const OrderDetail = () => {
                                     const orderItem = item.node
                                     return (
                                         <OrderItemCard
-                                        key={orderItem.id}
+                                            key={orderItem.id}
                                             itemName={orderItem.title}
                                             itemPrice={orderItem.price.amount}
                                             quantity={orderItem.quantity}
@@ -126,7 +138,7 @@ const OrderDetail = () => {
                         address2={shippingAddress.address2}
                         city={shippingAddress.city}
                         phone={shippingAddress.phoneNumber}
-                       
+
                     />
                 </CustomSection>
                 {/* Price Section */}

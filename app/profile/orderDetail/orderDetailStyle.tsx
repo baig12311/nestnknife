@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        padding: wp(3),
+        //padding: wp(3),
         borderRadius: wp(2)
     },
     containerStyle:{
@@ -42,8 +42,18 @@ const styles = StyleSheet.create({
         fontFamily: fonts.regular,
         fontSize: wp(3.5),
         color: Colors.secondary
+    },
+    infoMain:{
+            width: '50%',
+        flexDirection: 'row'
+    },
+    divider:{
+        height: hp(5),
+        borderWidth: 0.3,
+        borderColor: Colors.secondary,
+        alignSelf: 'center',
+        backgroundColor: 'yellow'
     }
-    
 
 })
 export default styles

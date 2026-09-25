@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         marginRight: wp(3)
     },
     title:{
-        fontSize:wp(3.5),
+        fontSize:wp(3.2),
        
         flexShrink:1,
         fontFamily:fonts.regular

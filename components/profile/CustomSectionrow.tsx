@@ -13,6 +13,7 @@ interface Props {
     subText?: string
     borderBottomWidth?: number
     status?: string
+    isHelp?:boolean
     onPress?: () => void
 }
 const CustomSectionRow: React.FC<Props> = ({ paddingHorizontal,
@@ -23,7 +24,8 @@ const CustomSectionRow: React.FC<Props> = ({ paddingHorizontal,
     subText,
     borderBottomWidth,
     status,
-    onPress
+    onPress,
+    isHelp
 }) => {
     return (
         <TouchableOpacity 
@@ -47,7 +49,12 @@ const CustomSectionRow: React.FC<Props> = ({ paddingHorizontal,
 
             <View style={styles.textContainer}>
                 <Text style={styles.mainText}>{mainText}</Text>
-                <Text style={styles.subtext}>{subText}</Text>
+                {
+                    !isHelp && (
+                                        <Text style={styles.subtext}>{subText}</Text>
+
+                    )
+                }
 
 
             </View>

@@ -33,7 +33,7 @@ const CollapsibleRow: React.FC<Props> = ({isLast, isExpand, onPress, question, a
     }, [isExpand])
     return (
         <View style={[styles.container, 
-            !isLast && {borderBottomWidth:1}
+            !isLast && {borderBottomWidth:0.3}
         ]}>
             <TouchableOpacity
                 style={styles.row}
@@ -68,9 +68,9 @@ const CollapsibleRow: React.FC<Props> = ({isLast, isExpand, onPress, question, a
 const styles = StyleSheet.create({
     container: {
         paddingVertical:hp(1),
-        paddingHorizontal:wp(2),
+        //paddingHorizontal:wp(2),
         borderColor: Colors.secondary,
-        borderStyle: 'dashed',
+        // borderStyle: 'dashed',
        
     },
     row: {
@@ -82,18 +82,17 @@ const styles = StyleSheet.create({
     text: {
         fontFamily: fonts.medium,
         color: Colors.text,
-        fontSize: wp(3.3),
+        fontSize: wp(3.7),
         flex:1,
        
     },
     textAns:{
         fontFamily: fonts.regular,
         color: Colors.secondary,
-        fontSize: wp(3)
+        fontSize: wp(3.3)
     },
     ansContainer:{
         paddingHorizontal:wp(2),
-       backgroundColor:'#F5F1EA' 
     }
 });
 

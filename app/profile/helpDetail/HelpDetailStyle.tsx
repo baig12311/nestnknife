@@ -13,20 +13,20 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     contentContainer:{
-        padding:wp(2),
+        //backgroundColor: 'white',
+        //borderWidth:1,
+        borderColor:Colors.secondary,
+        borderStyle: 'dashed',
         width: '100%',
+        padding:wp(2),
         borderRadius:wp(2),
         //padding: wp(3)
     },
-    viewButton:{
-        paddingVertical: wp(2),
-        marginTop: hp(1.5),
-    },
-    viewText:{
-        fontFamily: fonts.regular,
-        fontSize:wp(3.3),
-        color:Colors.secondary,
-        textAlign: 'center',
+    heading:{
+        fontFamily: fonts.medium,
+        color: Colors.secondary,
+        fontSize: wp(4),
+        marginBottom: hp(1)
     }
 
 });

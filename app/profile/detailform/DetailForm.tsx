@@ -11,6 +11,7 @@ import CustomToast from '../../../components/common/CustomToast';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import UploadImage from '../../../components/profile/UploadImage';
 import FloatingInput from '../../../components/profile/FloatingInput';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Benefits from '../../../components/profile/Benefits';
 import * as ImagePicker from 'expo-image-picker';
 import { useCustomer } from '../../../hooks/useCustomer';
@@ -31,6 +32,7 @@ const DetailForm = () => {
     const [phoneNumber, setPhoneNumber] = useState('')
     const { updateCustomer, error } = useCustomer()
     const [image, setImage] = useState<string | null>(null)
+    const [exists, setExists] = useState(false)
     const [edit, setEdit] = useState(false)
 
     // loading image from async storage
@@ -59,6 +61,7 @@ const DetailForm = () => {
             if (pNumber) {
                 setPhoneNumber(pNumber as string)
             }
+            setExists(true)
         }
     }, [])
 
@@ -198,7 +201,7 @@ const DetailForm = () => {
 
 
 
-                <Text style={styles.title}>Complete Profile</Text>
+                <Text style={styles.title}>{exists ? 'Edit Profile' : 'Complete Profile'}</Text>
 
             </View>
             <UploadImage
@@ -208,8 +211,19 @@ const DetailForm = () => {
                     setShowSheet(true)
                     sheetRef.current?.snapToIndex(0)
                 }} />
-            <Text style={styles.title}>Complete Your Profile</Text>
-            <Text style={styles.subTitle}>Add few details to personalize your experience</Text>
+            <Text style={[
+                styles.title,
+                exists && {marginBottom:hp(2)}
+                ]}>
+                    {exists ? 'Edit Your Profile' : 'Complete Your Profile'}
+                </Text>
+            {
+                !exists && (
+                                <Text 
+                                style={styles.subTitle}>Add few details to personalize your experience</Text>
+
+                )
+            }
             <FloatingInput
                 placeholder='First Name'
                 value={firstName}
